@@ -68,5 +68,6 @@
  "sort_order": "DESC",
  "autoname": "SPORTS-PROG-.#####",
  "title_field": "program_name",
- "search_fields": "program_name,sport,company"
+ "search_fields": "program_name,sport,company",
+ "show_title_field_in_link": 1
 }

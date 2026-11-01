@@ -6,7 +6,7 @@ Sports and Finance run in one console while remaining separate apps.
 
 ## Scope and success
 
-Deliver the three independently specified stories below, including their permission, data-integrity and failure cases. All work is forward-looking. See the [PRD](../../PRD.md) and [requirement baseline](../../concepts/requirement-baseline.md) for shared rules and unresolved decisions.
+Deliver the independently specified stories below, including their permission, data-integrity and failure cases. All work is forward-looking. See the [PRD](../../PRD.md) and [requirement baseline](../../concepts/requirement-baseline.md) for shared rules and unresolved decisions.
 
 ## Stories
 
@@ -15,6 +15,7 @@ Deliver the three independently specified stories below, including their permiss
 | [US-002-01](../user-stories/us-002-01-console-extension-spike.md) | Validate and specify the console provider contract | Must | Done | None |
 | [US-002-02](../user-stories/us-002-02-sports-console-provider.md) | Mount Sports views in the shared console | Must | Proposed | US-002-01, US-001-03 |
 | [US-002-03](../user-stories/us-002-03-console-login-and-finance-regression.md) | Unify console entry and protect existing Finance behavior | Must | Proposed | US-002-02 |
+| [US-002-04](../user-stories/us-002-04-development-documentation-and-build-evidence.md) | Expose Sports documentation and require adjustment logs | Must | In review | US-002-01 |
 
 ## Exit criteria
 

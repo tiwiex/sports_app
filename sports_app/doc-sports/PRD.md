@@ -48,7 +48,7 @@ Manual attendance can be used during the pilot while hardware is validated. Biom
 
 ### Subsequent or separately scoped work
 
-Parent/player self-service accounts, payment gateway integrations, SMS/WhatsApp, advanced player performance analytics, tournament/league management, accommodation, transport, medical case management, merchandise storefront, and multiple biometric vendors. Existing ERP capabilities may be configured where needed; these extensions have no committed release or estimate.
+Parent/player self-service activation and portal workflows, payment gateway integrations, SMS/WhatsApp, advanced player performance analytics, tournament/league management, accommodation, transport, medical case management, merchandise storefront, and multiple biometric vendors. Existing ERP capabilities may be configured where needed; these extensions have no committed release or estimate.
 
 Do not rebuild general ledger, payroll, inventory, procurement, or invoicing in Sports App. Do not migrate Primero automatically or create another staff console. A new generic platform app is not required for this first implementation.
 
@@ -78,7 +78,7 @@ Finance configures effective-dated fee plans by academy/program and links each p
 
 A stable player/enrollment/period/charge key prevents retries and concurrent runs from generating duplicate obligations or invoices. A fully exempt period remains visible as a zero-due obligation with a restricted decision link; no fictitious payment or unnecessary zero-value invoice is required. Mid-month entry, suspension, proration, taxes and overlapping exemptions must be explicitly configured or resolved before billing; there is no silent assumed policy.
 
-Cashier allocates a submitted ERPNext Payment Entry to the correct invoice. One guardian/payer Customer may fund multiple players: store player attribution at obligation/invoice allocation level and never infer a player's debt from the entire Customer balance. For MVP, use one player's obligation per invoice unless a tested line-allocation design is approved.
+Cashier allocates a submitted ERPNext Payment Entry to the correct invoice. Each player has their own ERPNext Customer, created automatically from registration details in the same transaction. Enrollments derive this link; staff do not choose a family/payer Customer. Keep player attribution at obligation/invoice allocation level. For MVP, use one player's obligation per invoice unless a tested line-allocation design is approved.
 
 Payment history shows invoice and receipt references, dates, period, due amount, submitted allocations, outstanding amount and correction links. Due-state rules are: Exempt (authorized zero charge), Unpaid (positive charge, no allocated receipt), Partially paid (some paid, balance remains), Paid (balance zero), or Overdue (positive balance past due date, retaining partial-payment information). Not billed is distinct from Paid or Exempt. Cancelled documents do not count; unallocated receipts are visible credits, not proof that a period is paid. Refunds, credit notes and reversals follow ERPNext permissions and workflows and recompute the view.
 
@@ -114,7 +114,7 @@ Deployment profile for this academy includes Frappe + ERPNext + ERP Boost + Spor
 
 ## 7. Proposed data model
 
-Names below are candidates, not created DocTypes. Use a `Sports` prefix to avoid collision with Primero's `Player` and `Player Application`.
+Use a `Sports` prefix to avoid collision with Primero's `Player` and `Player Application`. Settings, Program, Group, Player and Enrollment are implemented in the current development slices; other models below remain candidates.
 
 | Record | Core purpose and links |
 |---|---|
@@ -122,7 +122,7 @@ Names below are candidates, not created DocTypes. Use a `Sports` prefix to avoid
 | Sports Program / Group | Configurable sport, program, roster/group, schedule and fee-plan association |
 | Sports Application | Applicant/guardian contacts, submitted timestamp, review status and resulting player link |
 | Sports Player | Stable registration number, names, DOB where required, contacts/guardian, status and protected attachments |
-| Sports Enrollment | Player + academy/program/group, effective dates, status, fee plan and payer Customer |
+| Sports Enrollment | Player + academy/program/group, effective dates, status, fee plan and the player's automatically linked Customer |
 | Sports Fee Plan | Effective dates, frequency, price/currency, due-date policy, ERP item/account mapping |
 | Sports Scholarship / Exemption | Restricted approval, player/enrollment, scope, amount/percentage, dates, reason and decision audit |
 | Sports Fee Obligation | Player/enrollment/period key, approved amount, restricted adjustment reference, invoice link and derived settlement status |
@@ -180,7 +180,7 @@ Success is measured by complete required player records, searchable payment and 
 | OQ-02 | Required player/guardian details, age groups, duplicate checks, publication authorization and privacy/retention policy | Management + implementation lead / G1 |
 | OQ-03 | Currency, monthly rates, start date, due dates, proration, taxes, suspension and withdrawal billing | Finance + management / G0 |
 | OQ-04 | Scholarship approvers, full/partial treatment, overlapping awards, retroactive changes and finance visibility of concession-derived amounts | Management + finance / before fee implementation |
-| OQ-05 | Payer Customer model, shared guardians, refund/credit allocation and opening debt evidence | Finance / before billing implementation |
+| OQ-05 | One Customer per player confirmed by user; refund/credit allocation and opening debt evidence remain open | Finance / before billing implementation |
 | OQ-06 | Device vendor/model/SDK, ownership of templates, identifiers, supported auth, offline behavior, timezone, consent and revocation/deletion | Management + device supplier / G0; before live biometric enrollment |
 | OQ-07 | Target-site Frappe/ERPNext/Boost versions, app installation policy and console extension compatibility | Technical lead / integration spike |
 | OQ-08 | Launch-required ERP module list, HR/payroll app requirements and actual Boost coverage | Finance + management / G0 |
@@ -198,3 +198,11 @@ US-002-01 has a v1 provider prototype on the selected development site, `moyours
 ### Academy settings checkpoint
 
 US-001-01 adds one private academy configuration per site, company-scoped Programs and Groups, registration/enrollment defaults, and a default monthly fee with explicit opt-out. The Sports-owned settings view is available from the existing console to System Managers and the new Sports Academy Administrator role. No existing user receives that role automatically. Company/currency master read access does not grant accounting permissions. Actual player creation, website publishing and effective fee-plan/invoice behavior remain subsequent stories. See [the setup guide](academy-setup.md).
+
+## Development player slice (2026-11-01)
+
+US-001-01 and US-002-01 were accepted and merged into local development branches. US-003-02 now implements private Sports Player identity, enrollment and automatic per-player Customer links through the optional shared console. Sports Registrar is the initial player operator role; it does not receive financial transaction rights. Public applications, complete role boundaries, source-linked billing/payment/attendance histories and production acceptance remain their planned stories. See the [player build log](build-logs/2026-11-01-us-003-02-player-numbering-and-enrollment.md).
+
+Program categorization and delivery governance refinement: new player Customers are assigned to a Customer Group named for the initial registration program. A management-only Sports Development Tools view exposes current requirements and delivery documents; every story/adjustment requires a separate indexed build log. See [current requirements](REQUIREMENTS.md) and [US-002-04](backlog/user-stories/us-002-04-development-documentation-and-build-evidence.md).
+
+New registrations require a valid unique player email and atomically create a disabled Website User linked to the player and Customer Contact (SPORTS-FR-029). Accounts carry only the non-Desk Sports Player role, with no welcome mail or password. Existing players are not backfilled. Activation, authenticated own-record access and email-change review remain future work. The shared development Boost installation restores standard System Manager User role-editor permissions without extending Boost Admin authority.

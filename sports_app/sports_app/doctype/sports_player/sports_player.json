@@ -1,0 +1,153 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Player",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "allow_rename": 0,
+ "field_order": [
+  "full_name",
+  "company",
+  "customer",
+  "portal_user",
+  "registration_program",
+  "birth_date",
+  "contact_email",
+  "contact_phone",
+  "guardian_name",
+  "guardian_phone",
+  "registered_on",
+  "request_key",
+  "request_hash"
+ ],
+ "fields": [
+  {
+   "fieldname": "full_name",
+   "label": "Player name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "customer",
+   "label": "Customer",
+   "fieldtype": "Link",
+   "options": "Customer",
+   "read_only": 1,
+   "unique": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "portal_user",
+   "label": "Self-service User",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1,
+   "unique": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "registration_program",
+   "label": "Registration program",
+   "fieldtype": "Link",
+   "options": "Sports Program",
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "birth_date",
+   "label": "Date of birth",
+   "fieldtype": "Date"
+  },
+  {
+   "fieldname": "contact_email",
+   "label": "Contact email",
+   "fieldtype": "Data",
+   "options": "Email"
+  },
+  {
+   "fieldname": "contact_phone",
+   "label": "Contact phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "guardian_name",
+   "label": "Parent / guardian name",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "guardian_phone",
+   "label": "Parent / guardian phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "registered_on",
+   "label": "Registered on",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "request_key",
+   "label": "Registration request",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "unique": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "request_hash",
+   "label": "Request fingerprint",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "no_copy": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Registrar",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "full_name",
+ "search_fields": "full_name,company",
+ "autoname": ""
+}

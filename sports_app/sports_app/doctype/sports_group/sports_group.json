@@ -70,5 +70,6 @@
  "sort_order": "DESC",
  "autoname": "SPORTS-GRP-.#####",
  "title_field": "group_name",
- "search_fields": "group_name,program"
+ "search_fields": "group_name,program",
+ "show_title_field_in_link": 1
 }

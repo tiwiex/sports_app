@@ -5,7 +5,7 @@ frappe.boost_console_views["sports_app:overview"] = () => ({
 		const title = document.createElement("h3");
 		title.textContent = __("Sports Academy");
 		const description = document.createElement("p");
-		description.textContent = __("Authorized administrators can configure the academy, programs and groups through Academy Settings. Player registration, billing and attendance are not yet available.");
+		description.textContent = __("Authorized administrators can configure the academy, programs and groups through Academy Settings. Registrars can manage Players and their enrollment payer links through Players. Billing and attendance are not yet available.");
 		const company = document.createElement("p");
 		company.textContent = context.company
 			? __("Current company: {0}", [context.company])

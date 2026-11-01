@@ -13,7 +13,7 @@ Deliver the three independently specified stories below, including their permiss
 | Story | Outcome | Priority | State | Dependencies |
 |---|---|---|---|---|
 | [US-003-01](../user-stories/us-003-01-application-intake-and-review.md) | Capture and review player registrations | Must | Proposed | US-001-03 |
-| [US-003-02](../user-stories/us-003-02-player-numbering-and-enrollment.md) | Assign stable player IDs and enrollment dates | Must | Proposed | US-003-01, US-001-01 |
+| [US-003-02](../user-stories/us-003-02-player-numbering-and-enrollment.md) | Assign stable player IDs and enrollment dates | Must | In progress | US-003-01, US-001-01 |
 | [US-003-03](../user-stories/us-003-03-central-player-profile.md) | Present the private central player record | Must | Proposed | US-003-02 |
 
 ## Exit criteria
