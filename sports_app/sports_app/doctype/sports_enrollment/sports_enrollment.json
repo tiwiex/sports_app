@@ -1,0 +1,120 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Enrollment",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "allow_rename": 0,
+ "field_order": [
+  "player",
+  "company",
+  "program",
+  "group",
+  "payer_customer",
+  "start_date",
+  "end_date",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "player",
+   "label": "Player",
+   "fieldtype": "Link",
+   "options": "Sports Player",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "program",
+   "label": "Program",
+   "fieldtype": "Link",
+   "options": "Sports Program",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "group",
+   "label": "Group",
+   "fieldtype": "Link",
+   "options": "Sports Group"
+  },
+  {
+   "fieldname": "payer_customer",
+   "label": "Player Customer",
+   "fieldtype": "Link",
+   "options": "Customer",
+   "reqd": 1,
+   "in_list_view": 0,
+   "read_only": 1,
+   "description": "Automatically linked to the player's Customer.",
+   "hidden": 1,
+   "print_hide": 1
+  },
+  {
+   "fieldname": "start_date",
+   "label": "Start date",
+   "fieldtype": "Date",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "end_date",
+   "label": "End date",
+   "fieldtype": "Date"
+  },
+  {
+   "fieldname": "status",
+   "label": "Status",
+   "fieldtype": "Select",
+   "options": "Pending\nActive\nSuspended\nWithdrawn\nCompleted",
+   "default": "Pending",
+   "reqd": 1,
+   "in_list_view": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Registrar",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "autoname": "SPORTS-ENR-.#####",
+ "search_fields": "player,payer_customer,program"
+}

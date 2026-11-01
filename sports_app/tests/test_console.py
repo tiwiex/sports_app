@@ -6,6 +6,11 @@ from sports_app import console
 
 
 class TestSportsConsole(TestCase):
+	def setUp(self):
+		active = patch.object(console, "publish_assets")
+		active.start()
+		self.addCleanup(active.stop)
+
 	def test_roles_and_manifest(self):
 		fake = SimpleNamespace(session=SimpleNamespace(user="sports@test"), get_roles=lambda user: ["Sports Console"])
 		with patch.object(console, "frappe", fake):
@@ -13,7 +18,7 @@ class TestSportsConsole(TestCase):
 			fake.get_roles = lambda user: ["Accounts User"]
 			self.assertFalse(console.has_console_permission())
 			self.assertFalse(console.has_console_permission("Guest"))
-		with patch("sports_app.academy.can_manage_settings", return_value=False):
+		with patch("sports_app.academy.can_manage_settings", return_value=False), patch("sports_app.players.can_manage_players", return_value=False):
 			manifest = console.get_provider()
 		self.assertEqual(manifest["id"], "sports_app")
 		self.assertEqual(manifest["views"][0]["key"], "sports_app:overview")
@@ -52,4 +57,4 @@ class TestSportsConsole(TestCase):
 		for role in ("Sports Academy Administrator", "System Manager"):
 			for doctype in ("Company", "Currency"):
 				add_permission.assert_any_call(doctype, role, ptype="read")
-		self.assertEqual(add_permission.call_count, 4)
+		self.assertEqual(add_permission.call_count, 10)

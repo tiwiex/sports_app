@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-003](../epics/EPIC-003-registration-and-player-record.md)
-- State: Proposed
+- State: In progress
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -26,7 +26,7 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Acceptance criteria
 
 1. Given simultaneous new registrations, when IDs are assigned, then each academy-scoped registration number is unique, immutable and independent of player name or public slug.
-2. Given acceptance or direct registration, when enrollment is confirmed, then program/group, payer link, start/end dates and active status are validated.
+2. Given acceptance or direct registration, when enrollment is confirmed, then program/group, automatically created per-player Customer link, start/end dates and active status are validated.
 3. Given withdrawal, suspension or a same-name player, when records are updated, then existing history remains linked to the correct immutable ID and future eligibility follows effective dates.
 
 ## Verification plan
@@ -39,6 +39,18 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
-- Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+- Build log: [Private registration slice](../../build-logs/2026-11-01-us-003-02-player-numbering-and-enrollment.md).
+- Verification summary: Direct private registration, stable IDs, enrollment, automatic per-player Customer creation, concurrent retries and three browser role profiles verified on the development site. See the build log.
+- Remaining decisions / follow-up work: Public application acceptance integration depends on US-003-01; full identity/contact duplicate policy, broader role boundaries and downstream eligibility integration remain open. This private slice is not a completed public intake workflow.
+
+## Current delivery slice
+
+User requested player management and ERPNext Customer linkage after accepting settings. Start with private direct registration, an immutable Sports Player identity and Sports Enrollment Customer/date/status records. Public intake can later call this foundation; US-003-01 is still Proposed. Sports Registrar is the initial restricted operator role. Player-attributed invoicing and receipt history remain EPIC-004/005. See the [usage guide](../../players-guide.md).
+
+User refinement (2026-11-01): registration must create one Customer per player from the supplied details in one save. No shared family Customer or payer selector. Customer/contact/player/enrollment writes must roll back together, and retries must not duplicate any record. Program/group controls and profile rows show friendly names while retaining stable IDs internally.
+
+Program categorization and hidden native Customer-field refinement: [separate adjustment log](../../build-logs/2026-11-01-us-002-04-guardrails-docs-and-program-categories.md). New Customers belong to a program-named group based on their immutable initial registration program; future enrollments retain that classification.
+
+Follow-up: [asset cache refresh and Boost-style documentation modals](../../build-logs/2026-11-01-us-002-04-asset-cache-and-modal-layout.md). Content-fingerprinted assets must load after migration and browser reload; documentation uses the host card/tab styles with Frappe modal readers.
+
+Follow-up: [Player Users and User role editor](../../build-logs/2026-11-01-us-003-02-player-users-and-role-editor.md). New players require a unique email and receive a disabled Website User; activation remains deferred. Standard System Manager User role-editor access is restored without new Boost Admin powers.

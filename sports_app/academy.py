@@ -72,10 +72,12 @@ def validate_settings(doc):
 			frappe.throw(_("Default group must be enabled and belong to the default program."))
 
 
-def get_configured_settings():
+def get_configured_settings(for_update=False):
 	"""Use explicit saved values or schema defaults, never unrelated user defaults."""
-	doc = frappe.get_single("Sports Academy Settings")
-	stored = frappe.db.get_singles_dict("Sports Academy Settings")
+	doc = (frappe.get_doc("Sports Academy Settings", "Sports Academy Settings", for_update=True)
+		if for_update else frappe.get_single("Sports Academy Settings"))
+	stored = (frappe.db.get_singles_dict("Sports Academy Settings", for_update=True)
+		if for_update else frappe.db.get_singles_dict("Sports Academy Settings"))
 	for fieldname in SETTINGS_FIELDS:
 		if fieldname not in stored:
 			field = doc.meta.get_field(fieldname)

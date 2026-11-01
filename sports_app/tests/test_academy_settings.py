@@ -48,10 +48,11 @@ class TestAcademySettings(TestCase):
    academy.validate_company("Other Company")
 
  def test_settings_menu_is_not_a_basic_sports_capability(self):
-  with patch.object(academy, "can_manage_settings", return_value=False):
+  with patch.object(academy, "can_manage_settings", return_value=False), patch("sports_app.players.can_manage_players", return_value=False):
    self.assertEqual(len(console.get_provider()["views"]), 1)
-  with patch.object(academy, "can_manage_settings", return_value=True):
-   self.assertEqual(console.get_provider()["views"][-1]["key"], "sports_app:settings")
+  with patch.object(academy, "can_manage_settings", return_value=True), patch("sports_app.players.can_manage_players", return_value=True):
+   self.assertIn("sports_app:settings", [row["key"] for row in console.get_provider()["views"]])
+   self.assertIn("sports_app:development", [row["key"] for row in console.get_provider()["views"]])
 
  def test_settings_api_rejects_non_managers(self):
   with patch.object(academy, "can_manage_settings", return_value=False):

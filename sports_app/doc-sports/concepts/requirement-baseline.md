@@ -1,6 +1,6 @@
 # Sports requirement baseline
 
-Captured 2026-11-01. Status for every row: **Proposed**. Requirement IDs are prefixed `SPORTS-` to avoid ambiguity with ERP Boost's separate `FR-*` and `NFR-*` register. Epic/story IDs are local to this folder; qualify them as `sports_app:US-...` in cross-app issues.
+Captured 2026-11-01. Initial planning status for the original rows: **Proposed**; current delivery state is recorded by the linked stories and build logs. Requirement IDs are prefixed `SPORTS-` to avoid ambiguity with ERP Boost's separate `FR-*` and `NFR-*` register. Epic/story IDs are local to this folder; qualify them as `sports_app:US-...` in cross-app issues.
 
 The [original brief](../requirements.txt) remains unchanged. “Client brief” identifies directly requested outcomes; “User direction” identifies the accompanying IDE request; “Proposed” identifies analysis or design detail requiring refinement. This table is a documentation register, not a live Frappe DocType. Requirement behavior and release tests are developed in the [PRD](../PRD.md) and linked stories.
 
@@ -54,3 +54,16 @@ The [original brief](../requirements.txt) remains unchanged. “Client brief” 
 | Attendance history | SPORTS-FR-014, SPORTS-FR-015 |
 
 25 functional and 8 non-functional requirements are planning decomposition, not additional promises from the client. First-release requirements are Must unless a story explicitly identifies later work; release sequencing does not reduce the importance of biometrics or the agreed ERP scope.
+
+
+## Accepted user refinements (2026-11-01)
+
+| Requirement | Current rule | Delivery |
+|---|---|---|
+| SPORTS-FR-026 | Background, atomic creation of one Customer per player from registration details; no manual/shared payer selection | US-003-02 |
+| SPORTS-FR-027 | Customer Group named for the initial program, created/reused during registration | US-003-02 |
+| SPORTS-FR-028 | Management-only read-only Sports Development Tools documentation hub | US-002-04 |
+| SPORTS-FR-029 | Require unique player email; automatically provision a disabled non-Desk Website User for future self-service, without invitation or staff/finance roles | US-003-02 |
+| SPORTS-NFR-009 | A separate dated, indexed build log after every story implementation or adjustment | US-002-04 and all subsequent work |
+
+See [current requirements](../REQUIREMENTS.md) for the governing rules and [adjustment evidence](../build-logs/2026-11-01-us-002-04-guardrails-docs-and-program-categories.md).

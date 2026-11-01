@@ -26,8 +26,12 @@ The demo site's business defaults are left for academy staff to select. Verifica
 
 ## Installation and access
 
-Sports App requires ERPNext for Company/currency masters. Boost is optional for native setup; the Sports menu requires the compatible Boost console provider host. Standard install/migrate hooks create the two Sports roles and synchronize the optional host's Page roles. Existing users are not assigned new roles automatically.
+Sports App requires ERPNext for Company/currency masters. Boost is optional for native setup; the Sports menu requires the compatible Boost console provider host. Standard install/migrate hooks create the Sports roles and synchronize the optional host's Page roles. Existing users are not assigned new roles automatically.
 
 For a controlled schema-only development update after source changes, run role setup before model sync, then console setup and cache clearing. This story used that sequence on the backed-up `moyours.ideltatech.com` site rather than running unrelated historical migrations.
 
 Native DocType forms remain available to authorized administrators for support. The same server validations apply to native forms, REST writes and the Sports console endpoints.
+
+Player management now uses these defaults; see the [Players guide](players-guide.md).
+
+Sports install/migrate setup publishes content-fingerprinted console JavaScript in `public/js/releases`. A changed source gets a new asset URL, preventing reuse of cached older forms. Reload an already-open console after an update; migration does not replace running browser code. Canonical sources remain in `public/js`, and older generated assets are retained for in-flight pages.
