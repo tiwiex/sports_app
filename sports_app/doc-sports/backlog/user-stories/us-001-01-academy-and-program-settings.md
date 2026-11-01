@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-001](../epics/EPIC-001-academy-configuration-and-access.md)
-- State: Proposed
+- State: Done
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -39,6 +39,17 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
-- Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+- Build log: [Delivery evidence](../../build-logs/2026-11-01-us-001-01-academy-and-program-settings.md).
+- Verification summary: 45 combined Python checks and two existing JavaScript suites pass; real configuration roundtrips, company-scope validation, denied-role API/menu checks and browser save/read-back are recorded in the build log.
+- Remaining decisions / follow-up work: User accepted local commit and merge into develop. Academy staff must choose real program/group and fee defaults; website publishing and fee-plan/billing rules remain later stories. The supported configuration is one academy per site.
+
+
+## Refined delivery scope
+
+- Three Sports-owned DocTypes: single Academy Settings plus company-scoped Program and Group masters.
+- Sports → Academy Settings contains the setup form, registration preview and program/group create/edit dialogs.
+- System Manager or Sports Academy Administrator can configure; basic Sports Console users cannot access settings. The configuration role can read company/currency masters and has no accounting transaction rights.
+- Company scope is enforced server-side, including direct API/native form writes. Default program/group must be enabled, belong together and match the settings company.
+- Required settings are enforced on Save. Monthly fees require a positive default amount unless explicitly disabled; saving does not implement pricing plans or create charges.
+- Registration prefix/digits and enrollment status are defaults for later player/enrollment implementation. They do not allocate or renumber any existing player ID.
+- Native forms remain available for authorized support. ERPNext is required for the linked masters; Boost remains optional outside the shared console deployment.

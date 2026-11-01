@@ -12,7 +12,7 @@ Deliver the three independently specified stories below, including their permiss
 
 | Story | Outcome | Priority | State | Dependencies |
 |---|---|---|---|---|
-| [US-002-01](../user-stories/us-002-01-console-extension-spike.md) | Validate and specify the console provider contract | Must | Proposed | None |
+| [US-002-01](../user-stories/us-002-01-console-extension-spike.md) | Validate and specify the console provider contract | Must | Done | None |
 | [US-002-02](../user-stories/us-002-02-sports-console-provider.md) | Mount Sports views in the shared console | Must | Proposed | US-002-01, US-001-03 |
 | [US-002-03](../user-stories/us-002-03-console-login-and-finance-regression.md) | Unify console entry and protect existing Finance behavior | Must | Proposed | US-002-02 |
 

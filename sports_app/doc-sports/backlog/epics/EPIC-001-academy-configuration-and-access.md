@@ -12,7 +12,7 @@ Deliver the three independently specified stories below, including their permiss
 
 | Story | Outcome | Priority | State | Dependencies |
 |---|---|---|---|---|
-| [US-001-01](../user-stories/us-001-01-academy-and-program-settings.md) | Configure academy and program defaults | Must | Proposed | None |
+| [US-001-01](../user-stories/us-001-01-academy-and-program-settings.md) | Configure academy and program defaults | Must | Done | None |
 | [US-001-02](../user-stories/us-001-02-configurable-public-website.md) | Configure and publish academy website content | Must | Proposed | US-001-01 |
 | [US-001-03](../user-stories/us-001-03-sports-role-and-data-boundaries.md) | Define and enforce sports permissions | Must | Proposed | US-001-01 |
 

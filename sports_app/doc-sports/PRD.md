@@ -5,7 +5,7 @@
 | Product | Generic Sports Academy Management App |
 | First academy | Moyours Sports Academy (name to confirm) |
 | Version / date | 0.1 / 2026-11-01 |
-| Status | Draft for review; implementation not started |
+| Status | Draft for review; console extension prototype implemented |
 | Platform | Frappe / ERPNext, Sports App, and ERP Boost |
 | Source | [Client brief](requirements.txt), repository inspection, and the user's integration direction |
 
@@ -188,3 +188,13 @@ Success is measured by complete required player records, searchable payment and 
 | OQ-10 | Concurrent users/events, target hardware, backup/restore and retention targets | Technical lead + operations / before pilot |
 
 Do not turn unknown hardware support or broad ERP expectations into implied delivered scope. Resolve each decision in its story and record accepted architecture separately from this draft.
+
+
+## 12. Implementation checkpoint — 2026-11-01
+
+US-002-01 has a v1 provider prototype on the selected development site, `moyours.ideltatech.com`, verified for Sports-only, Finance-only and mixed roles. Both apps use story branches in the development bench. Boost has an independent dev checkout at the latest reviewed source baseline `36912af`; the original live repository is clean and unchanged. See the story build log and ADR-0001 for the implemented contract and scope limits. This checkpoint does not mark broader Sports or ERP scope delivered.
+
+
+### Academy settings checkpoint
+
+US-001-01 adds one private academy configuration per site, company-scoped Programs and Groups, registration/enrollment defaults, and a default monthly fee with explicit opt-out. The Sports-owned settings view is available from the existing console to System Managers and the new Sports Academy Administrator role. No existing user receives that role automatically. Company/currency master read access does not grant accounting permissions. Actual player creation, website publishing and effective fee-plan/invoice behavior remain subsequent stories. See [the setup guide](academy-setup.md).

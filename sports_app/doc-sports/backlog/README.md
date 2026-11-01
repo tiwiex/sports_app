@@ -1,6 +1,6 @@
 # Sports App product backlog
 
-All 8 epics and 24 implementation stories are **Proposed**, priority **Must** for the first complete release. “Must” includes user-requested outcomes and proposed controls necessary to operate them; refine details against the PRD decisions before committing estimates. There are no completed implementation stories in this baseline.
+The 8 epics contain 24 implementation stories: **22 Proposed** and **US-001-01 / US-002-01 Done**. Priority is **Must** for the first complete release. “Must” includes user-requested outcomes and proposed controls necessary to operate them; refine details against the PRD decisions before committing estimates. US-002-01 has a verified console prototype and US-001-01 has verified academy settings; both were accepted by the user for local merge into develop.
 
 ```text
 Original brief / user direction → SPORTS-FR / SPORTS-NFR → PRD → Epic → Story → App PR(s) → Build log → Release evidence

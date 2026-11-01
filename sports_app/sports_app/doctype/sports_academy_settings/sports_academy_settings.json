@@ -1,0 +1,135 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Academy Settings",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "field_order": [
+  "academy_name",
+  "company",
+  "currency",
+  "timezone",
+  "registration_section",
+  "registration_prefix",
+  "registration_digits",
+  "default_enrollment_status",
+  "default_program",
+  "default_group",
+  "fee_section",
+  "monthly_fees_enabled",
+  "default_monthly_fee"
+ ],
+ "fields": [
+  {
+   "fieldname": "academy_name",
+   "label": "Academy name",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "currency",
+   "label": "Fee currency",
+   "fieldtype": "Link",
+   "options": "Currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "timezone",
+   "label": "Academy timezone",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "registration_section",
+   "label": "Registration defaults",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "registration_prefix",
+   "label": "Registration prefix",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "description": "Uppercase letters, digits and hyphens; for example ACADEMY. Existing player IDs are never renumbered."
+  },
+  {
+   "fieldname": "registration_digits",
+   "label": "Registration digits",
+   "fieldtype": "Int",
+   "default": 5,
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_enrollment_status",
+   "label": "Default enrollment status",
+   "fieldtype": "Select",
+   "options": "Pending\nActive",
+   "default": "Pending",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_program",
+   "label": "Default program",
+   "fieldtype": "Link",
+   "options": "Sports Program",
+   "reqd": 1
+  },
+  {
+   "fieldname": "default_group",
+   "label": "Default group",
+   "fieldtype": "Link",
+   "options": "Sports Group"
+  },
+  {
+   "fieldname": "fee_section",
+   "label": "Fee defaults",
+   "fieldtype": "Section Break",
+   "description": "Defaults for future fee-plan setup. Saving settings does not generate charges or accounting documents."
+  },
+  {
+   "fieldname": "monthly_fees_enabled",
+   "label": "Monthly fees enabled",
+   "fieldtype": "Check",
+   "default": 1
+  },
+  {
+   "fieldname": "default_monthly_fee",
+   "label": "Default monthly fee",
+   "fieldtype": "Currency",
+   "options": "currency",
+   "depends_on": "monthly_fees_enabled"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "issingle": 1
+}
