@@ -1,0 +1,44 @@
+# US-003-03: Present the private central player record
+
+## Header
+
+- Epic: [EPIC-003](../epics/EPIC-003-registration-and-player-record.md)
+- State: Proposed
+- Priority: Must
+- Delivery owner / affected apps: Sports App
+
+## Story statement
+
+**As a** registrar, **I want** to search one player and view permitted linked histories **so that** registration, payments and attendance are accessible together.
+
+## Traceability
+
+- Requirements: `SPORTS-FR-005`, `SPORTS-NFR-005`, `SPORTS-NFR-007`
+- Dependencies: [US-003-02](../../backlog/user-stories/us-003-02-player-numbering-and-enrollment.md)
+- Planned branch: `story/us-003-03-central-player-profile`
+- Planned build log: `YYYY-MM-DD-us-003-03-central-player-profile.md`
+- PRD: [Product requirements](../../PRD.md)
+
+## Notes and scope
+
+This story covers the outcome and acceptance criteria below. Resolve applicable PRD open decisions during refinement. Use app-owned models and existing ERPNext transaction behavior; no duplicated accounting ledger or copied staff console. Existing source patterns are reference material, not completion evidence.
+
+## Acceptance criteria
+
+1. Given a registration number or name, when searching, then authorized results distinguish same-name players and show only permitted identity fields.
+2. Given a player with history, when opening the profile, then enrollment, payment and attendance sections use paginated linked records and show source references; empty modules are identified clearly.
+3. Given a non-management operator and private attachments, when profile payloads are inspected, then scholarship details and unauthorized files are absent; measure search/profile latency at the agreed pilot volume.
+
+## Verification plan
+
+- Positive path plus relevant denied-role, invalid-input, retry/concurrency and correction scenarios from the acceptance criteria.
+- Use fixtures and a designated development/test site; record app versions and policy decisions used.
+- Add meaningful automated coverage for financial integrity, confidentiality, identity and device processing as applicable; use manual review for content/layout where sufficient.
+- Link evidence to each acceptance criterion, update the requirement baseline and record any ADR changes.
+
+## Completion evidence
+
+- Pull request(s): Not opened.
+- Build log: Not started.
+- Verification summary: Not implemented or verified.
+- Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.

@@ -1,0 +1,10 @@
+We want to incorporate a player management, payment and attendance system for Moyours Sports Academy, and the director referred me to you.
+The objective is to have one central player record containing:
+- Player registration
+- Player ID/registration number
+- Player information
+- Scholarship/exemption status (for management only)
+- Monthly payment records
+- Payment status/history
+- Biometric identity
+- Attendance history
