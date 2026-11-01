@@ -242,3 +242,15 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+
+# Sports contributes views to the optional Boost host; it owns no copied shell.
+boost_console_providers = ["sports_app.console.get_provider"]
+after_install = "sports_app.console.setup_console"
+after_migrate = "sports_app.console.setup_console"
+on_login = "sports_app.console.set_console_login_redirect"
+
+before_install = "sports_app.console.setup_roles"
+before_migrate = "sports_app.console.setup_roles"
+
+# Academy configuration links to ERPNext company and currency masters.
+required_apps = ["erpnext"]

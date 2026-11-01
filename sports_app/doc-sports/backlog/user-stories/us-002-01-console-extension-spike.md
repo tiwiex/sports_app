@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-002](../epics/EPIC-002-shared-console-integration.md)
-- State: Proposed
+- State: Done
 - Priority: Must
 - Delivery owner / affected apps: ERP Boost + Sports App
 
@@ -39,6 +39,6 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
-- Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+- Build log: [2026-11-01 delivery evidence](../../build-logs/2026-11-01-us-002-01-console-extension-spike.md).
+- Verification summary: 31 Python checks and both JavaScript suites pass. Real Sports-only, Finance-only and mixed-role browser/permission checks passed on `moyours.ideltatech.com`; temporary accounts/sessions removed. See the build log for limits.
+- Remaining decisions / follow-up work: User accepted local commit and merge into develop. Full Sports views, richer context, finance workflow configuration and broader regression remain US-002-02/03 and later stories.
