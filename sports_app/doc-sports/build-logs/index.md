@@ -2,6 +2,7 @@
 
 | Date | Entry | Status |
 |---|---|---|
+| 2026-11-02 | [Develop integration](2026-11-02-us-005-01-develop-integration.md) | Verified merges / release record |
 | 2026-11-02 | [Project commit review](2026-11-02-us-005-01-project-commit-review.md) | Verified / local commits |
 | 2026-11-01 | [Invoice context Confirm Payment](2026-11-01-us-005-01-invoice-context-confirm-payment.md) | Verified |
 | 2026-11-01 | [Moyours TLS certificate activation](2026-11-01-us-001-01-moyours-tls-activation.md) | Verified / activated |

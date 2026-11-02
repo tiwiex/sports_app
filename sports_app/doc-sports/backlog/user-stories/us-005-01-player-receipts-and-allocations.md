@@ -56,3 +56,7 @@ Authorised Finance users can use Confirm Payment directly from an enrollment inv
 ## Local commit review — 2 November 2026
 
 [Repository scope, current checks and release boundaries](../../build-logs/2026-11-02-us-005-01-project-commit-review.md). Local commit capture does not close the remaining production scope.
+
+## Develop integration — 2 November 2026
+
+[Authorised merges, post-merge checks and push record](../../build-logs/2026-11-02-us-005-01-develop-integration.md).
