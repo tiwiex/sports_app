@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-003](../epics/EPIC-003-registration-and-player-record.md)
-- State: Proposed
+- State: In progress — PoC workflow
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -39,6 +39,8 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
-- Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+- Build log: [Public submission and review](../../build-logs/2026-11-01-us-003-01-public-submission-and-review.md).
+- Verification summary: Public submission/reference, private review, possible matches, accept/reject, immutable timestamp, strict fields, guest/role denial, rate limit, retry/concurrency, rollback and desktop/phone flow verified on the development site; see build evidence.
+- Remaining decisions / follow-up work: Production acceptance/hardening, verified communications, full consent/contract versioning, portal activation and payments remain separate scope. This slice completes the requested PoC intake workflow.
+
+New user refinement: [multi-step enrollment and draft Payment Entry review](../../build-logs/2026-11-01-us-005-01-enrollment-payment-review.md). This supersedes the previous no-payment PoC boundary; finance submission, invoice allocation and production acceptance remain separate.

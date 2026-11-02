@@ -1,0 +1,371 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Registration",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "allow_rename": 0,
+ "autoname": "hash",
+ "title_field": "full_name",
+ "search_fields": "full_name,contact_email",
+ "field_order": [
+  "sales_invoice",
+  "payment_entry",
+  "payment_customer",
+  "payment_snapshot",
+  "full_name",
+  "company",
+  "program",
+  "requested_pathway",
+  "status",
+  "submitted_on",
+  "player",
+  "reviewed_by",
+  "reviewed_on",
+  "rejection_reason",
+  "request_key",
+  "request_hash",
+  "acceptance_key",
+  "player_details",
+  "first_name",
+  "last_name",
+  "birth_date",
+  "gender",
+  "preferred_position",
+  "school_name",
+  "contact_email",
+  "contact_phone",
+  "medical_notes",
+  "guardian_details",
+  "guardian_name",
+  "guardian_relationship",
+  "guardian_phone",
+  "guardian_alt_phone",
+  "guardian_email",
+  "home_address",
+  "emergency_details",
+  "emergency_contact_name",
+  "emergency_contact_phone",
+  "consent_details",
+  "medical_consent",
+  "media_consent",
+  "terms_accepted"
+ ],
+ "fields": [
+  {
+   "fieldname": "full_name",
+   "label": "Player name",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "fieldname": "program",
+   "label": "Operational program",
+   "fieldtype": "Link",
+   "options": "Sports Program"
+  },
+  {
+   "fieldname": "requested_pathway",
+   "label": "Requested website pathway",
+   "fieldtype": "Data",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "label": "Status",
+   "fieldtype": "Select",
+   "options": "Pending\nAccepted\nRejected",
+   "default": "Pending",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "submitted_on",
+   "label": "Submitted on",
+   "fieldtype": "Datetime",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "player",
+   "label": "Accepted player",
+   "fieldtype": "Link",
+   "options": "Sports Player",
+   "read_only": 1,
+   "unique": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "reviewed_by",
+   "label": "Reviewed by",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reviewed_on",
+   "label": "Reviewed on",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "rejection_reason",
+   "label": "Rejection reason",
+   "fieldtype": "Small Text",
+   "read_only": 1
+  },
+  {
+   "fieldname": "request_key",
+   "label": "Request Key",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "no_copy": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "request_hash",
+   "label": "Request Hash",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "acceptance_key",
+   "label": "Acceptance Key",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1,
+   "no_copy": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "player_details",
+   "label": "The player",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "first_name",
+   "label": "First name",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "last_name",
+   "label": "Last name",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "birth_date",
+   "label": "Date of birth",
+   "fieldtype": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "label": "Gender",
+   "fieldtype": "Select",
+   "options": "\nBoy\nGirl",
+   "reqd": 1
+  },
+  {
+   "fieldname": "preferred_position",
+   "label": "Preferred position",
+   "fieldtype": "Select",
+   "options": "\nNo preference\nGoalkeeper\nDefender\nMidfielder\nWinger\nStriker\nNot sure yet",
+   "reqd": 0
+  },
+  {
+   "fieldname": "school_name",
+   "label": "School name",
+   "fieldtype": "Data",
+   "reqd": 0
+  },
+  {
+   "fieldname": "contact_email",
+   "label": "Player email",
+   "fieldtype": "Data",
+   "options": "Email",
+   "reqd": 1,
+   "description": "A unique player email for the future self-service account; separate from the guardian email."
+  },
+  {
+   "fieldname": "contact_phone",
+   "label": "Player / contact phone",
+   "fieldtype": "Data",
+   "reqd": 0
+  },
+  {
+   "fieldname": "medical_notes",
+   "label": "Medical notes",
+   "fieldtype": "Small Text",
+   "description": "Allergies or conditions coaches should know about. Private player information.",
+   "reqd": 0
+  },
+  {
+   "fieldname": "guardian_details",
+   "label": "Parent / guardian",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "guardian_name",
+   "label": "Parent / guardian name",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "guardian_relationship",
+   "label": "Relationship to player",
+   "fieldtype": "Data",
+   "reqd": 0
+  },
+  {
+   "fieldname": "guardian_phone",
+   "label": "Parent / guardian phone",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "guardian_alt_phone",
+   "label": "Alternative guardian phone",
+   "fieldtype": "Data",
+   "reqd": 0
+  },
+  {
+   "fieldname": "guardian_email",
+   "label": "Guardian email",
+   "fieldtype": "Data",
+   "options": "Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "home_address",
+   "label": "Home address",
+   "fieldtype": "Small Text",
+   "reqd": 1
+  },
+  {
+   "fieldname": "emergency_details",
+   "label": "Emergency contact (if different)",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "emergency_contact_name",
+   "label": "Emergency contact name",
+   "fieldtype": "Data",
+   "reqd": 0
+  },
+  {
+   "fieldname": "emergency_contact_phone",
+   "label": "Emergency contact phone",
+   "fieldtype": "Data",
+   "reqd": 0
+  },
+  {
+   "fieldname": "consent_details",
+   "label": "Consent choices",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "medical_consent",
+   "label": "Emergency medical attention consent recorded",
+   "fieldtype": "Check",
+   "description": "Permission to seek medical help if the guardian cannot be reached.",
+   "reqd": 0
+  },
+  {
+   "fieldname": "media_consent",
+   "label": "Photo and video permission recorded",
+   "fieldtype": "Check",
+   "description": "Permission to use academy training/match photos and video publicly. Optional; never preselected.",
+   "reqd": 0
+  },
+  {
+   "fieldname": "terms_accepted",
+   "label": "Academy terms acceptance recorded",
+   "fieldtype": "Check",
+   "description": "Record only consent actually supplied by the guardian. The prototype does not establish a contract or take payment.",
+   "reqd": 0
+  },
+  {
+   "fieldname": "payment_entry",
+   "label": "Enrollment Payment Entry",
+   "fieldtype": "Link",
+   "options": "Payment Entry",
+   "unique": 1,
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "payment_customer",
+   "label": "Enrollment Customer",
+   "fieldtype": "Link",
+   "options": "Customer",
+   "unique": 1,
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "payment_snapshot",
+   "label": "Enrollment payment snapshot",
+   "fieldtype": "Small Text",
+   "hidden": 1,
+   "read_only": 1,
+   "no_copy": 1
+  },
+  {
+   "fieldname": "sales_invoice",
+   "label": "Enrollment Sales Invoice",
+   "fieldtype": "Link",
+   "options": "Sales Invoice",
+   "unique": 1,
+   "read_only": 1,
+   "no_copy": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Registrar",
+   "read": 1,
+   "write": 1,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  }
+ ],
+ "sort_field": "submitted_on",
+ "sort_order": "DESC"
+}

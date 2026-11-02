@@ -57,4 +57,4 @@ class TestSportsConsole(TestCase):
 		for role in ("Sports Academy Administrator", "System Manager"):
 			for doctype in ("Company", "Currency"):
 				add_permission.assert_any_call(doctype, role, ptype="read")
-		self.assertEqual(add_permission.call_count, 10)
+		self.assertEqual(add_permission.call_count, 16)

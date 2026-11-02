@@ -18,7 +18,17 @@
   "default_group",
   "fee_section",
   "monthly_fees_enabled",
-  "default_monthly_fee"
+  "default_monthly_fee",
+  "enrollment_payment_section",
+  "enrollment_payments_enabled",
+  "enrollment_payment_currency",
+  "enrollment_registration_fee",
+  "enrollment_jersey_fee",
+  "enrollment_monthly_fee",
+  "enrollment_bank_account",
+  "enrollment_receivable_account",
+  "enrollment_registration_item",
+  "enrollment_jersey_item"
  ],
  "fields": [
   {
@@ -105,6 +115,65 @@
    "fieldtype": "Currency",
    "options": "currency",
    "depends_on": "monthly_fees_enabled"
+  },
+  {
+   "fieldname": "enrollment_payment_section",
+   "label": "Website enrollment payment setup",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "enrollment_payments_enabled",
+   "label": "Website enrollment payments enabled",
+   "fieldtype": "Check",
+   "default": 0
+  },
+  {
+   "fieldname": "enrollment_payment_currency",
+   "label": "Enrollment payment currency",
+   "fieldtype": "Link",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "enrollment_registration_fee",
+   "label": "Initial registration fee",
+   "fieldtype": "Currency",
+   "options": "enrollment_payment_currency"
+  },
+  {
+   "fieldname": "enrollment_jersey_fee",
+   "label": "Jersey fee (2 sets)",
+   "fieldtype": "Currency",
+   "options": "enrollment_payment_currency"
+  },
+  {
+   "fieldname": "enrollment_monthly_fee",
+   "label": "Monthly fee (information only)",
+   "fieldtype": "Currency",
+   "options": "enrollment_payment_currency"
+  },
+  {
+   "fieldname": "enrollment_bank_account",
+   "label": "Enrollment bank account",
+   "fieldtype": "Link",
+   "options": "Bank Account"
+  },
+  {
+   "fieldname": "enrollment_receivable_account",
+   "label": "Enrollment receivable account",
+   "fieldtype": "Link",
+   "options": "Account"
+  },
+  {
+   "fieldname": "enrollment_registration_item",
+   "label": "Registration fee item",
+   "fieldtype": "Link",
+   "options": "Item"
+  },
+  {
+   "fieldname": "enrollment_jersey_item",
+   "label": "Jersey fee item",
+   "fieldtype": "Link",
+   "options": "Item"
   }
  ],
  "permissions": [

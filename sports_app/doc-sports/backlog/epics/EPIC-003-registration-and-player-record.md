@@ -19,3 +19,5 @@ Deliver the three independently specified stories below, including their permiss
 ## Exit criteria
 
 Every linked story is Done with acceptance evidence, affected app pull requests and build logs. Demonstrate the combined workflow on the agreed test-site versions. Record unresolved scope as explicit follow-up work; no missing client requirement can be hidden by closing this epic.
+
+US-003-01 now includes a submittable public PoC and private registration review, linked to the existing US-003-02 identity service. [Build evidence](../../build-logs/2026-11-01-us-003-01-public-submission-and-review.md) distinguishes this workflow from remaining production acceptance.

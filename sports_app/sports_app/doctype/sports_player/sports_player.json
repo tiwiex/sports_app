@@ -12,11 +12,31 @@
   "customer",
   "portal_user",
   "registration_program",
+  "source_registration",
+  "player_details",
+  "first_name",
+  "last_name",
   "birth_date",
+  "gender",
+  "preferred_position",
+  "school_name",
   "contact_email",
   "contact_phone",
+  "medical_notes",
+  "guardian_details",
   "guardian_name",
+  "guardian_relationship",
   "guardian_phone",
+  "guardian_alt_phone",
+  "guardian_email",
+  "home_address",
+  "emergency_details",
+  "emergency_contact_name",
+  "emergency_contact_phone",
+  "consent_details",
+  "medical_consent",
+  "media_consent",
+  "terms_accepted",
   "registered_on",
   "request_key",
   "request_hash"
@@ -27,7 +47,8 @@
    "label": "Player name",
    "fieldtype": "Data",
    "reqd": 1,
-   "in_list_view": 1
+   "in_list_view": 1,
+   "read_only_depends_on": "eval:doc.first_name || doc.last_name"
   },
   {
    "fieldname": "company",
@@ -70,13 +91,14 @@
   },
   {
    "fieldname": "contact_email",
-   "label": "Contact email",
+   "label": "Player email",
    "fieldtype": "Data",
-   "options": "Email"
+   "options": "Email",
+   "description": "A unique player email for the future self-service account; separate from the guardian email."
   },
   {
    "fieldname": "contact_phone",
-   "label": "Contact phone",
+   "label": "Player / contact phone",
    "fieldtype": "Data"
   },
   {
@@ -111,6 +133,117 @@
    "hidden": 1,
    "read_only": 1,
    "no_copy": 1
+  },
+  {
+   "fieldname": "player_details",
+   "label": "The player",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "first_name",
+   "label": "First name",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "last_name",
+   "label": "Last name",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "gender",
+   "label": "Gender",
+   "fieldtype": "Select",
+   "options": "\nBoy\nGirl"
+  },
+  {
+   "fieldname": "preferred_position",
+   "label": "Preferred position",
+   "fieldtype": "Select",
+   "options": "\nNo preference\nGoalkeeper\nDefender\nMidfielder\nWinger\nStriker\nNot sure yet"
+  },
+  {
+   "fieldname": "school_name",
+   "label": "School name",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "medical_notes",
+   "label": "Medical notes",
+   "fieldtype": "Small Text",
+   "description": "Allergies or conditions coaches should know about. Private player information."
+  },
+  {
+   "fieldname": "guardian_details",
+   "label": "Parent / guardian",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "guardian_relationship",
+   "label": "Relationship to player",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "guardian_alt_phone",
+   "label": "Alternative guardian phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "guardian_email",
+   "label": "Guardian email",
+   "fieldtype": "Data",
+   "options": "Email"
+  },
+  {
+   "fieldname": "home_address",
+   "label": "Home address",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "emergency_details",
+   "label": "Emergency contact (if different)",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "emergency_contact_name",
+   "label": "Emergency contact name",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "emergency_contact_phone",
+   "label": "Emergency contact phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "consent_details",
+   "label": "Consent choices",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "medical_consent",
+   "label": "Emergency medical attention consent recorded",
+   "fieldtype": "Check",
+   "description": "Permission to seek medical help if the guardian cannot be reached."
+  },
+  {
+   "fieldname": "media_consent",
+   "label": "Photo and video permission recorded",
+   "fieldtype": "Check",
+   "description": "Permission to use academy training/match photos and video publicly. Optional; never preselected."
+  },
+  {
+   "fieldname": "terms_accepted",
+   "label": "Academy terms acceptance recorded",
+   "fieldtype": "Check",
+   "description": "Record only consent actually supplied by the guardian. The prototype does not establish a contract or take payment."
+  },
+  {
+   "fieldname": "source_registration",
+   "label": "Source registration",
+   "fieldtype": "Link",
+   "options": "Sports Registration",
+   "read_only": 1,
+   "no_copy": 1,
+   "unique": 1
   }
  ],
  "permissions": [

@@ -64,6 +64,8 @@ The [original brief](../requirements.txt) remains unchanged. “Client brief” 
 | SPORTS-FR-027 | Customer Group named for the initial program, created/reused during registration | US-003-02 |
 | SPORTS-FR-028 | Management-only read-only Sports Development Tools documentation hub | US-002-04 |
 | SPORTS-FR-029 | Require unique player email; automatically provision a disabled non-Desk Website User for future self-service, without invitation or staff/finance roles | US-003-02 |
+| SPORTS-FR-030 | Shared public-demo/staff registration fields based on reference enrollment; new DocTypes prefixed Sports | US-001-02, US-003-02 |
+| SPORTS-FR-031 | Enrollment draft invoice with invoice-series transfer reference; applicant claim sends invoice to unposted review; Finance completes invoice and allocated receipt atomically | US-005-01 |
 | SPORTS-NFR-009 | A separate dated, indexed build log after every story implementation or adjustment | US-002-04 and all subsequent work |
 
 See [current requirements](../REQUIREMENTS.md) for the governing rules and [adjustment evidence](../build-logs/2026-11-01-us-002-04-guardrails-docs-and-program-categories.md).

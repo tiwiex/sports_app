@@ -12,7 +12,7 @@ Deliver the three independently specified stories below, including their permiss
 
 | Story | Outcome | Priority | State | Dependencies |
 |---|---|---|---|---|
-| [US-005-01](../user-stories/us-005-01-player-receipts-and-allocations.md) | Record player-attributed payments using ERPNext | Must | Proposed | US-004-03, US-002-03 |
+| [US-005-01](../user-stories/us-005-01-player-receipts-and-allocations.md) | Record player-attributed payments using ERPNext | Must | In progress — invoice-first PoC | US-004-03, US-002-03 |
 | [US-005-02](../user-stories/us-005-02-monthly-status-and-history.md) | Show monthly payment status and source history | Must | Proposed | US-005-01, US-003-03 |
 | [US-005-03](../user-stories/us-005-03-corrections-and-reconciliation.md) | Reconcile credits, refunds and payment corrections | Must | Proposed | US-005-02 |
 

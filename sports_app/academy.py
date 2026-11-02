@@ -11,6 +11,9 @@ SETTINGS_FIELDS = (
 	"academy_name", "company", "currency", "timezone", "registration_prefix",
 	"registration_digits", "default_enrollment_status", "default_program",
 	"default_group", "monthly_fees_enabled", "default_monthly_fee",
+	"enrollment_payments_enabled", "enrollment_payment_currency", "enrollment_registration_fee", "enrollment_jersey_fee",
+	"enrollment_monthly_fee", "enrollment_bank_account", "enrollment_receivable_account",
+	"enrollment_registration_item", "enrollment_jersey_item",
 )
 
 
