@@ -245,8 +245,8 @@ app_license = "mit"
 
 # Sports contributes views to the optional Boost host; it owns no copied shell.
 boost_console_providers = ["sports_app.console.get_provider"]
-after_install = "sports_app.console.setup_console"
-after_migrate = "sports_app.console.setup_console"
+after_install = ["sports_app.console.setup_console", "sports_app.payment_setup.setup_payment_support"]
+after_migrate = ["sports_app.console.setup_console", "sports_app.payment_setup.setup_payment_support"]
 on_login = "sports_app.console.set_console_login_redirect"
 
 before_install = "sports_app.console.setup_roles"
@@ -254,3 +254,23 @@ before_migrate = "sports_app.console.setup_roles"
 
 # Academy configuration links to ERPNext company and currency masters.
 required_apps = ["erpnext"]
+
+# Protect Sports-linked ERPNext receipt provenance without changing ERPNext core.
+doc_events = {
+    "Sales Invoice": {
+        "validate": "sports_app.enrollment_invoices.validate_enrollment_invoice",
+        "before_submit": "sports_app.enrollment_invoices.validate_finance_submission",
+        "on_submit": "sports_app.enrollment_invoices.record_invoice_payment",
+        "before_update_after_submit": "sports_app.enrollment_invoices.validate_enrollment_invoice",
+    },
+    "Payment Entry": {
+        "validate": "sports_app.enrollment_payments.validate_sports_payment",
+        "before_submit": "sports_app.enrollment_payments.validate_sports_payment",
+    },
+}
+
+# App-owned invoice review action; core accounting stays in ERPNext.
+doctype_js = {"Sales Invoice": "public/js/enrollment_invoice.js"}
+
+# Add the app-owned finance shortcut to Boost invoice menus.
+app_include_js = ["/assets/sports_app/js/invoice_context_payment.js"]

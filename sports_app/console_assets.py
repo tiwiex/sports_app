@@ -2,7 +2,7 @@
 import hashlib
 from pathlib import Path
 
-FILES = ("console_overview.js", "players.js", "academy_settings.js", "development_tools.js")
+FILES = ("console_overview.js", "players.js", "registrations.js", "academy_settings.js", "development_tools.js")
 
 
 def _root():

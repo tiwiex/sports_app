@@ -8,6 +8,7 @@ from frappe.utils import cint, CallbackManager
 from sports_app.players import (PLAYER_FIELDS, ENROLLMENT_FIELDS, require_player_access,
  registration_settings, is_eligible)
 from sports_app.academy import validate_company
+from sports_app.registration import get_registration_fields
 
 
 def _payload(value, fields):
@@ -25,7 +26,7 @@ def _page(value):
 def get_registration_defaults():
  require_player_access()
  settings = registration_settings()
- return {key: settings.get(key) for key in ("company", "default_program", "default_group", "default_enrollment_status")}
+ return {**{key: settings.get(key) for key in ("company", "default_program", "default_group", "default_enrollment_status")}, "player_fields": get_registration_fields()}
 
 
 @frappe.whitelist()

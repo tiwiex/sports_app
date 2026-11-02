@@ -4,6 +4,7 @@ from frappe.model.naming import make_autoname
 from frappe.utils import now_datetime, getdate, today
 from sports_app.players import require_player_access, registration_settings, immutable, create_player_customer, create_player_user, validate_player_email
 from sports_app.academy import validate_company
+from sports_app.registration import validate_registration_details
 
 
 class SportsPlayer(Document):
@@ -23,18 +24,25 @@ class SportsPlayer(Document):
 
  def before_insert(self):
   require_player_access()
+  if self.get("source_registration"):
+   frappe.throw("Registration provenance is assigned by the acceptance service.")
   if self.get("portal_user"):
    frappe.throw("The self-service User is created automatically; existing Users cannot be assigned.")
   if self.customer:
    frappe.throw("A player Customer is created automatically; existing Customers cannot be assigned.")
   if not self.registration_program:
    self.registration_program = registration_settings().default_program
+  from sports_app.registration_origin import current_registration
+  origin = current_registration()
+  if origin:
+   self.source_registration = origin.name
   self.registered_on = now_datetime()
 
  def validate(self):
   require_player_access()
   validate_company(self.company)
-  immutable(self, ("company", "registered_on", "request_key", "request_hash", "customer", "registration_program", "portal_user"))
+  immutable(self, ("company", "registered_on", "request_key", "request_hash", "customer", "registration_program", "portal_user", "source_registration"))
+  validate_registration_details(self)
   if self.registration_program:
    program = frappe.get_doc("Sports Program", self.registration_program)
    program.check_permission("read")

@@ -1,0 +1,22 @@
+{
+  "name": "Moyours",
+  "full_name": "Moyours Football Club Academy",
+  "tagline": "Raising champions. Building futures.",
+  "location": "Abuja, Nigeria",
+  "hero_title": "Big dreams.",
+  "hero_second_line": "Real",
+  "hero_emphasis": "opportunity.",
+  "hero_text": "A place to find your game, grow in confidence and take your next step. Discover youth football at Moyours, in the heart of Abuja.",
+  "email": "admin@moyoursacademy.ng",
+  "phone": "09139583674",
+  "address": "Suite A05, Tsukunda House, Central Business District, Abuja",
+  "training": [
+    {"day": "Friday", "time": "4:00 – 6:00 PM"},
+    {"day": "Saturday", "time": "11:30 AM – 2:30 PM"}
+  ],
+  "programs": [
+    {"id": "foundations", "name": "Foundations", "ages": "5–8", "number": "01", "headline": "Small steps. A lifelong love of the game.", "description": "Playful sessions give young footballers space to explore, make friends and feel comfortable with the ball.", "skills": ["Balance and coordination", "Confident first touches", "Learning to play together"]},
+    {"id": "development", "name": "Development", "ages": "9–13", "number": "02", "headline": "Find your feet. Develop your game.", "description": "Build technique and match awareness through focused practice, small-sided games and the experience of being part of a team.", "skills": ["Control, passing and finishing", "Reading the game", "Teamwork and match experience"]},
+    {"id": "performance", "name": "Performance", "ages": "14–18", "number": "03", "headline": "Train with purpose. Play with ambition.", "description": "A focused pathway for older players, bringing individual development, competitive football and preparation for the next level together.", "skills": ["Individual development", "Competitive match preparation", "Scouting and trial pathways"]}
+  ]
+}

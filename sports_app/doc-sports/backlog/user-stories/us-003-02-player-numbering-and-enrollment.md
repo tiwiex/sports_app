@@ -54,3 +54,7 @@ Program categorization and hidden native Customer-field refinement: [separate ad
 Follow-up: [asset cache refresh and Boost-style documentation modals](../../build-logs/2026-11-01-us-002-04-asset-cache-and-modal-layout.md). Content-fingerprinted assets must load after migration and browser reload; documentation uses the host card/tab styles with Frappe modal readers.
 
 Follow-up: [Player Users and User role editor](../../build-logs/2026-11-01-us-003-02-player-users-and-role-editor.md). New players require a unique email and receive a disabled Website User; activation remains deferred. Standard System Manager User role-editor access is restored without new Boost Admin powers.
+
+User refinement: [Full menu and shared registration fields](../../build-logs/2026-11-01-us-001-02-menu-and-registration-fields.md). Share the reference enrollment details with staff registration, retain unique player email and automatic Customer/User provisioning, and prefix any new DocTypes with Sports. Public intake remains demo-only.
+
+Superseding refinement: public enrollment now submits Sports Registration for staff review/acceptance, documented in [US-003-01 evidence](../../build-logs/2026-11-01-us-003-01-public-submission-and-review.md). Earlier demo-only submission scope is historical; wider publishing/production scope remains open.

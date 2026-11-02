@@ -41,3 +41,7 @@ Use PRD G0–G4. Complete biometric provider validation before claiming complete
 Every story implementation and every subsequent fix, adjustment or user refinement must have a separate dated build log before completion is reported. Use `YYYY-MM-DD-<story-id>-<adjustment>.md`, index it in `build-logs/index.md`, and link it from each affected story. This applies even when changes are uncommitted or documentation-only. Record actual checks, changed behavior, schema/data impact, cleanup and limitations; never overwrite prior evidence to disguise a changed decision. Repository-root `AGENTS.md` makes this an agent guardrail. Sports Development Tools discovers these files automatically.
 
 One requested adjustment and the fixes needed to verify it share one adjustment log; a later requested change gets a new log. Individual file edits and test iterations do not each need their own log.
+
+## DocType naming
+
+All new app-owned DocTypes, including registration/application and child-table types, must start with `Sports`. Extend existing Sports Player/Sports Enrollment where appropriate. Do not rename ERPNext core Customer, User, Contact or other installed-app DocTypes.

@@ -3,9 +3,10 @@ import frappe
 from frappe import _
 from frappe.utils import getdate
 from sports_app.academy import get_configured_settings, validate_settings_values, validate_company
+from sports_app.registration import get_registration_fields
 
 PLAYER_ROLE = "Sports Registrar"
-PLAYER_FIELDS = ("full_name", "birth_date", "contact_email", "contact_phone", "guardian_name", "guardian_phone")
+PLAYER_FIELDS = ("full_name", *(field["fieldname"] for field in get_registration_fields() if field["fieldtype"] != "Section Break"))
 ENROLLMENT_FIELDS = ("program", "group", "start_date", "end_date", "status")
 
 
@@ -70,7 +71,31 @@ def create_player_customer(player):
  """Narrow creation capability after authorized player insertion; never link by name/email."""
  require_player_access()
  company = validate_company(player.company)
+ from sports_app.registration_origin import current_registration
+ origin = current_registration()
+ if origin and origin.payment_customer:
+  customer = frappe.get_doc("Customer", origin.payment_customer)
+  if origin.company != player.company or origin.name != player.source_registration or customer.disabled:
+   frappe.throw(_("Invalid registration Customer linkage."))
+  customer.email_id = player.contact_email
+  if customer.customer_primary_contact:
+   contact = frappe.get_doc("Contact", customer.customer_primary_contact)
+   contact.add_email(player.contact_email, is_primary=True)
+   contact.save(ignore_permissions=True)
+  else:
+   from erpnext.selling.doctype.customer.customer import make_contact
+   customer.flags.ignore_permissions = True
+   contact = make_contact(customer)
+  customer.db_set({"email_id": player.contact_email, "customer_primary_contact": contact.name})
+  player.db_set("customer", customer.name, update_modified=False)
+  return customer.name
  group = ensure_program_customer_group(player)
+ customer = _insert_identity_customer(player, company, group, "SPORTS-CUST-" + player.name)
+ player.db_set("customer", customer.name, update_modified=False)
+ return customer.name
+
+
+def _insert_identity_customer(player, company, group, customer_key):
  territory = frappe.db.get_single_value("Selling Settings", "territory")
  territory = territory or (company.country if frappe.db.exists("Territory", company.country) else None)
  if not territory:
@@ -83,7 +108,7 @@ def create_player_customer(player):
  # write rights. ERPNext validation and primary Contact creation still execute.
  # Derive an app-owned key from the immutable player ID. ERPNext name-based
  # suffix lookup uses snapshot reads and can collide for concurrent same names.
- customer.insert(ignore_permissions=True, set_name="SPORTS-CUST-" + player.name)
+ customer.insert(ignore_permissions=True, set_name=customer_key)
  if player.contact_phone:
   # ERPNext 15's Contact.after_insert call-log hook commits inside its phone
   # loop. Insert the contact without phones, then append/save the phone on
@@ -96,8 +121,7 @@ def create_player_customer(player):
   contact.add_phone(player.contact_phone, is_primary_mobile_no=True)
   contact.save(ignore_permissions=True)
   customer.db_set({"customer_primary_contact": contact.name, "mobile_no": player.contact_phone})
- player.db_set("customer", customer.name, update_modified=False)
- return customer.name
+ return customer
 
 
 def ensure_program_customer_group(player):
@@ -108,7 +132,10 @@ def ensure_program_customer_group(player):
  validate_company(program.company)
  if program.company != player.company or not program.enabled:
   frappe.throw(_("Choose an enabled registration program in the player's company."))
- name = program.program_name.strip()
+ return _ensure_program_category(program.program_name.strip())
+
+
+def _ensure_program_category(name):
  existing = frappe.db.get_value("Customer Group", name, ["name", "is_group"], as_dict=True, for_update=True)
  if existing:
   if existing.is_group:

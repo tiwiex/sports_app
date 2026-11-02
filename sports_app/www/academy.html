@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Discover youth football at Moyours Football Club Academy in Abuja. Explore our academy pathway, training and community.">
+  <meta name="csrf-token" content="{{ csrf_token | e }}">
+  <meta name="theme-color" content="#153e30">
+  <title>{{ academy.full_name | e }} · Website preview</title>
+  <link rel="icon" href="/assets/sports_app/images/moyours/crest.png">
+  <link rel="stylesheet" href="{{ website_css | e }}">
+  <script src="{{ website_js | e }}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="preview-bar"><span class="preview-dot"></span> WEBSITE PREVIEW <span class="preview-detail">Enroll online. Applications are reviewed by the academy.</span></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="{{ academy.full_name | e }} home">
+      <img src="/assets/sports_app/images/moyours/crest.png" width="54" height="54" alt="Moyours academy crest">
+      <span>{{ academy.name | e }}<small>FOOTBALL CLUB ACADEMY</small></span>
+    </a>
+    <button class="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="navigation"><span></span><span></span></button>
+    <nav id="navigation" aria-label="Main navigation">
+      <a class="summer-camp" href="https://www.moyoursacademy.com/summer-camp" target="_blank" rel="noopener noreferrer" title="Current academy website">Summer Camp</a>
+      <a href="#about">About</a><a href="#programs">Programs</a>
+      <a href="https://www.moyoursacademy.com/squads" target="_blank" rel="noopener noreferrer" title="Current academy website">Squads</a>
+      <a href="https://www.moyoursacademy.com/coaches" target="_blank" rel="noopener noreferrer" title="Current academy website">Coaches</a>
+      <a href="https://www.moyoursacademy.com/fixtures" target="_blank" rel="noopener noreferrer" title="Current academy website">Fixtures</a>
+      <a href="https://www.moyoursacademy.com/results" target="_blank" rel="noopener noreferrer" title="Current academy website">Results</a>
+      <a href="#life">Gallery</a>
+      <a href="https://www.moyoursacademy.com/news" target="_blank" rel="noopener noreferrer" title="Current academy website">News</a>
+      <a class="support-link" href="https://www.moyoursacademy.com/support" target="_blank" rel="noopener noreferrer" title="Current academy website">Support us</a>
+      <a href="#visit">Contact</a>
+      <button class="button button-gold nav-cta" data-enroll>Enroll</button>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="pitch-markings" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="little-line"></span> {{ academy.location | e }} · YOUTH FOOTBALL</p>
+        <h1 id="hero-title">{{ academy.hero_title | e }}<br> {{ academy.hero_second_line | e }} <em>{{ academy.hero_emphasis | e }}</em></h1>
+        <p class="hero-description">{{ academy.hero_text | e }}</p>
+        <div class="hero-actions"><button class="button button-gold" data-enroll>Find your place <span aria-hidden="true">↗</span></button><a class="text-link" href="#programs">Explore our programs <span aria-hidden="true">↓</span></a></div>
+        <div class="hero-foot"><span class="round-ball" aria-hidden="true">✳</span><span>More than a football academy.<br> <strong>A community to grow with.</strong></span></div>
+      </div>
+      <div class="hero-visual">
+        <figure class="hero-photo"><img id="hero-image" src="/assets/sports_app/images/moyours/football-1.webp" width="1000" height="1250" fetchpriority="high" alt="Young footballers competing on the academy pitch"><figcaption><span>THE GAME BRINGS US TOGETHER</span><span id="slide-count" aria-live="polite">01 / 02</span></figcaption></figure>
+        <div class="photo-label"><span class="live-dot"></span> MADE ON THE TRAINING GROUND</div>
+        <div class="photo-controls"><button id="previous-photo" aria-label="Previous academy photo">←</button><button id="next-photo" aria-label="Next academy photo">→</button></div>
+        <div class="vertical-note" aria-hidden="true">PASSION. DISCIPLINE. POSSIBILITY.</div>
+      </div>
+      <a class="hero-scroll" href="#about">GET TO KNOW MOYOURS <span aria-hidden="true">↓</span></a>
+    </section>
+    <div class="values-strip" aria-label="Academy values"><span>LOVE THE GAME</span><b aria-hidden="true">✳</b><span>GROW TOGETHER</span><b aria-hidden="true">✳</b><span>GO FURTHER</span><b aria-hidden="true">✳</b><span>PLAY WITH PURPOSE</span></div>
+    <section class="section about-section" id="about" aria-labelledby="about-title">
+      <div class="section-kicker"><span>01 / OUR ACADEMY</span><span>ROOTED IN ABUJA. LOOKING AHEAD.</span></div>
+      <div class="about-grid"><h2 id="about-title">Football opens<br> doors.<br> <em>We help you<br> walk through.</em></h2><div class="about-copy"><p class="lead">Talent needs somewhere to grow.</p><p>From a coach helping one student make a school team to an academy connecting young footballers with new opportunities, Moyours has grown through a belief in what sport can make possible.</p><p>Our approach brings structured training and mentorship together. On the pitch and beyond it, there is room to learn, belong and build a future.</p><a class="underlined-link" href="#visit">Come and meet us <span aria-hidden="true">↗</span></a><div class="about-facts"><div><strong>Abuja</strong><span>Our home. Your starting point.</span></div><div><strong>Girls & boys</strong><span>A shared passion for football.</span></div></div></div></div>
+    </section>
+    <section class="section programs-section" id="programs" aria-labelledby="programs-title">
+      <div class="section-kicker"><span>02 / FIND YOUR PATHWAY</span><span>ONE GAME. ROOM TO GROW.</span></div>
+      <div class="section-heading"><h2 id="programs-title">Every player starts<br> <em>somewhere.</em></h2><p>From first touches to the next challenge.<br> Explore the three stages of our academy.</p></div>
+      <div class="program-tabs" role="tablist" aria-label="Academy pathway">
+      {% for program in academy.programs %}
+        <button id="tab-{{ program.id | e }}" role="tab" aria-selected="{{ 'true' if loop.first else 'false' }}" aria-controls="panel-{{ program.id | e }}" tabindex="{{ '0' if loop.first else '-1' }}"><span class="tab-number">{{ program.number | e }}</span><span>{{ program.name | e }}<small>AGES {{ program.ages | e }}</small></span><span class="tab-arrow" aria-hidden="true">↗</span></button>
+      {% endfor %}
+      </div>
+      {% for program in academy.programs %}
+      <div class="program-panel" id="panel-{{ program.id | e }}" role="tabpanel" aria-labelledby="tab-{{ program.id | e }}" tabindex="0" {% if not loop.first %}hidden{% endif %}>
+        <div class="program-art" aria-hidden="true"><div class="field-diagram"><div class="field-circle"></div><span class="player-dot dot-one"></span><span class="player-dot dot-two"></span><span class="player-dot dot-three"></span><span class="run-line"></span></div><span>BUILDING THE NEXT GENERATION</span></div>
+        <div class="program-copy"><p class="eyebrow">{{ program.name | e }} · AGES {{ program.ages | e }}</p><h3>{{ program.headline | e }}</h3><p>{{ program.description | e }}</p><ul>{% for skill in program.skills %}<li>{{ skill | e }}</li>{% endfor %}</ul><button class="underlined-link" data-enroll data-program="{{ program.name | e }}">Explore joining {{ program.name | e }} <span aria-hidden="true">↗</span></button></div>
+      </div>
+      {% endfor %}
+      <p class="program-note">Not sure where to start? <a href="#visit">Talk to the academy</a> about the right group for your child.</p>
+    </section>
+    <section class="life-section" id="life" aria-labelledby="life-title">
+      <div class="section section-life-heading"><div class="section-kicker"><span>03 / ACADEMY LIFE</span><span>THE MOMENTS THAT MAKE US.</span></div><div class="section-heading"><h2 id="life-title">This is where<br> <em>we come alive.</em></h2><p>The energy. The friendships. The football.<br> A glimpse of life at Moyours.</p></div></div>
+      <div class="gallery-grid"><button class="gallery-photo" data-photo="1" aria-label="Enlarge football training photograph"><img src="/assets/sports_app/images/moyours/football-1.webp" width="1000" height="1250" loading="lazy" alt="Players in red and yellow competing for the ball"><span>ON THE PITCH <b aria-hidden="true">↗</b></span></button><div class="gallery-quote"><span aria-hidden="true">“</span><p>A love of the game.<br> A place to belong.<br> <em>A chance to go further.</em></p><small>THE MOYOURS SPIRIT</small></div><button class="gallery-photo" data-photo="2" aria-label="Enlarge academy player photograph"><img src="/assets/sports_app/images/moyours/football-2.webp" width="1000" height="1250" loading="lazy" alt="A footballer at Moyours academy"><span>THE NEXT CHAPTER <b aria-hidden="true">↗</b></span></button></div>
+    </section>
+    <section class="section visit-section" id="visit" aria-labelledby="visit-title">
+      <div class="section-kicker"><span>04 / SEE YOU ON THE PITCH</span><span>{{ academy.location | e }}</span></div>
+      <div class="visit-grid"><div><h2 id="visit-title">Your next step?<br> <em>Come say hello.</em></h2><p class="visit-intro">Get to know the academy, ask your questions and find the right starting point.</p><a class="underlined-link" href="mailto:{{ academy.email | e }}">{{ academy.email | e }} <span aria-hidden="true">↗</span></a><a class="phone-link" href="tel:{{ academy.phone | e }}">{{ academy.phone | e }}</a></div><div class="training-card"><p class="eyebrow">WEEKLY TRAINING · WEST AFRICA TIME</p>{% for session in academy.training %}<div class="training-row"><strong>{{ session.day | e }}</strong><span>{{ session.time | e }}</span></div>{% endfor %}<p class="address-label">FIND THE ACADEMY</p><p>{{ academy.address | e }}</p><a class="underlined-link" href="https://www.google.com/maps/search/?api=1&query=Moyours+Football+Club+Academy+Abuja" target="_blank" rel="noopener noreferrer">Open map <span aria-hidden="true">↗</span></a><small>Contact the academy to confirm your training location and session.</small></div></div>
+    </section>
+    <section class="join-section"><div><p class="eyebrow">THE FUTURE IS STILL TO BE WRITTEN.</p><h2>Let’s get <em>started.</em></h2></div><button class="button button-gold" data-enroll>Join the academy <span aria-hidden="true">↗</span></button></section>
+  </main>
+  <footer class="site-footer"><div class="footer-top"><a class="brand" href="#home"><img src="/assets/sports_app/images/moyours/crest.png" width="48" height="48" alt=""><span>{{ academy.name | e }}<small>FOOTBALL CLUB ACADEMY</small></span></a><p>{{ academy.tagline | e }}</p><a href="#home">Back to top ↑</a></div><div class="footer-bottom"><span>© {{ academy.full_name | e }} · Website prototype</span><a href="https://www.moyoursacademy.com/" target="_blank" rel="noopener noreferrer">Visit the current academy website ↗</a></div></footer>
+  <dialog data-payment-enabled="{{ '1' if payment_enabled else '0' }}" id="enrollment-dialog" aria-labelledby="enrollment-title"><button class="dialog-close" data-close aria-label="Close enrollment preview">×</button><ol class="enrollment-steps" aria-label="Enrollment progress"><li data-step-marker="0">Welcome</li><li data-step-marker="1">Player details</li><li data-step-marker="2">Payment</li><li data-step-marker="3">Confirmation</li></ol><p class="eyebrow">YOUR JOURNEY STARTS HERE</p><h2 id="enrollment-title">Player registration<br> <em>at Moyours.</em></h2><p class="demo-notice">Submit your details for academy review. Your registration remains private; acceptance is confirmed by the academy.</p><section id="enrollment-welcome"><h3>Welcome to {{ academy.name | e }}</h3><p>Tell us about your child, check the initial fees and receive your bank-transfer reference. Your application and payment are reviewed by the academy.</p><p>Registration does not activate an account or confirm a place until the academy accepts it.</p><button class="button button-green" id="enrollment-begin" type="button">Proceed to registration ↗</button></section><form hidden id="enrollment-form" method="post" action="/academy"><label class="intake-honeypot" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label><p id="enrollment-error" class="submission-error" hidden role="alert" tabindex="-1"></p><div class="registration-grid">
+{% for field in registration_fields %}
+{% if field.fieldtype == 'Section Break' %}<h3 class="registration-heading">{{ field.label | e }}</h3>
+{% elif field.fieldtype == 'Check' %}<label class="consent-choice"><input type="checkbox" name="{{ field.fieldname | e }}" value="1"><span>{{ field.label | e }}{% if field.description %}<small>{{ field.description | e }}</small>{% endif %}</span></label>
+{% else %}<label{% if field.fieldtype == 'Small Text' %} class="wide-field"{% endif %}>{{ field.label | e }}{% if field.reqd %} <span aria-hidden="true">*</span>{% endif %}
+{% if field.fieldtype == 'Select' %}<select name="{{ field.fieldname | e }}" {% if field.reqd %}required{% endif %}>{% for option in field.options.split('\n') %}<option value="{{ option | e }}">{{ option | e if option else 'Select…' }}</option>{% endfor %}</select>
+{% elif field.fieldtype == 'Small Text' %}<textarea name="{{ field.fieldname | e }}" rows="2" maxlength="2000" {% if field.reqd %}required{% endif %}></textarea>
+{% else %}<input name="{{ field.fieldname | e }}" type="{{ 'date' if field.fieldtype == 'Date' else ('email' if field.options == 'Email' else ('tel' if 'phone' in field.fieldname else 'text')) }}" autocomplete="off" maxlength="140" {% if field.reqd %}required{% endif %}>{% endif %}
+{% if field.description %}<small class="field-help">{{ field.description | e }}</small>{% endif %}</label>{% endif %}
+{% endfor %}
+<h3 class="registration-heading">Initial program</h3><label class="wide-field">Program<select name="program">{% for program in academy.programs %}<option>{{ program.name | e }}</option>{% endfor %}</select></label>
+</div><p class="demo-notice">Make Payment saves a draft invoice and displays bank-transfer instructions. Your bank transfer and admission are reviewed separately; this website does not debit your account.</p><button class="button button-green" type="submit">Make Payment <span aria-hidden="true">↗</span></button><button class="wizard-back" id="enrollment-back" type="button">← Back to welcome</button><button class="wizard-back" id="enrollment-return-payment" hidden type="button">Return to payment →</button><small>Need help? <a href="mailto:{{ academy.email | e }}">Contact the academy</a>.</small></form><section id="enrollment-payment" hidden aria-labelledby="payment-title"><h3 id="payment-title">Payment</h3><p>Transfer the total initial payment, using the invoice reference below as your transfer narration.</p><dl class="fee-breakdown"><div><dt>Registration fee</dt><dd id="fee-registration"></dd></div><div><dt>Jersey (2 sets)</dt><dd id="fee-jersey"></dd></div><div class="fee-total"><dt>Total initial payment</dt><dd id="fee-total"></dd></div><div class="fee-monthly"><dt>Monthly subscription<small>Recurring; not part of today’s payment</small></dt><dd id="fee-monthly"></dd></div></dl><div class="bank-instructions"><p class="eyebrow">TRANSFER TO</p><div><span>Bank</span><strong id="payment-bank"></strong><button type="button" data-copy="payment-bank">Copy</button></div><div><span>Account number</span><strong id="payment-account"></strong><button type="button" data-copy="payment-account">Copy</button></div><div><span>Account name</span><strong id="payment-beneficiary"></strong></div></div><div class="payment-reference"><p>Use this invoice number as the transfer narration:</p><strong id="payment-reference"></strong><button type="button" data-copy="payment-reference">Copy</button><p id="payment-state"></p></div><p id="payment-action-error" role="alert" hidden></p><p id="copy-status" role="status"></p><div class="wizard-actions"><button type="button" class="button wizard-back" id="payment-back-details">← Back to details</button><button type="button" class="button button-gold" id="payment-made">I’ve made payment ↗</button></div><small>Clicking “I’ve made payment” requests Finance review. It does not confirm receipt of funds.</small></section><div id="enrollment-result" hidden role="status" tabindex="-1"><div class="success-mark" aria-hidden="true">✓</div><h3>Registration received.</h3><p>Keep your reference: <strong id="registration-reference"></strong>. The academy will review your details. This reference confirms receipt, not acceptance or payment. No confirmation email has been sent.</p><p id="final-bank-details"></p><button class="wizard-back" type="button" id="registration-new">Start another registration</button><button class="button button-green" data-close>Back to the academy <span aria-hidden="true">↗</span></button></div></dialog>
+  <dialog id="photo-dialog" class="photo-dialog" aria-label="Academy photograph"><button class="dialog-close" data-close aria-label="Close photograph">×</button><img id="expanded-photo" alt=""><p>MOYOURS · ACADEMY LIFE</p></dialog>
+</body>
+</html>

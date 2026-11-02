@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-005](../epics/EPIC-005-payments-and-financial-history.md)
-- State: Proposed
+- State: In progress — invoice-first enrollment PoC
 - Priority: Must
 - Delivery owner / affected apps: ERPNext configuration + Sports App
 
@@ -26,7 +26,7 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Acceptance criteria
 
 1. Given an authorized cashier and a player invoice, when recording and submitting payment, then the resulting ERPNext Payment Entry identifies the correct company, Customer, currency and allocation.
-2. Given two players sharing a guardian Customer, when a receipt is allocated, then only the intended player obligation changes and unallocated credit is shown separately.
+2. Given two players with separate automatically created Customers, when a receipt is allocated, then only the intended player obligation changes and unallocated credit is shown separately.
 3. Given a repeated submit request or an existing draft, when resumed, then a second receipt is not created; failed submission leaves no false paid status.
 
 ## Verification plan
@@ -39,6 +39,20 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
+- Build log: [Enrollment payment review](../../build-logs/2026-11-01-us-005-01-enrollment-payment-review.md).
+- Verification summary: Current invoice-first PoC verifies draft invoice creation, unposted claims, one-click Finance submission/allocation, retry safety, failure rollback and UI/privacy controls. Earlier receipt-first evidence is historical. Full monthly billing and production reconciliation remain open.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+Earlier refinement (historical): [multi-step enrollment and draft Payment Entry review](../../build-logs/2026-11-01-us-005-01-enrollment-payment-review.md). This supersedes the previous no-payment PoC boundary; finance submission, invoice allocation and production acceptance remain separate.
+
+## Invoice-first adjustment — 1 November 2026
+
+New registrations create a draft Sales Invoice at Make Payment and move that invoice to Pending Review when payment is claimed. Finance verifies the bank credit and uses one Complete Payment action to submit the invoice and one fully allocated receipt atomically, with retry protection. No Payment Entry form is required. Both applicant steps remain unposted; partial failures leave no paid status. Legacy receipt-first references remain supported. [Implementation, tests and cleanup](../../build-logs/2026-11-01-us-005-01-invoice-first-payment-completion.md). The older payment-entry-first refinement above is historical. Full monthly billing, corrections and production reconciliation remain open.
+
+## Invoice context payment confirmation — 1 November 2026
+
+Authorised Finance users can use Confirm Payment directly from an enrollment invoice context menu while it is Pending Review. The shortcut disappears after settlement; View retains Complete Payment. Both use the same server-controlled workflow and atomic receipt service. [Build evidence](../../build-logs/2026-11-01-us-005-01-invoice-context-confirm-payment.md).
+
+## Local commit review — 2 November 2026
+
+[Repository scope, current checks and release boundaries](../../build-logs/2026-11-02-us-005-01-project-commit-review.md). Local commit capture does not close the remaining production scope.

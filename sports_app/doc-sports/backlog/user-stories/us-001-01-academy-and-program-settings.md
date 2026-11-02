@@ -53,3 +53,15 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Required settings are enforced on Save. Monthly fees require a positive default amount unless explicitly disabled; saving does not implement pricing plans or create charges.
 - Registration prefix/digits and enrollment status are defaults for later player/enrollment implementation. They do not allocate or renumber any existing player ID.
 - Native forms remain available for authorized support. ERPNext is required for the linked masters; Boost remains optional outside the shared console deployment.
+
+## Chart of Accounts compatibility adjustment — 1 November 2026
+
+Restored missing native Account permissions in development ERP Boost while preserving Sports-only read restrictions and all existing custom rules. Administrator can create/edit child accounts after reloading Desk. [Repair, regression checks and cleanup evidence](../../build-logs/2026-11-01-us-001-01-coa-native-permissions.md). No Sports runtime/schema changes.
+
+## CoA balance repair — 1 November 2026
+
+[Diagnosis, applied repair and verification](../../build-logs/2026-11-01-us-001-01-coa-balance-diagnosis.md): missing native GL read rules hide balances for the finance user; an absent optional Purchase Invoice workflow column also breaks console lists. The user approved both repairs; missing native GL rules were restored, optional workflow columns/filters are handled, and browser balances plus console lists passed verification.
+
+## TLS hosting readiness — 1 November 2026
+
+[Certificate activation diagnosis and staged validation](../../build-logs/2026-11-01-us-001-01-moyours-tls-activation.md): certificate issuance succeeded, but active Nginx uses a stale copied configuration without Moyours. After explicit user approval, the active configuration was backed up and linked to the validated generated configuration, and shared Nginx was gracefully reloaded. Public TLS hostname/trust verification, HTTP-to-HTTPS redirection and Chromium academy loading passed; the certificate expires on 30 January 2027.

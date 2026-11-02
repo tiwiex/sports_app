@@ -91,25 +91,21 @@ frappe.boost_console_views["sports_app:players"] = () => {
   const defaults = await call("get_registration_defaults");
   if (signal.aborted) return;
   const key = crypto.randomUUID();
+  const playerFields = defaults.player_fields;
   const fields = [
-   { fieldname: "full_name", label: __("Player name"), fieldtype: "Data", reqd: 1 },
-   { fieldname: "birth_date", label: __("Date of birth"), fieldtype: "Date" },
-   { fieldname: "contact_email", label: __("Player email"), fieldtype: "Data", options: "Email", reqd: 1, description: __("A unique email for the player’s future self-service account.") },
-   { fieldname: "contact_phone", label: __("Contact phone"), fieldtype: "Data" },
-   { fieldname: "guardian_name", label: __("Parent / guardian name"), fieldtype: "Data" },
-   { fieldname: "guardian_phone", label: __("Parent / guardian phone"), fieldtype: "Data" },
+   ...playerFields.map(field => ({ ...field, label: __(field.label), description: field.description ? __(field.description) : undefined })),
    { fieldname: "enrollment_section", label: __("Initial enrollment"), fieldtype: "Section Break" },
    ...enrollmentFields(defaults.company)
   ];
   showDialog("Register Player", fields, async values => {
-   const similar = await call("list_players", { search: values.full_name });
+   const similar = await call("list_players", { search: `${values.first_name} ${values.last_name}` });
    if (signal.aborted) return;
-   if (similar.some(row => row.full_name.toLowerCase() === values.full_name.trim().toLowerCase())) {
+   if (similar.some(row => row.full_name.toLowerCase() === `${values.first_name} ${values.last_name}`.trim().toLowerCase())) {
     const confirmed = await new Promise(resolve => frappe.confirm(__("A player with this name already exists. Register a separate player? Check Players first if unsure."), () => resolve(true), () => resolve(false)));
     if (!confirmed || signal.aborted) return false;
    }
    const player = {}, enrollment = {};
-   for (const field of ["full_name", "birth_date", "contact_email", "contact_phone", "guardian_name", "guardian_phone"]) player[field] = values[field] || "";
+   for (const field of playerFields.filter(field => field.fieldtype !== "Section Break")) player[field.fieldname] = values[field.fieldname] ?? "";
    for (const field of ["program", "group", "start_date", "end_date", "status"]) enrollment[field] = values[field] || "";
    const name = await call("register_player", { player, enrollment, request_key: key });
    if (!signal.aborted) await showPlayer(name);

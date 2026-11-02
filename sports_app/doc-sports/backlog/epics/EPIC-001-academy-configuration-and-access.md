@@ -19,3 +19,5 @@ Deliver the three independently specified stories below, including their permiss
 ## Exit criteria
 
 Every linked story is Done with acceptance evidence, affected app pull requests and build logs. Demonstrate the combined workflow on the agreed test-site versions. Record unresolved scope as explicit follow-up work; no missing client requirement can be hidden by closing this epic.
+
+US-001-02 prototype checkpoint: native `/academy` public preview is verified on the development site; content editor/publishing and production acceptance remain open. See [website PoC log](../../build-logs/2026-11-01-us-001-02-website-prototype.md).

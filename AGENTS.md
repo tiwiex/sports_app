@@ -15,6 +15,10 @@
 - Keep requirements, PRD, story acceptance criteria and user guides aligned with accepted user refinements. Preserve historical evidence; clearly identify superseded decisions.
 - Use `build-logs/TEMPLATE.md`. Build logs and current requirements must be discoverable through Sports Development Tools.
 
+## DocType naming
+
+- Prefix every new app-owned DocType, including registration/application and child-table types, with `Sports`. Reuse Sports Player/Sports Enrollment where suitable; do not rename ERPNext core DocTypes.
+
 ## Player and finance invariants
 
 - Each player has one automatically created Customer, with the player's supplied name/contact details. Create player, Customer/contact and initial enrollment atomically; retries must not duplicate them.
@@ -22,7 +26,7 @@
 - Categorize a new Customer under a Customer Group named for the initial registration program. Further enrollments do not silently move existing accounting classifications.
 - Show program/group names to operators while retaining stable internal IDs.
 - Enforce roles, Company/User Permissions and validation in APIs and native controllers. Narrow background Customer/Contact/Customer Group creation does not grant general finance write privileges.
-- ERPNext is the accounting source of truth. Do not create invoices/payments or infer balances as a side effect of registration. Watch for upstream hooks that commit inside a supposed atomic operation.
+- ERPNext is the accounting source of truth. Ordinary registration creates no invoices/payments. The explicitly authorized enrollment Make Payment service creates an application-owned draft Sales Invoice and prospective Customer; an applicant claim moves the invoice to Pending Review without a Payment Entry or ledger posting. Only authorised Finance may complete payment, atomically submitting the invoice and its fully allocated receipt. Preserve legacy receipt references. Do not infer bank clearance from an applicant claim. Watch for upstream hooks that commit inside a supposed atomic operation.
 
 ## Verification and documentation access
 

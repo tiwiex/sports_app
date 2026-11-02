@@ -19,7 +19,7 @@ Only documentation is introduced by this baseline. No app, database, role, route
 
 ## Current implementation
 
-[US-002-01](backlog/user-stories/us-002-01-console-extension-spike.md) is Done with a working provider prototype on `moyours.ideltatech.com`. [Delivery evidence](build-logs/2026-11-01-us-002-01-console-extension-spike.md) records the independent dev checkout, role/browser checks, temporary-account cleanup and remaining Finance setup. US-003-02 is In progress and US-002-04 is In review; other implementation stories remain Proposed.
+[US-002-01](backlog/user-stories/us-002-01-console-extension-spike.md) is Done with a working provider prototype on `moyours.ideltatech.com`. [Delivery evidence](build-logs/2026-11-01-us-002-01-console-extension-spike.md) records the independent dev checkout, role/browser checks, temporary-account cleanup and remaining Finance setup. US-003-01/US-003-02 are In progress and US-002-04 is In review; US-001-02 now has a public website prototype slice; other implementation stories remain Proposed.
 
 
 [Academy setup guide](academy-setup.md) explains the Sports settings menu, administrator role, programs/groups and validation rules.
@@ -31,3 +31,9 @@ Only documentation is introduced by this baseline. No app, database, role, route
 [Current requirements](REQUIREMENTS.md) records accepted refinements. Management users can browse requirements, PRD, stories, ADRs and logs through **Sports → Development Tools**. Repository-root `AGENTS.md` and the [development process](DEVELOPMENT_PROCESS.md) require a new indexed log after each story or adjustment.
 
 Development Tools now follows the Boost card/counter/tab layout and opens documents in Frappe modals. [Asset refresh and modal evidence](build-logs/2026-11-01-us-002-04-asset-cache-and-modal-layout.md) records the content-fingerprint fix for stale registration forms.
+
+[Website prototype guide](website-prototype.md) covers the `/academy` preview, app-owned public content, demo interactions and limits. [PoC build evidence](build-logs/2026-11-01-us-001-02-website-prototype.md) records verification and the preceding local merges.
+
+Public enrollment is now submittable: [Sports Registration review workflow](website-prototype.md), with [submission/acceptance evidence](build-logs/2026-11-01-us-003-01-public-submission-and-review.md). Earlier demo-only submission notes are historical.
+
+[Enrollment payment wizard](website-prototype.md) now creates draft invoices, uses actual invoice references and sends claims for unposted Finance review. One Complete Payment action submits the invoice and its allocated receipt together. [Current build evidence](build-logs/2026-11-01-us-005-01-invoice-first-payment-completion.md) supersedes the earlier receipt-first PoC for new enrollments.

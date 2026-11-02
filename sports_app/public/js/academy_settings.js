@@ -96,6 +96,16 @@ frappe.boost_console_views["sports_app:settings"] = () => {
    { fieldname: "default_group", label: __("Default group"), fieldtype: "Link", options: "Sports Group", get_query: () => ({ filters: { program: form.get_value("default_program"), enabled: 1 } }) },
    { fieldname: "monthly_fees_enabled", label: __("Monthly fees enabled"), fieldtype: "Check", default: 1 },
    { fieldname: "default_monthly_fee", label: __("Default monthly fee"), fieldtype: "Currency", options: "currency", description: __("Default for monthly fees. Saving this amount does not create a charge or payment.") },
+   {fieldname: "enrollment_payment_section", label: __("Website enrollment payments"), fieldtype: "Section Break"},
+   {fieldname: "enrollment_payments_enabled", label: __("Enable enrollment payments"), fieldtype: "Check"},
+   {fieldname: "enrollment_payment_currency", label: __("Enrollment payment currency"), fieldtype: "Link", options: "Currency"},
+   {fieldname: "enrollment_registration_fee", label: __("Initial registration fee"), fieldtype: "Currency", options: "enrollment_payment_currency"},
+   {fieldname: "enrollment_jersey_fee", label: __("Jersey fee (2 sets)"), fieldtype: "Currency", options: "enrollment_payment_currency"},
+   {fieldname: "enrollment_monthly_fee", label: __("Monthly fee (information only)"), fieldtype: "Currency", options: "enrollment_payment_currency"},
+   {fieldname: "enrollment_registration_item", label: __("Registration fee item"), fieldtype: "Link", options: "Item", get_query: () => ({filters:{is_stock_item:0, disabled:0}})},
+   {fieldname: "enrollment_jersey_item", label: __("Jersey fee item"), fieldtype: "Link", options: "Item", get_query: () => ({filters:{is_stock_item:0, disabled:0}})},
+   {fieldname: "enrollment_bank_account", label: __("Enrollment bank account"), fieldtype: "Link", options: "Bank Account", get_query: () => ({filters:{company:form.get_value("company"), is_company_account:1, disabled:0}})},
+   {fieldname: "enrollment_receivable_account", label: __("Enrollment receivable account"), fieldtype: "Link", options: "Account", get_query: () => ({filters:{company:form.get_value("company"), account_type:"Receivable", is_group:0, disabled:0}})},
   ] });
   form.make();
   await form.set_values(values);
