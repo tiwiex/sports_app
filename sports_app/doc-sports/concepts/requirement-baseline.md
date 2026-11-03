@@ -69,3 +69,13 @@ The [original brief](../requirements.txt) remains unchanged. “Client brief” 
 | SPORTS-NFR-009 | A separate dated, indexed build log after every story implementation or adjustment | US-002-04 and all subsequent work |
 
 See [current requirements](../REQUIREMENTS.md) for the governing rules and [adjustment evidence](../build-logs/2026-11-01-us-002-04-guardrails-docs-and-program-categories.md).
+
+## Club relations addition — 2 November 2026
+
+SPORTS-FR-032: generic Company-scoped organisation/opportunity/correspondence workspace. SPORTS-FR-033: sourced directory and attributable staff relationship-priority assessment. Both map to EPIC-009 / US-009-01.
+
+## Website payment review notifications — 3 November 2026
+
+| ID | Requirement | Story |
+|---|---|---|
+| SPORTS-FR-034 | Configurable comma-separated review email list; transactional, duplicate-safe notification on first website payment claim; preserve Finance authorization | US-005-01 |

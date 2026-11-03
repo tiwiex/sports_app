@@ -58,3 +58,5 @@ Follow-up: [Player Users and User role editor](../../build-logs/2026-11-01-us-00
 User refinement: [Full menu and shared registration fields](../../build-logs/2026-11-01-us-001-02-menu-and-registration-fields.md). Share the reference enrollment details with staff registration, retain unique player email and automatic Customer/User provisioning, and prefix any new DocTypes with Sports. Public intake remains demo-only.
 
 Superseding refinement: public enrollment now submits Sports Registration for staff review/acceptance, documented in [US-003-01 evidence](../../build-logs/2026-11-01-us-003-01-public-submission-and-review.md). Earlier demo-only submission scope is historical; wider publishing/production scope remains open.
+
+Presentation follow-up: [Player reference menu and grouped profile modal](../../build-logs/2026-11-03-us-003-03-player-profile-layout.md). Existing program-membership creation and automatic account linkage are retained.

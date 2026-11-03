@@ -224,3 +224,31 @@ User explicitly extended the PoC to a multi-page enrollment with a draft Payment
 ### Invoice-first enrollment refinement — 1 November 2026
 
 Supersedes the earlier advance-receipt PoC for new enrollments. Make Payment creates a draft Sales Invoice and prospective Customer; the actual invoice number is the reference. The applicant claim moves the invoice to Pending Review, retaining docstatus 0 and creating no Payment Entry. An authorised Finance reviewer uses Complete Payment to submit the invoice and create/submit a fully allocated receipt in the same transaction. Failure leaves both unposted; retries do not duplicate settlement. Existing selected-approver, native finance, workflow and Company/User Permission controls apply. Player admission remains separate. Legacy receipt references are retained. This slice covers full initial-fee settlement, not recurring monthly billing, partial/overpayments or production reconciliation. [Build evidence](build-logs/2026-11-01-us-005-01-invoice-first-payment-completion.md).
+
+## Club and partner relations — 2 November 2026
+
+New EPIC-009 covers generic organisation relationships, sport-independent opportunities and internal correspondence. Initial scope includes a sourced Nigerian/international football directory and staff-assessed1–5 relationship priority, not a club-performance ranking. Management-only access, Company boundaries and native validation apply. Imported prospects do not become Customers/Suppliers automatically. Outreach, player sharing and external portal access require future explicit controls and are not triggered by this slice. See [US-009-01](backlog/user-stories/us-009-01-club-partner-relations.md).
+
+Club directory table/contact refinement (2 November 2026): tabular directory and interaction views include optional public email with attributable source/purpose. Reviewed contact enrichment is explicit, Company-scoped and non-destructive; contact-form routes remain available where a suitable email is not published.
+
+Club table sorting refinement (2 November 2026): server-side allowlisted column sorting and combined organization/email, country, priority, relationship and email-presence filters apply before pagination. Default organization ordering is alphabetical; changing tabs clears filters/sort state.
+
+## Payment review notification refinement — 3 November 2026
+
+SPORTS-FR-034 adds configurable payment review emails to Sports Academy Settings and the Sports settings console. On the first applicant payment claim, queue a linked notification alongside the unposted Pending Review transition. Legacy receipt references receive the same notification. Retries do not notify again; failed transactions leave no queued message. Blank disables notifications. Recipients must still have existing document access and Finance approval permissions. Email content clearly distinguishes an applicant claim from bank clearance; no token, player contact details or bank account details are included. This supersedes the historical no-automatic-email boundary for this specific event.
+
+## Registration review interface — 3 November 2026
+
+The private registration queue adopts Boost's invoice table styling: sortable Reference, Player, Pathway, Submitted on and Status columns; status badges; reference action dropdowns. View opens a registration modal, preserving the current filtered/paginated list. Accept/Reject are offered only for pending registrations with write permission and re-fetch current state before confirmation. Acceptance retains possible-match review and enrollment choices; rejection requires a reason. Admission remains separate from payment approval. Sports owns this UI and API; Boost's reusable shell is unchanged.
+
+## Enrollment review terminology — 3 November 2026
+
+The staff queue is labelled **Enrollments**, with **Enrollment application** identifying incoming admissions requests. Acceptance creates the player and program membership already shown under Players. This is a presentation change; application and dated membership records retain their separate responsibilities and existing links. The modal replaces the flat definition list with grouped responsive cards and consistent label/value fields. Current admission permissions, explicit confirmation, possible-match checks, rejection reason and independent Finance review remain in effect.
+
+## Manual attendance prototype checkpoint — 3 November 2026
+
+Sports Session and Sports Attendance now provide a development prototype of US-006-01/02. The shared console offers session creation/listing, fixed eligible rosters, manual statuses, explicit absence finalization, reasoned corrections and per-record native audit history. Staff access reuses existing Sports management roles and native Company/document restrictions. Responsible operator is the creator; later operator assignment and coach-specific group scope remain future policy. No manual roster exceptions, cross-session player report/rate denominator, biometric identity/device adapter or production readiness is claimed. See the [attendance guide](attendance-guide.md) and build evidence.
+
+## Player presentation refinement — 3 November 2026
+
+The private Players queue uses the Enrollments table/reference-menu style. View opens a grouped responsive modal with identity, linked accounts, paginated program memberships, contacts and consent choices while retaining search/list context. New program enrollment remains permission-controlled and reuses the player's existing Customer; it creates no invoice/payment. Full payment/attendance history aggregation remains US-003-03 follow-up.

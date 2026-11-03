@@ -1,7 +1,8 @@
 /* Sports-owned private registration and enrollment in the shared Boost shell. */
 frappe.provide("frappe.boost_console_views");
 frappe.boost_console_views["sports_app:players"] = () => {
- let host, signal, search = "", offset = 0, generation = 0;
+ let host, signal, search = "", offset = 0, generation = 0, profileDialog, sortBy = "registered_on", sortOrder = "desc";
+ const lifecycle = new AbortController();
  const dialogs = new Set();
  const node = (tag, text, cls) => {
   const el = document.createElement(tag);
@@ -23,9 +24,9 @@ frappe.boost_console_views["sports_app:players"] = () => {
  };
  const table = (labels, rows) => {
   const wrap = node("div", null, "table-responsive");
-  const el = node("table", null, "table table-striped");
+  const el = node("table", null, "table table-bordered ing-console-table");
   const head = node("thead"), tr = node("tr");
-  for (const label of labels) tr.append(node("th", __(label)));
+  for (const label of labels) {const th = node("th", __(label)); th.scope = "col"; tr.append(th);}
   head.append(tr); el.append(head);
   const body = node("tbody");
   for (const values of rows) {
@@ -39,25 +40,87 @@ frappe.boost_console_views["sports_app:players"] = () => {
   }
   el.append(body); wrap.append(el); return wrap;
  };
+ const formatDate = value => value ? (frappe.datetime.str_to_user ? frappe.datetime.str_to_user(String(value).split(".")[0]) : value) : "—";
+ const statusChip = status => {const chip = node("span", __(status), "ing-console-status-chip"); chip.classList.add(status === "Active" ? "is-approved" : status === "Pending" ? "is-pending-review" : "is-draft"); return chip;};
+ const closeMenus = () => {for (const menu of host.querySelectorAll(".sports-player-menu")) {menu.classList.remove("is-open"); menu.querySelector("button").setAttribute("aria-expanded", "false"); menu.querySelector(".dropdown-menu").removeAttribute("style");}};
+ const startEnrollment = async name => {
+  const result = await call("get_player", {name}); if (signal.aborted) return;
+  if (!result.can_enroll) {frappe.msgprint(__("You do not have permission to add an enrollment for this player.")); return;}
+  return newEnrollment(result.player);
+ };
+ const referenceMenu = row => {
+  const menu = node("div", null, "ing-console-action-menu sports-player-menu"), list = node("ul", null, "dropdown-menu"); list.setAttribute("role", "menu");
+  const toggle = button(row.name, event => {
+   event.preventDefault(); event.stopPropagation(); const open = menu.classList.contains("is-open"); closeMenus(); if (open) return;
+   menu.classList.add("is-open"); toggle.setAttribute("aria-expanded", "true");
+   const rect = toggle.getBoundingClientRect(), width = Math.max(170, list.getBoundingClientRect().width);
+   list.style.cssText = `position:fixed;left:${Math.max(8, Math.min(rect.left, innerWidth - width - 8))}px;top:${Math.max(8, Math.min(rect.bottom + 4, innerHeight - list.getBoundingClientRect().height - 8))}px;z-index:9999`;
+  });
+  toggle.classList.add("ing-console-action-menu-toggle", "ing-console-action-menu-toggle-name"); toggle.setAttribute("aria-label", __("Actions for player {0}", [row.name])); toggle.setAttribute("aria-haspopup", "menu"); toggle.setAttribute("aria-expanded", "false"); toggle.append(node("span", "▾", "ing-console-action-caret"));
+  const add = (label, action) => {const li = node("li"), item = button(label, event => {event.preventDefault();event.stopPropagation();closeMenus();action();});item.className = "dropdown-item";item.setAttribute("role", "menuitem");item.style.cssText = "width:100%;text-align:left;border:0;background:transparent";li.append(item);list.append(li);};
+  add("View", () => showPlayer(row.name)); if (row.can_enroll) add("New program enrollment", () => startEnrollment(row.name));
+  toggle.addEventListener("keydown", event => {if(event.key === "ArrowDown") {event.preventDefault(); if(!menu.classList.contains("is-open"))toggle.click();list.querySelector("button").focus();}}, {signal});
+  list.addEventListener("keydown", event => {const items = [...list.querySelectorAll("button")], index = items.indexOf(document.activeElement);if(["ArrowDown","ArrowUp","Home","End"].includes(event.key)){event.preventDefault();items[event.key === "Home" ? 0 : event.key === "End" ? items.length-1 : (index+(event.key === "ArrowDown" ? 1 : -1)+items.length)%items.length].focus();}}, {signal});
+  menu.append(toggle,list); return menu;
+ };
  const showPlayer = async (name, start = 0) => {
   const current = ++generation;
   const result = await call("get_player", { name, start });
   if (signal.aborted || current !== generation) return;
-  const p = result.player, wrapper = node("section");
-  wrapper.append(button("Back to Players", render), node("h3", p.full_name), node("p", `${p.name} · ${p.company}`));
-  wrapper.append(node("p", __("Registered on: {0}", [p.registered_on])), link("Sports Player", p.name));
-  if (p.customer) wrapper.append(node("p", __("Customer")), link("Customer", p.customer, p.full_name));
-  if (p.portal_user) wrapper.append(node("p", __("Self-service User: {0} (prepared for future activation)", [p.portal_user]), "text-muted"));
-  wrapper.append(node("h4", __("Enrollments")));
-  wrapper.append(button("New Enrollment", () => newEnrollment(p)));
-  wrapper.append(table(["Enrollment", "Program", "Group", "Customer", "Start", "End", "Status", "Eligible today"], result.enrollments.map(row => [
-   link("Sports Enrollment", row.name), row.program_name || row.program, row.group_name || row.group, link("Customer", row.payer_customer, p.full_name), row.start_date, row.end_date, row.status, row.eligible_today ? __("Yes") : __("No")
+  const p = result.player, wrapper = node("section", null, "sports-player-profile");
+  const style = node("style"); style.textContent = `
+   .sports-player-profile{color:var(--text-color,#173042);font-size:14px;line-height:1.5}
+   .sports-player-profile .player-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+   .sports-player-profile .player-hero h3{margin:3px 0 5px;font-size:24px;overflow-wrap:anywhere}
+   .sports-player-profile .player-eyebrow{color:var(--text-muted,#607287);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+   .sports-player-profile .player-card{border:1px solid var(--border-color,#d7e2ed);border-radius:8px;padding:18px;margin-bottom:16px;background:var(--card-bg,#fff)}
+   .sports-player-profile .player-summary{background:var(--subtle-fg,#f4f8fb)}
+   .sports-player-profile .player-card h4{font-size:15px;margin:0 0 14px;font-weight:700}
+   .sports-player-profile .player-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px;margin:0}
+   .sports-player-profile .player-field{min-width:0}.sports-player-profile .player-field.is-wide{grid-column:1/-1}
+   .sports-player-profile dt{font-size:12px;font-weight:500;color:var(--text-muted,#607287);margin-bottom:4px}
+   .sports-player-profile dd{font-size:14px;font-weight:500;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+   .sports-player-profile a{overflow-wrap:anywhere}
+   .sports-player-profile .player-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+   @media(max-width:640px){.sports-player-profile .player-grid{grid-template-columns:minmax(0,1fr)}.sports-player-profile .player-card{padding:14px}.sports-player-profile .player-hero h3{font-size:21px}}
+  `; wrapper.append(style);
+  const card = (label, cls = "") => {const section = node("section", null, `player-card ${cls}`); section.append(node("h4", __(label))); wrapper.append(section); return section;};
+  const grid = section => {const dl = node("dl", null, "player-grid"); section.append(dl); return dl;};
+  const field = (dl, label, value, wide = false) => {
+   const cell = node("div", null, `player-field${wide ? " is-wide" : ""}`), dd = node("dd");
+   if (value instanceof Node) dd.append(value); else dd.textContent = value == null || value === "" ? "—" : value;
+   cell.append(node("dt", __(label)), dd); dl.append(cell);
+  };
+  const hero = node("header", null, "player-hero"), identity = node("div");
+  identity.append(node("div", __("Player profile"), "player-eyebrow"), node("h3", p.full_name));
+  hero.append(identity, node("span", p.name, "ing-console-status-chip")); wrapper.append(hero);
+  const summary = grid(card("Player summary", "player-summary"));
+  field(summary, "Player ID", p.name); field(summary, "Academy company", p.company); field(summary, "Registered on", formatDate(p.registered_on));
+  const actions = node("div", null, "player-actions"); actions.append(link("Sports Player", p.name, __("Open player record")));
+  if (result.can_enroll) actions.append(button("New program enrollment", () => newEnrollment(p), true));
+  wrapper.append(actions);
+  const accounts = grid(card("Linked accounts"));
+  field(accounts, "Customer", p.customer ? (frappe.model.can_read("Customer") ? link("Customer", p.customer, p.full_name) : p.customer) : null);
+  field(accounts, "Self-service account", p.portal_user || null);
+  const memberships = card("Program enrollments");
+  memberships.append(table(["Enrollment", "Program", "Group", "Start", "End", "Status", "Eligible today"], result.enrollments.map(row => [
+   link("Sports Enrollment", row.name), row.program_name || row.program, row.group_name || row.group || "—", formatDate(row.start_date), formatDate(row.end_date), statusChip(row.status), row.eligible_today ? __("Yes") : __("No")
   ])));
-  if (!result.enrollments.length) wrapper.append(node("p", __("No enrollments on this page."), "text-muted"));
-  if (start) wrapper.append(button("Previous enrollments", () => showPlayer(name, Math.max(0, start - 20))));
-  if (result.enrollments.length === 20) wrapper.append(button("More enrollments", () => showPlayer(name, start + 20)));
-  wrapper.append(node("p", __("Each player has their own Customer account, created during registration. Registration and enrollment do not create invoices or payments."), "text-muted"));
-  host.replaceChildren(wrapper);
+  if (!result.enrollments.length) memberships.append(node("p", __("No program enrollments on this page."), "text-muted"));
+  const pages = node("div", null, "player-actions");
+  if (start) pages.append(button("Previous enrollments", () => showPlayer(name, Math.max(0, start - 20))));
+  if (result.enrollments.length === 20) pages.append(button("More enrollments", () => showPlayer(name, start + 20)));
+  memberships.append(pages);
+  memberships.append(node("p", __("Active, date-eligible program enrollments are used for attendance rosters. Adding an enrollment does not create an invoice or payment."), "text-muted"));
+  let values;
+  for (const item of result.fields || []) {
+   if (item.fieldtype === "Section Break") {values = grid(card(item.label === "The player" ? "Player details" : item.label)); continue;}
+   if (!values) values = grid(card("Player details"));
+   field(values, item.label, item.fieldtype === "Check" ? (p[item.fieldname] ? __("Yes") : __("No")) : p[item.fieldname], item.fieldtype === "Small Text");
+  }
+  if (profileDialog) profileDialog.hide();
+  profileDialog = new frappe.ui.Dialog({title: __("Player: {0}", [p.name]), size: "extra-large", fields: [{fieldname: "player_view", fieldtype: "HTML"}]});
+  profileDialog.fields_dict.player_view.$wrapper.append(wrapper); dialogs.add(profileDialog); profileDialog.show();
  };
  const enrollmentFields = company => [
   { fieldname: "program", label: __("Program"), fieldtype: "Link", options: "Sports Program", reqd: 1, get_query: () => ({ filters: { company, enabled: 1 } }) },
@@ -83,7 +146,7 @@ frappe.boost_console_views["sports_app:players"] = () => {
   if (signal.aborted) { dialog.hide(); return; }
   dialog.show(); return dialog;
  };
- const newEnrollment = player => showDialog("New Enrollment", enrollmentFields(player.company), async values => {
+ const newEnrollment = player => showDialog("New program enrollment", enrollmentFields(player.company), async values => {
   await call("save_enrollment", { player: player.name, enrollment: values });
   if (!signal.aborted) await showPlayer(player.name);
  });
@@ -108,30 +171,44 @@ frappe.boost_console_views["sports_app:players"] = () => {
    for (const field of playerFields.filter(field => field.fieldtype !== "Section Break")) player[field.fieldname] = values[field.fieldname] ?? "";
    for (const field of ["program", "group", "start_date", "end_date", "status"]) enrollment[field] = values[field] || "";
    const name = await call("register_player", { player, enrollment, request_key: key });
-   if (!signal.aborted) await showPlayer(name);
+   if (!signal.aborted) { await render(); await showPlayer(name); }
   }, { program: defaults.default_program, group: defaults.default_group, status: defaults.default_enrollment_status });
  };
  async function render() {
+  closeMenus();
   const current = ++generation;
-  const rows = await call("list_players", { search, start: offset });
+  const rows = await call("list_players", { search, start: offset, sort_by: sortBy, sort_order: sortOrder });
   if (signal.aborted || current !== generation) return;
   const wrapper = node("section");
-  wrapper.append(node("h3", __("Players")), button("Register Player", register, true));
+  wrapper.append(node("h3", __("Players")), node("p", __("Manage player profiles and program enrollments without leaving the console."), "text-muted"), button("Register Player", register, true));
   const label = node("label", __("Search by registration ID or name"));
   label.htmlFor = "sports-player-search";
   const input = node("input", null, "form-control"); input.id = label.htmlFor; input.value = search; input.type = "search";
-  const form = node("form");
-  form.append(label, input, button("Search", () => { search = input.value; offset = 0; render(); }));
+  const form = node("form"); form.style.cssText = "display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin:14px 0";
+  const searchField = node("div"); searchField.append(label, input); form.append(searchField, button("Search", () => { search = input.value; offset = 0; render(); }));
   form.addEventListener("submit", event => { event.preventDefault(); search = input.value; offset = 0; render(); }, { signal });
   wrapper.append(form);
-  wrapper.append(table(["Registration ID", "Name", "Date of birth", "Company"], rows.map(row => [button(row.name, () => showPlayer(row.name)), row.full_name, row.birth_date, row.company])));
+  const listing = table(["Player ID", "Name", "Date of birth", "Company", "Registered on"], rows.map(row => [referenceMenu(row), row.full_name, formatDate(row.birth_date), row.company, formatDate(row.registered_on)]));
+  for (const [index, field] of ["name", "full_name", "birth_date", "company", "registered_on"].entries()) {
+   const th = listing.querySelectorAll("th")[index], label = th.textContent, active = sortBy === field;
+   th.setAttribute("aria-sort", active ? (sortOrder === "asc" ? "ascending" : "descending") : "none");
+   const sort = button(label + (active ? (sortOrder === "asc" ? " ↑" : " ↓") : " ↕"), () => {sortOrder = active && sortOrder === "asc" ? "desc" : "asc"; sortBy = field; offset = 0; render();});
+   sort.setAttribute("aria-label", __("Sort by {0}", [label])); sort.style.cssText = "font:inherit;color:inherit;background:transparent;border:0;padding:0;white-space:nowrap"; th.replaceChildren(sort);
+  }
+  wrapper.append(listing);
   if (!rows.length) wrapper.append(node("p", __("No players found."), "text-muted"));
   if (offset) wrapper.append(button("Previous", () => { offset = Math.max(0, offset - 20); render(); }));
   if (rows.length === 20) wrapper.append(button("Next", () => { offset += 20; render(); }));
   host.replaceChildren(wrapper);
  }
  return {
-  async mount(options) { host = options.container; signal = options.signal; await render(); },
-  unmount() { generation++; for (const dialog of dialogs) dialog.hide(); dialogs.clear(); }
+  async mount(options) {
+   host = options.container; signal = lifecycle.signal; if (options.signal.aborted) {lifecycle.abort();return;}
+   options.signal.addEventListener("abort", () => lifecycle.abort(), {once:true,signal});
+   document.addEventListener("click", closeMenus, {signal});
+   document.addEventListener("keydown", event => {if(event.key === "Escape"){const toggle = host.querySelector(".sports-player-menu.is-open > button");closeMenus();if(toggle)toggle.focus();}}, {signal});
+   window.addEventListener("resize", closeMenus, {signal});host.addEventListener("scroll", closeMenus, {capture:true,signal});await render();
+  },
+  unmount() { generation++; closeMenus(); lifecycle.abort(); for (const dialog of dialogs) dialog.hide(); dialogs.clear(); }
  };
 };

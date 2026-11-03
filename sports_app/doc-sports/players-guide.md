@@ -16,7 +16,9 @@ Registration numbers use the configured prefix and digit count. Correcting a nam
 
 ## Maintain the player and enrollment
 
-Search by registration ID or name. Same-name players are allowed after a duplicate-name warning; use registration ID and birth date to distinguish them. Select an ID to open the private profile and its paginated enrollment list. The profile's registration ID link opens the native Sports Player form for contact/name corrections. **New Enrollment** adds a record to the same player and Customer. Selecting an enrollment ID opens the native form for status/date changes. Both interfaces enforce the same server validations and native change history.
+Search by registration ID or name. Same-name players are allowed after a duplicate-name warning; use registration ID and birth date to distinguish them. Sort by Player ID, Name, Birth date, Company or Registered on using the column headers. Open the Player ID reference menu and choose **View** to open a grouped profile modal while keeping your list and search in place.
+
+The profile groups the player summary, linked accounts, paginated program enrollments, player/guardian/emergency contacts and consent choices. **Open player record** opens the native Sports Player form for corrections. **New program enrollment** appears in the reference menu and profile for operators permitted to create enrollments and update that player; it adds membership to the same player and Customer. Selecting an enrollment ID opens the native form for status/date changes. Both interfaces enforce the same server validations and native change history.
 
 Pending and Suspended enrollments are ineligible. Active enrollments are eligible from the start date through an optional end date, inclusive. Withdrawn and Completed enrollments require an end date and are ineligible. This is current enrollment eligibility, not a reconstruction of past status changes. Do not delete/recreate a player to withdraw them. Program/company and group/program must match; used program/group scope cannot move away from its enrollment history.
 
@@ -45,6 +47,6 @@ In the native form, edit first/last names for structured records; full name is d
 
 ## Website applications
 
-Sports → Registrations holds public submissions for private review. Acceptance creates the same Player/Customer/User/enrollment records as direct registration and adds a Source registration link. Pending/rejected applications create no Player/User/enrollment. When the applicant uses Make Payment, a prospective Customer and draft Sales Invoice exist before admission; acceptance reuses that Customer. Rejection does not automatically cancel an invoice or refund a receipt. See the [complete PoC workflow](website-prototype.md).
+Sports → Enrollments holds public submissions for private review. Acceptance creates the same Player/Customer/User/enrollment records as direct registration and adds a Source registration link. Pending/rejected applications create no Player/User/enrollment. When the applicant uses Make Payment, a prospective Customer and draft Sales Invoice exist before admission; acceptance reuses that Customer. Rejection does not automatically cancel an invoice or refund a receipt. See the [complete PoC workflow](website-prototype.md).
 
 Enrollment invoice references and review states appear in the private registration profile. Finance users open the invoice and use Complete Payment after verifying the full bank credit; the invoice and its allocated receipt submit together, without opening Payment Entry separately. Registrars receive no general finance permissions. Applicant claims remain unposted.

@@ -65,3 +65,6 @@ Restored missing native Account permissions in development ERP Boost while prese
 ## TLS hosting readiness — 1 November 2026
 
 [Certificate activation diagnosis and staged validation](../../build-logs/2026-11-01-us-001-01-moyours-tls-activation.md): certificate issuance succeeded, but active Nginx uses a stale copied configuration without Moyours. After explicit user approval, the active configuration was backed up and linked to the validated generated configuration, and shared Nginx was gracefully reloaded. Public TLS hostname/trust verification, HTTP-to-HTTPS redirection and Chromium academy loading passed; the certificate expires on 30 January 2027.
+## Payment review recipient setting — 3 November 2026
+
+Academy Settings now includes comma-separated Payment review email addresses for website payment claims. Blank disables notifications. See [US-005-01 notification build evidence](../../build-logs/2026-11-03-us-005-01-payment-review-emails.md); Finance permissions are unchanged.

@@ -30,12 +30,17 @@ def get_registration_defaults():
 
 
 @frappe.whitelist()
-def list_players(search="", start=0):
+def list_players(search="", start=0, sort_by="registered_on", sort_order="desc"):
  require_player_access()
+ if sort_by not in ("name", "full_name", "birth_date", "company", "registered_on") or sort_order not in ("asc", "desc"):
+  frappe.throw(_("Select a valid player sort column and direction."))
  text = str(search or "").strip()[:100]
- return frappe.get_list("Sports Player", fields=["name", "full_name", "birth_date", "company", "registered_on"],
+ rows = frappe.get_list("Sports Player", fields=["name", "full_name", "birth_date", "company", "registered_on"],
   or_filters=[["name", "like", "%" + text + "%"], ["full_name", "like", "%" + text + "%"]] if text else None,
-  order_by="creation desc, name desc", start=_page(start), page_length=20)
+  order_by=f"{sort_by} {sort_order}" + (", name asc" if sort_by != "name" else ""), start=_page(start), page_length=20)
+ for row in rows:
+  row["can_enroll"] = bool(frappe.has_permission("Sports Enrollment", "create") and frappe.get_doc("Sports Player", row.name).has_permission("write"))
+ return rows
 
 
 @frappe.whitelist()
@@ -56,7 +61,8 @@ def get_player(name, start=0):
  for row in enrollments:
   row["eligible_today"] = is_eligible(row, frappe.utils.today())
  return {"player": {key: doc.get(key) for key in ("name", "company", "registered_on", "modified", "customer", "portal_user", *PLAYER_FIELDS)},
-  "enrollments": enrollments}
+  "enrollments": enrollments, "fields": get_registration_fields(),
+  "can_enroll": bool(doc.has_permission("write") and frappe.has_permission("Sports Enrollment", "create"))}
 
 
 @frappe.whitelist(methods=["POST"])

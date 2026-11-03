@@ -112,7 +112,7 @@ def payment_made(reference, request_key):
         from sports_app.enrollment_invoices import claim_invoice
         return claim_invoice(reference, request_key)
     key = request_uuid(request_key)
-    intake_settings()  # consistent lock ordering; no guest-selected company/accounts
+    settings = intake_settings()  # consistent lock ordering; no guest-selected company/accounts
     name = frappe.db.get_value("Sports Registration", {"payment_entry":str(reference)}, "name", for_update=True)
     if not name:
         frappe.throw(_("Invalid payment reference or registration token."), frappe.PermissionError)
@@ -136,4 +136,6 @@ def payment_made(reference, request_key):
     # triggering Boost's approval-email hook. Record an explicit audit comment.
     payment.db_set(dict(workflow_state="Pending Review", sports_claimed_on=now_datetime()))
     payment.add_comment("Comment", "Applicant reported a bank transfer. Awaiting Finance verification; no receipt has been posted.")
+    from sports_app.payment_notifications import notify_payment_review
+    notify_payment_review(app, payment, settings)
     return _response(app, payment)

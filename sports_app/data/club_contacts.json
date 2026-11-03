@@ -1,0 +1,172 @@
+[
+  {
+    "seed_key": "fb14f159640bdac4d12dc01da08bd5061664d22ce6d97f381ece24c6d56ad0b0",
+    "organization_name": "Manchester United",
+    "public_email": "enquiries@manutd.co.uk",
+    "email_purpose": "General club enquiries",
+    "email_source_url": "https://www.manutd.com/en/help/club-contacts",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.manutd.com/en/help/club-contacts",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "32185404514bf407ad344f33c30d07a20d26d51b5ec09feaae14beec64b8463d",
+    "organization_name": "Tottenham Hotspur",
+    "public_email": "supporterservices@tottenhamhotspur.com",
+    "email_purpose": "Supporter services / club enquiries",
+    "email_source_url": "https://www.premierleague.com/en/clubs/6/Tottenham-Hotspur/directory",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.premierleague.com/en/clubs/6/Tottenham-Hotspur/directory",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "ea43db6c3b8c839e95c4d3bf3db58f50f22aa62d5414ccd677f35668b4853ca0",
+    "organization_name": "Newcastle United",
+    "public_email": "supporter.services@nufc.co.uk",
+    "email_purpose": "Supporter services / club enquiries",
+    "email_source_url": "https://www.premierleague.com/en/clubs/4/bournemouth/directory",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.premierleague.com/en/clubs/4/bournemouth/directory",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "82576816d4f7037a9dba278ac83cfdade83f998665f51fe2d396dbe8bec0ac70",
+    "organization_name": "Everton",
+    "public_email": "everton@evertonfc.com",
+    "email_purpose": "General club enquiries",
+    "email_source_url": "https://www.premierleague.com/en/clubs/11/club/directory",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.premierleague.com/en/clubs/11/club/directory",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "08797efbe8160b2d29509ee9cd46120e08d572bf3589158c1f2f2681c4b76c9a",
+    "organization_name": "Aston Villa",
+    "public_email": "postmaster@avfc.co.uk",
+    "email_purpose": "General club enquiries",
+    "email_source_url": "https://www.premierleague.com/en/clubs/7/brighton-and-hove-albion/directory",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.premierleague.com/en/clubs/7/brighton-and-hove-albion/directory",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "24a3c9d8bbf47c7f6de548537cd82ab7444d60b0babc728e66ea78cdc7244783",
+    "organization_name": "Nottingham Forest",
+    "public_email": "reception@nottinghamforest.co.uk",
+    "email_purpose": "General club enquiries",
+    "email_source_url": "https://www.premierleague.com/en/news/2642034",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.premierleague.com/en/news/2642034",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "95c5e8eb4c16d34c4d70ff16f418003992c62528986f26cdd8b6fdb9339a8863",
+    "organization_name": "FC Bayern München",
+    "public_email": "service@fcbayern.com",
+    "email_purpose": "General service / imprint contact",
+    "email_source_url": "https://fcbayern.com/en/imprint",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://fcbayern.com/en/imprint",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "773e34b3bb3348ec1190a1882968f8129a370a9049ba66b24f5d7dcf679d9cb1",
+    "organization_name": "Borussia Dortmund",
+    "public_email": "service@bvb.de",
+    "email_purpose": "Supporter services",
+    "email_source_url": "https://www.bvb.de/de/en/service.html",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.bvb.de/de/en/service.html",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "545dd43f155416929987f94e7618ec93492bf04a287499ecc14a61d28fae8cde",
+    "organization_name": "Eintracht Frankfurt",
+    "public_email": "info@eintrachtfrankfurt.de",
+    "email_purpose": "General office / imprint contact",
+    "email_source_url": "https://www.eintracht.de/impressum/",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.eintracht.de/impressum/",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "e136324cdd5f5a4001bcea13e4421019c0138215ab5ee9472105f9148ed7ffc9",
+    "organization_name": "1. FSV Mainz 05",
+    "public_email": "info@mainz05.de",
+    "email_purpose": "Service / ticket enquiries",
+    "email_source_url": "https://www.mainz05.de/tickets/kontakt",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.mainz05.de/tickets/kontakt",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "b1eb17543b7d807d8e4602bd91e6382fc7c2dd72dfd9a229f4e5fd929c3d9d03",
+    "organization_name": "FC Schalke 04",
+    "public_email": "post@schalke04.de",
+    "email_purpose": "General club contact",
+    "email_source_url": "https://schalke04.de/en/contact/",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://schalke04.de/en/contact/",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "c5d665bffbcf2e7ea861a8932df6c6b6c4393c86b1b6a0b9316747d8503e8cd8",
+    "organization_name": "Sport-Club Freiburg",
+    "public_email": "scf@scfreiburg.com",
+    "email_purpose": "General office / imprint contact",
+    "email_source_url": "https://www.scfreiburg.com/impressum/",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.scfreiburg.com/impressum/",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "bfbd6280107c79b2d8b192366df7f5d43bba922118e04ff1b416602f64b6b084",
+    "organization_name": "Real Madrid",
+    "public_email": "atencionpublico@corp.realmadrid.com",
+    "email_purpose": "Public enquiries office",
+    "email_source_url": "https://www.realmadrid.com/en-US/the-club/contact",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://www.realmadrid.com/en-US/the-club/contact",
+    "contact_notes": "Published business address; delivery and suitability for recruitment have not been tested."
+  },
+  {
+    "seed_key": "3f70cb7ddaeff126121b8c37187a34d27189ce3a461b8a81054c784432620158",
+    "organization_name": "Plateau United FC",
+    "public_email": "plateaunitedfootballclub@gmail.com",
+    "email_purpose": "Club address published in youth league directory",
+    "email_source_url": "https://nylc.ng/club/plateau-united-football-club/overview",
+    "email_checked_on": "2026-11-02",
+    "contact_page": "https://nylc.ng/club/plateau-united-football-club/overview",
+    "contact_notes": "Published by the youth league under the club profile; not independently confirmed by the club or delivery-tested."
+  },
+  {
+    "seed_key": "3deaa2c3d42eaea84da3c4d4077025d520256389038cd09513d5e3f37335c00e",
+    "organization_name": "Enyimba FC",
+    "contact_page": "https://enyimbafc.net/contact-us/",
+    "contact_notes": "Official feedback form explicitly excludes trial/player enquiries. No public email imported."
+  },
+  {
+    "seed_key": "b96d67a7de1413cd7c1f12c7c6dd9eb420e1995aeb03c6ac4ab75cc9783c0e80",
+    "organization_name": "Liverpool",
+    "contact_page": "https://www.liverpoolfc.com/info/contact-us",
+    "contact_notes": "Official help/contact route; no public email imported."
+  },
+  {
+    "seed_key": "07cfe3482554563b79a4a7a5b4705cce413f5f28ca1b5517d001eee1e4dc8212",
+    "organization_name": "Arsenal",
+    "contact_page": "https://www.arsenal.com/contact-arsenal",
+    "contact_notes": "Official contact routes; retail-specific addresses were excluded from this club-relations directory."
+  },
+  {
+    "seed_key": "420869a3050473fd4d08c96dd8c56ecee7c849511abd6d06cc5a345f7e2ff59f",
+    "organization_name": "Villarreal CF",
+    "contact_page": "https://villarrealcf.es/en/formulario-contacto/",
+    "contact_notes": "Official contact form; privacy-rights mailbox was excluded from general enquiries."
+  },
+  {
+    "seed_key": "40a4294d18fc100bac90ed083dc7681bb7628a5fdfb6a8bc00ae6af5364bb6ad",
+    "organization_name": "Bayer 04 Leverkusen",
+    "contact_page": "https://www.bayer04.de/de-de/news/bayer04/bayer-04-stellt-sich-im-service-neu-auf",
+    "contact_notes": "Club directs service enquiries to its contact form; former info mailbox was not imported."
+  }
+]

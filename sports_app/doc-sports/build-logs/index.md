@@ -2,6 +2,15 @@
 
 | Date | Entry | Status |
 |---|---|---|
+| 2026-11-03 | [Players table and profile layout](2026-11-03-us-003-03-player-profile-layout.md) | Verified development presentation / US-003-03 |
+| 2026-11-03 | [Manual attendance prototype](2026-11-03-us-006-01-manual-attendance-prototype.md) | Verified development prototype / US-006-01, US-006-02 |
+| 2026-11-03 | [Administrator approver enabled](2026-11-03-us-005-01-administrator-approver-enabled.md) | Applied on Moyours; eligibility verified |
+| 2026-11-03 | [Administrator payment review diagnosis](2026-11-03-us-005-01-administrator-payment-review-diagnosis.md) | Diagnosis verified; approver decision pending |
+| 2026-11-03 | [Enrollment terminology and review modal](2026-11-03-us-003-01-enrollment-review-layout.md) | Verified development / US-003-01 |
+| 2026-11-03 | [Registration table and context menu](2026-11-03-us-003-01-registration-context-menu.md) | Verified development / US-003-01 |
+| 2026-11-03 | [Website payment review emails](2026-11-03-us-005-01-payment-review-emails.md) | Verified development / US-005-01; recipients blank |
+| 2026-11-02 | [Club tables and public emails](2026-11-02-us-009-01-table-and-public-emails.md) | Verified development / In review |
+| 2026-11-02 | [Club and partner relations](2026-11-02-us-009-01-club-partner-relations.md) | Verified development / In review |
 | 2026-11-02 | [Develop integration](2026-11-02-us-005-01-develop-integration.md) | Verified merges / release record |
 | 2026-11-02 | [Project commit review](2026-11-02-us-005-01-project-commit-review.md) | Verified / local commits |
 | 2026-11-01 | [Invoice context Confirm Payment](2026-11-01-us-005-01-invoice-context-confirm-payment.md) | Verified |
@@ -23,3 +32,5 @@
 Implementation evidence begins with US-002-01. Start a log from [TEMPLATE](TEMPLATE.md) when implementing a story. Evidence must distinguish source inspection, automated checks, manual demonstrations and business sign-off.
 
 - [2026-11-01 — US-001-01: Restore native Chart of Accounts permissions](2026-11-01-us-001-01-coa-native-permissions.md) — Verified / In review.
+
+- [2026-11-02 — US-009-01: Column filters and sorting](2026-11-02-us-009-01-column-filters-and-sorting.md) — Verified development adjustment / In Review.

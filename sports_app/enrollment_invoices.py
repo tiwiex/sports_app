@@ -112,7 +112,7 @@ def validate_enrollment_invoice(doc, method=None):
 
 def claim_invoice(reference, request_key):
     key = request_uuid(request_key)
-    intake_settings()
+    settings = intake_settings()
     name = frappe.db.get_value("Sports Registration", {"sales_invoice":str(reference)}, "name", for_update=True)
     if not name:
         frappe.throw(_("Invalid payment reference or registration token."), frappe.PermissionError)
@@ -128,9 +128,11 @@ def claim_invoice(reference, request_key):
     if app.status not in ("Pending", "Accepted") or invoice.workflow_state != "Draft":
         frappe.throw(_("This invoice cannot be moved to review."))
     invoice_workflow()
-    # Applicant claims are not approvals; no Guest invoice permissions or email.
+    # Applicant claims are not approvals and grant no Guest invoice permissions.
     invoice.db_set(dict(workflow_state="Pending Review", sports_claimed_on=now_datetime()))
     invoice.add_comment("Comment", "Applicant reported a bank transfer. Awaiting Finance verification; invoice and payment remain unposted.")
+    from sports_app.payment_notifications import notify_payment_review
+    notify_payment_review(app, invoice, settings)
     return _response(app, invoice)
 
 

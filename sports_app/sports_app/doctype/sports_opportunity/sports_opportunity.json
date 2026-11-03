@@ -1,0 +1,112 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Opportunity",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "autoname": "SPORTS-OPP-.#####",
+ "field_order": [
+  "company",
+  "title",
+  "organization",
+  "opportunity_type",
+  "status",
+  "owner_user",
+  "next_follow_up",
+  "player",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "label": "Academy company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "title",
+   "label": "Opportunity title",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "organization",
+   "label": "Organization",
+   "fieldtype": "Link",
+   "options": "Sports Organization",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "opportunity_type",
+   "label": "Opportunity type",
+   "fieldtype": "Select",
+   "options": "Trial\nRecruitment\nFriendly Match\nScholarship\nTraining Exchange\nPartnership\nOther",
+   "default": "Trial",
+   "reqd": 1
+  },
+  {
+   "fieldname": "status",
+   "label": "Status",
+   "fieldtype": "Select",
+   "options": "New\nContacted\nInterested\nInvited\nIn Progress\nCompleted\nClosed",
+   "default": "New",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "owner_user",
+   "label": "Responsible staff",
+   "fieldtype": "Link",
+   "options": "User"
+  },
+  {
+   "fieldname": "next_follow_up",
+   "label": "Next follow-up",
+   "fieldtype": "Date",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "player",
+   "label": "Player (internal only)",
+   "fieldtype": "Link",
+   "options": "Sports Player",
+   "description": "Internal nomination only. Does not authorise sharing a player profile."
+  },
+  {
+   "fieldname": "notes",
+   "label": "Internal notes",
+   "fieldtype": "Small Text"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "export": 0,
+   "delete": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "export": 0,
+   "delete": 0,
+   "share": 0
+  }
+ ],
+ "title_field": "title",
+ "show_title_field_in_link": 1,
+ "search_fields": "title,organization",
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

@@ -21,6 +21,7 @@
   "default_monthly_fee",
   "enrollment_payment_section",
   "enrollment_payments_enabled",
+  "payment_review_emails",
   "enrollment_payment_currency",
   "enrollment_registration_fee",
   "enrollment_jersey_fee",
@@ -126,6 +127,12 @@
    "label": "Website enrollment payments enabled",
    "fieldtype": "Check",
    "default": 0
+  },
+  {
+   "fieldname": "payment_review_emails",
+   "label": "Payment review email addresses",
+   "fieldtype": "Small Text",
+   "description": "Comma-separated email addresses to notify when an applicant reports payment. Leave blank to disable. Recipients still need their normal Finance approval permissions."
   },
   {
    "fieldname": "enrollment_payment_currency",

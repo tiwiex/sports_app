@@ -37,3 +37,7 @@ Development Tools now follows the Boost card/counter/tab layout and opens docume
 Public enrollment is now submittable: [Sports Registration review workflow](website-prototype.md), with [submission/acceptance evidence](build-logs/2026-11-01-us-003-01-public-submission-and-review.md). Earlier demo-only submission notes are historical.
 
 [Enrollment payment wizard](website-prototype.md) now creates draft invoices, uses actual invoice references and sends claims for unposted Finance review. One Complete Payment action submits the invoice and its allocated receipt together. [Current build evidence](build-logs/2026-11-01-us-005-01-invoice-first-payment-completion.md) supersedes the earlier receipt-first PoC for new enrollments.
+
+[Club and partner relations](club-relations-guide.md): private organisations, opportunities, correspondence logs and sourced Nigerian/international directory with staff-assessed priority.
+
+- [Manual attendance prototype guide](attendance-guide.md) — sessions, active-enrollment rosters, marking, finalization and audit corrections.

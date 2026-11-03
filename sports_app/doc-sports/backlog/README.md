@@ -71,3 +71,7 @@ The dependency links in each story govern implementation order; numeric epic ord
 Use the [story template](user-stories/STORY_TEMPLATE.md) and [development process](../DEVELOPMENT_PROCESS.md). In ERP Boost issues/PRs qualify IDs as `sports_app:US-002-01` to distinguish local Boost story IDs.
 
 - [US-002-04: Development documentation and build evidence](user-stories/us-002-04-development-documentation-and-build-evidence.md)
+
+- [EPIC-009: Club and partner relations](epics/EPIC-009-club-and-partner-relations.md) — [US-009-01](user-stories/us-009-01-club-partner-relations.md), development slice in review.
+
+Manual attendance prototype (3 November 2026): [guide](../attendance-guide.md) and [US-006-01/02 build evidence](../build-logs/2026-11-03-us-006-01-manual-attendance-prototype.md). Session/manual marking slices are In progress; reporting/biometrics and coach-scope acceptance remain open.

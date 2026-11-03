@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-003](../epics/EPIC-003-registration-and-player-record.md)
-- State: Proposed
+- State: In progress — profile presentation slice
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -39,6 +39,10 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
+- Build log: [Player list and profile layout](../../build-logs/2026-11-03-us-003-03-player-profile-layout.md).
+- Verification summary: Invoice-style reference menu, sortable list and grouped responsive profile verified with automated desktop/phone browser fixtures and protected native read APIs. Full linked histories remain outstanding.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+## Presentation refinement — 3 November 2026
+
+Match the Enrollments queue: bordered sortable table, Player ID context menu, View modal and permission-scoped New program enrollment action. Keep the search/list beneath the modal; show friendly program/group names and explicit consent choices. This completes the presentation slice only. Payment/attendance histories, broader role/privacy verification and pilot-volume latency remain acceptance work before the whole story can be Done.

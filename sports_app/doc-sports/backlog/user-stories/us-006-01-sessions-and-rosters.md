@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-006](../epics/EPIC-006-sessions-and-attendance.md)
-- State: Proposed
+- State: In progress — manual attendance prototype
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -42,3 +42,7 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Build log: Not started.
 - Verification summary: Not implemented or verified.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+## Manual prototype — 3 November 2026
+
+Implemented development slice: session scheduling with timezone/operator, fixed date-eligible Active roster, unique player/session identity, manual marking, explicit finalization, reasoned corrections and audit history. Native Company/document restrictions and batch conflict/rollback controls apply. [Build evidence](../../build-logs/2026-11-03-us-006-01-manual-attendance-prototype.md). Full coach/group authorization, roster exceptions and production acceptance remain open; this story is not marked Done.

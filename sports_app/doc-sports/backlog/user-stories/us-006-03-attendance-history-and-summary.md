@@ -42,3 +42,7 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Build log: Not started.
 - Verification summary: Not implemented or verified.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+## Prototype dependency evidence — 3 November 2026
+
+The manual prototype supplies saved session rosters, per-status counts and per-record comment/Version history. Cross-session player history, date-range reports, attendance rates and group-restricted coach access are not implemented; this story remains Proposed. [Related evidence](../../build-logs/2026-11-03-us-006-01-manual-attendance-prototype.md).

@@ -14,6 +14,7 @@ SETTINGS_FIELDS = (
 	"enrollment_payments_enabled", "enrollment_payment_currency", "enrollment_registration_fee", "enrollment_jersey_fee",
 	"enrollment_monthly_fee", "enrollment_bank_account", "enrollment_receivable_account",
 	"enrollment_registration_item", "enrollment_jersey_item",
+	"payment_review_emails",
 )
 
 
@@ -39,6 +40,8 @@ def validate_company(company):
 
 def validate_settings_values(values):
 	"""Validate reusable policy without selecting site- or client-specific defaults."""
+	from sports_app.payment_notifications import review_recipients
+	review_recipients(values.get("payment_review_emails"))
 	required = {"academy_name": "Academy name", "company": "Company", "currency": "Fee currency",
 		"timezone": "Academy timezone", "registration_prefix": "Registration prefix", "default_program": "Default program"}
 	missing = [label for name, label in required.items() if not str(values.get(name) or "").strip()]
@@ -61,6 +64,8 @@ def validate_settings_values(values):
 def validate_settings(doc):
 	require_settings_access()
 	validate_settings_values(doc.as_dict())
+	from sports_app.payment_notifications import review_recipients
+	doc.payment_review_emails = ", ".join(review_recipients(doc.get("payment_review_emails")))
 	validate_company(doc.company)
 	if not frappe.db.exists("Currency", {"name": doc.currency, "enabled": 1}):
 		frappe.throw(_("Select an enabled currency."))

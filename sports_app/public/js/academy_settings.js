@@ -98,6 +98,7 @@ frappe.boost_console_views["sports_app:settings"] = () => {
    { fieldname: "default_monthly_fee", label: __("Default monthly fee"), fieldtype: "Currency", options: "currency", description: __("Default for monthly fees. Saving this amount does not create a charge or payment.") },
    {fieldname: "enrollment_payment_section", label: __("Website enrollment payments"), fieldtype: "Section Break"},
    {fieldname: "enrollment_payments_enabled", label: __("Enable enrollment payments"), fieldtype: "Check"},
+   {fieldname: "payment_review_emails", label: __("Payment review email addresses"), fieldtype: "Small Text", description: __("Comma-separated email addresses to notify when an applicant reports payment. Leave blank to disable. Recipients still need their normal Finance approval permissions.")},
    {fieldname: "enrollment_payment_currency", label: __("Enrollment payment currency"), fieldtype: "Link", options: "Currency"},
    {fieldname: "enrollment_registration_fee", label: __("Initial registration fee"), fieldtype: "Currency", options: "enrollment_payment_currency"},
    {fieldname: "enrollment_jersey_fee", label: __("Jersey fee (2 sets)"), fieldtype: "Currency", options: "enrollment_payment_currency"},

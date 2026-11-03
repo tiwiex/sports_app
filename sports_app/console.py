@@ -24,10 +24,14 @@ def get_provider():
 		"assets": [asset_url("console_overview.js")],
 	}]
 	if can_manage_players():
-		views.append({"key": "sports_app:registrations", "label": "Registrations", "group": "Sports",
+		views.append({"key": "sports_app:registrations", "label": "Enrollments", "group": "Sports",
 			"assets": [asset_url("registrations.js")]})
 		views.append({"key": "sports_app:players", "label": "Players", "group": "Sports",
 			"assets": [asset_url("players.js")]})
+	if can_manage_players():
+		views.append({"key": "sports_app:attendance", "label": "Attendance", "group": "Sports", "assets": [asset_url("attendance.js")]})
+	if can_manage_settings():
+		views.append({"key": "sports_app:relations", "label": "Clubs & Partners", "group": "Sports", "assets": [asset_url("relations.js")]})
 	if can_manage_settings():
 		views.append({
 			"key": "sports_app:settings", "label": "Academy Settings", "group": "Sports",

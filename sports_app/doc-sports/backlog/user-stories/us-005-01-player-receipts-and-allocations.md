@@ -60,3 +60,18 @@ Authorised Finance users can use Confirm Payment directly from an enrollment inv
 ## Develop integration — 2 November 2026
 
 [Authorised merges, post-merge checks and push record](../../build-logs/2026-11-02-us-005-01-develop-integration.md).
+
+## Payment review email adjustment — 3 November 2026
+
+- Sports Academy Settings and its console expose Payment review email addresses as comma-separated text. Invalid addresses are rejected; duplicates and surrounding spaces are normalized. Blank disables this notification.
+- The first website payment claim queues a review email linked to its Sales Invoice (or legacy Payment Entry) in the same transaction as Pending Review. No duplicate on retries and no mail after rollback. Applicant claims remain unposted.
+- The email asks staff to verify the bank credit; receiving it grants no read, approval or posting permissions.
+- [Build evidence and release notes](../../build-logs/2026-11-03-us-005-01-payment-review-emails.md). Wider billing/reconciliation scope remains open.
+
+## Administrator payment review diagnosis — 3 November 2026
+
+[Read-only diagnosis](../../build-logs/2026-11-03-us-005-01-administrator-payment-review-diagnosis.md): the pending invoice remains unposted; Administrator lacks explicit invoice approver configuration, while the configured Finance reviewer is eligible. Additional Administrator approval access awaits the user's decision; no payment was completed during investigation.
+
+## Administrator approval enabled — 3 November 2026
+
+Following explicit user approval, Administrator is now an additional Sales Invoice approver on Moyours. Completion eligibility for ACC-SINV-2026-00003 was verified without posting payment; the existing Finance reviewer remains enabled. [Applied configuration and preservation checks](../../build-logs/2026-11-03-us-005-01-administrator-approver-enabled.md). This supersedes the pending decision recorded in the earlier diagnosis.

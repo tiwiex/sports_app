@@ -1,0 +1,174 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Session",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "allow_rename": 0,
+ "autoname": "SPORTS-SES-.#####",
+ "field_order": [
+  "title",
+  "company",
+  "program",
+  "group",
+  "session_date",
+  "start_time",
+  "end_time",
+  "timezone",
+  "venue",
+  "status",
+  "operator",
+  "finalized_by",
+  "finalized_on",
+  "cancellation_reason",
+  "request_key",
+  "request_hash"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "label": "Session title",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "program",
+   "label": "Program",
+   "fieldtype": "Link",
+   "options": "Sports Program",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "group",
+   "label": "Group",
+   "fieldtype": "Link",
+   "options": "Sports Group"
+  },
+  {
+   "fieldname": "session_date",
+   "label": "Session date",
+   "fieldtype": "Date",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "start_time",
+   "label": "Start time",
+   "fieldtype": "Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_time",
+   "label": "End time",
+   "fieldtype": "Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "timezone",
+   "label": "Academy timezone",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "venue",
+   "label": "Venue",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "status",
+   "label": "Status",
+   "fieldtype": "Select",
+   "options": "Scheduled\nFinalized\nCancelled",
+   "default": "Scheduled",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "operator",
+   "label": "Responsible operator",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "finalized_by",
+   "label": "Finalized by",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "finalized_on",
+   "label": "Finalized on",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cancellation_reason",
+   "label": "Cancellation reason",
+   "fieldtype": "Small Text",
+   "read_only": 1
+  },
+  {
+   "fieldname": "request_key",
+   "label": "Request key",
+   "fieldtype": "Data",
+   "unique": 1,
+   "hidden": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "request_hash",
+   "label": "Request fingerprint",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Registrar",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

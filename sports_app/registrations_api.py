@@ -45,13 +45,19 @@ def _submit_registration(player, pathway, request_key, website=""):
 
 
 @frappe.whitelist()
-def list_registrations(status="Pending", start=0):
+def list_registrations(status="Pending", start=0, sort_by="submitted_on", sort_order="desc"):
     require_player_access()
     if status not in ("Pending", "Accepted", "Rejected"):
         frappe.throw(_("Select a valid registration status."))
-    return frappe.get_list("Sports Registration", filters={"status": status},
+    if sort_by not in ("name", "full_name", "requested_pathway", "submitted_on", "status") or sort_order not in ("asc", "desc"):
+        frappe.throw(_("Select a valid registration sort column and direction."))
+    rows = frappe.get_list("Sports Registration", filters={"status": status},
         fields=["name", "full_name", "requested_pathway", "submitted_on", "status", "player"],
-        order_by="submitted_on desc", start=max(0, cint(start)), page_length=20)
+        order_by=f"{sort_by} {sort_order}" + (", name asc" if sort_by != "name" else ""),
+        start=max(0, cint(start)), page_length=20)
+    for row in rows:
+        row["can_review"] = row.status == "Pending" and frappe.get_doc("Sports Registration", row.name).has_permission("write")
+    return rows
 
 
 @frappe.whitelist()
@@ -63,6 +69,7 @@ def get_registration(name):
     return {"registration": {key: doc.get(key) for key in (*PUBLIC_FIELDS, "name", "full_name",
         "company", "program", "requested_pathway", "submitted_on", "status", "player", "rejection_reason", "payment_entry", "sales_invoice") },
         "possible_matches": duplicates, "fields": get_registration_fields(),
+        "can_review": doc.status == "Pending" and doc.has_permission("write"),
         "invoice": frappe.db.get_value("Sales Invoice", doc.sales_invoice, ["name", "workflow_state", "docstatus", "outstanding_amount"], as_dict=True) if doc.get("sales_invoice") else None,
         "payment": frappe.db.get_value("Payment Entry", doc.payment_entry, ["name", "workflow_state", "docstatus"], as_dict=True) if doc.payment_entry else None}
 

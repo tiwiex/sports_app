@@ -1,0 +1,238 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Organization",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "autoname": "SPORTS-ORG-.#####",
+ "field_order": [
+  "company",
+  "organization_name",
+  "organization_type",
+  "sport",
+  "country",
+  "region",
+  "team_category",
+  "relationship_status",
+  "relationship_owner",
+  "public_email",
+  "email_purpose",
+  "email_source_url",
+  "email_checked_on",
+  "contact_page",
+  "contact_notes",
+  "public_phone",
+  "website",
+  "priority_rating",
+  "rating_reason",
+  "assessed_by",
+  "assessed_on",
+  "source_url",
+  "source_context",
+  "source_checked_on",
+  "notes",
+  "directory_key",
+  "seed_key"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "label": "Academy company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "organization_name",
+   "label": "Organization name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "organization_type",
+   "label": "Organization type",
+   "fieldtype": "Select",
+   "options": "Club\nAcademy\nAssociation\nFederation\nSponsor\nOther",
+   "default": "Club",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sport",
+   "label": "Sport",
+   "fieldtype": "Data",
+   "reqd": 1
+  },
+  {
+   "fieldname": "country",
+   "label": "Country",
+   "fieldtype": "Link",
+   "options": "Country",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "region",
+   "label": "State / region",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "team_category",
+   "label": "Team category",
+   "fieldtype": "Select",
+   "options": "Unspecified\nMen\nWomen\nMixed",
+   "default": "Unspecified"
+  },
+  {
+   "fieldname": "relationship_status",
+   "label": "Relationship status",
+   "fieldtype": "Select",
+   "options": "Prospect\nContacted\nActive\nPaused\nClosed",
+   "default": "Prospect"
+  },
+  {
+   "fieldname": "relationship_owner",
+   "label": "Relationship owner",
+   "fieldtype": "Link",
+   "options": "User"
+  },
+  {
+   "fieldname": "public_email",
+   "label": "Public business email",
+   "fieldtype": "Data",
+   "options": "Email"
+  },
+  {
+   "fieldname": "public_phone",
+   "label": "Public business phone",
+   "fieldtype": "Data"
+  },
+  {
+   "fieldname": "website",
+   "label": "Official website",
+   "fieldtype": "Data",
+   "options": "URL"
+  },
+  {
+   "fieldname": "priority_rating",
+   "label": "Relationship priority",
+   "fieldtype": "Select",
+   "options": "Unrated\n1\n2\n3\n4\n5",
+   "default": "Unrated",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Staff assessment of relationship priority, not sporting quality. 1 = low; 5 = highest. Imports remain Unrated."
+  },
+  {
+   "fieldname": "rating_reason",
+   "label": "Rating rationale",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "assessed_by",
+   "label": "Assessed by",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "assessed_on",
+   "label": "Assessed on",
+   "fieldtype": "Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "source_url",
+   "label": "Directory source URL",
+   "fieldtype": "Data",
+   "options": "URL"
+  },
+  {
+   "fieldname": "source_context",
+   "label": "Source context",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "source_checked_on",
+   "label": "Source checked on",
+   "fieldtype": "Date"
+  },
+  {
+   "fieldname": "notes",
+   "label": "Internal relationship notes",
+   "fieldtype": "Small Text"
+  },
+  {
+   "fieldname": "directory_key",
+   "label": "Directory identity",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "hidden": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "seed_key",
+   "label": "Seed identity",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "email_purpose",
+   "label": "Public email purpose",
+   "fieldtype": "Data",
+   "description": "Published purpose; do not assume this is a trial or recruitment address."
+  },
+  {
+   "fieldname": "email_source_url",
+   "label": "Email source URL",
+   "fieldtype": "Data",
+   "options": "URL"
+  },
+  {
+   "fieldname": "email_checked_on",
+   "label": "Email source checked on",
+   "fieldtype": "Date"
+  },
+  {
+   "fieldname": "contact_page",
+   "label": "Official contact page",
+   "fieldtype": "Data",
+   "options": "URL"
+  },
+  {
+   "fieldname": "contact_notes",
+   "label": "Contact restrictions / notes",
+   "fieldtype": "Small Text"
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "export": 0,
+   "delete": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "export": 0,
+   "delete": 0,
+   "share": 0
+  }
+ ],
+ "title_field": "organization_name",
+ "show_title_field_in_link": 1,
+ "search_fields": "organization_name,country,sport",
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
