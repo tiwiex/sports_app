@@ -10,7 +10,10 @@ from sports_app import attendance as policy
 from sports_app.academy import can_manage_settings, get_configured_settings, validate_company
 
 
-@frappe.whitelist(allow_guest=True, methods=["GET"])
+# Reviewed public endpoint: minimal anonymous bootstrap or rate-limited token-bound enrollment; see tests/build logs.
+@frappe.whitelist(  # nosemgrep: frappe-semgrep-rules.rules.security.guest-whitelisted-method
+	allow_guest=True, methods=["GET"]
+)
 def bootstrap():
 	if frappe.session.user == "Guest":
 		result = {"authenticated": False}

@@ -40,6 +40,7 @@ class TestStoryTracking(TestCase):
 			(frappe, "throw", throw),
 			(frappe, "session", SimpleNamespace(user="reviewer@example.test")),
 			(api, "_", lambda s: s),
+			(service, "_", lambda s: s),
 			(api, "_root", lambda: self.root),
 			(api, "require_settings_access", lambda: None),
 		):

@@ -120,7 +120,7 @@ def public_record(doc):
 
 
 @frappe.whitelist()
-def search_players(search=""):
+def search_players(search: str = ""):
 	require_access()
 	settings = get_configured_settings()
 	validate_company(settings.company)
@@ -139,7 +139,7 @@ def search_players(search=""):
 
 
 @frappe.whitelist()
-def list_player_statuses(search="", start=0):
+def list_player_statuses(search: str = "", start: str | int = 0):
 	require_access()
 	from frappe.utils import cint
 
@@ -188,7 +188,7 @@ def list_player_statuses(search="", start=0):
 
 
 @frappe.whitelist()
-def records(player):
+def records(player: str):
 	player_record(player)
 	return frappe.get_list(
 		DOCTYPE,
@@ -214,7 +214,7 @@ def records(player):
 
 
 @frappe.whitelist(methods=["POST"])
-def prepare(player, values, consent_confirmed, request_key):
+def prepare(player: str, values: str | dict, consent_confirmed: str | int | bool, request_key: str):
 	player = player_record(player, lock=True)
 	if consent_confirmed not in (1, "1", True):
 		frappe.throw(_("Confirm only consent actually supplied for biometric registration."))
@@ -231,17 +231,15 @@ def prepare(player, values, consent_confirmed, request_key):
 	if frappe.db.exists(DOCTYPE, {"player": player.name, "status": "Pending capture"}):
 		frappe.throw(_("This player already has a pending capture request. Review or withdraw it first."))
 	doc = frappe.get_doc(
-		dict(
-			doctype=DOCTYPE,
-			player=player.name,
-			company=player.company,
-			status="Pending capture",
-			**values,
-			request_key=key,
-			request_hash=digest,
-			prepared_by=frappe.session.user,
-			prepared_on=now_datetime(),
-		)
+		doctype=DOCTYPE,
+		player=player.name,
+		company=player.company,
+		status="Pending capture",
+		**values,
+		request_key=key,
+		request_hash=digest,
+		prepared_by=frappe.session.user,
+		prepared_on=now_datetime(),
 	)
 	doc.flags.sports_biometric_preparation = CAPABILITY
 	doc.insert()
@@ -249,7 +247,7 @@ def prepare(player, values, consent_confirmed, request_key):
 
 
 @frappe.whitelist(methods=["POST"])
-def demo_capture(name):
+def demo_capture(name: str):
 	require_access()
 	doc = frappe.get_doc(DOCTYPE, name, for_update=True)
 	doc.check_permission("write")
@@ -277,7 +275,7 @@ def demo_capture(name):
 
 
 @frappe.whitelist(methods=["POST"])
-def withdraw(name, reason):
+def withdraw(name: str, reason: str):
 	require_access()
 	if not isinstance(reason, str) or not reason.strip() or len(reason) > 1000:
 		frappe.throw(_("Supply a withdrawal reason, up to 1000 characters."))

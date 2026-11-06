@@ -1,4 +1,5 @@
 import frappe
+from frappe import _
 from frappe.model.document import Document
 
 from sports_app.academy import validate_company
@@ -12,9 +13,9 @@ class SportsEnrollment(Document):
 		player = frappe.get_doc("Sports Player", self.player)
 		player.check_permission("read")
 		if not player.customer:
-			frappe.throw("The player has no linked Customer. Contact the academy administrator.")
+			frappe.throw(_("The player has no linked Customer. Contact the academy administrator."))
 		if self.payer_customer and self.payer_customer != player.customer:
-			frappe.throw("Enrollment must use the player's own Customer.")
+			frappe.throw(_("Enrollment must use the player's own Customer."))
 		self.payer_customer = player.customer
 		self.company = player.company
 		validate_company(self.company)

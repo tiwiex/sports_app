@@ -23,9 +23,12 @@ from sports_app.registrations import (
 )
 
 
-@frappe.whitelist(allow_guest=True, methods=["POST"])
+# Reviewed public endpoint: minimal anonymous bootstrap or rate-limited token-bound enrollment; see tests/build logs.
+@frappe.whitelist(  # nosemgrep: frappe-semgrep-rules.rules.security.guest-whitelisted-method
+	allow_guest=True, methods=["POST"]
+)
 @rate_limit(limit=15, seconds=3600, methods=["POST"])
-def submit_registration(player, pathway, request_key, website=""):
+def submit_registration(player: str | dict, pathway: str, request_key: str, website: str = ""):
 	return _submit_registration(player, pathway, request_key, website)
 
 
@@ -71,7 +74,9 @@ def _submit_registration(player, pathway, request_key, website=""):
 
 
 @frappe.whitelist()
-def list_registrations(status="Pending", start=0, sort_by="submitted_on", sort_order="desc"):
+def list_registrations(
+	status: str = "Pending", start: str | int = 0, sort_by: str = "submitted_on", sort_order: str = "desc"
+):
 	require_player_access()
 	if status not in ("Pending", "Accepted", "Rejected"):
 		frappe.throw(_("Select a valid registration status."))
@@ -99,7 +104,7 @@ def list_registrations(status="Pending", start=0, sort_by="submitted_on", sort_o
 
 
 @frappe.whitelist()
-def get_registration(name):
+def get_registration(name: str):
 	doc = review_record(name)
 	duplicates = frappe.get_list(
 		"Sports Player",
@@ -146,7 +151,7 @@ def get_registration(name):
 
 
 @frappe.whitelist(methods=["POST"])
-def accept_registration(name, enrollment=None):
+def accept_registration(name: str, enrollment: str | dict | None = None):
 	require_player_access()
 	settings = registration_settings(for_update=True)
 	doc = review_record(name, write=True)
@@ -190,7 +195,7 @@ def accept_registration(name, enrollment=None):
 
 
 @frappe.whitelist(methods=["POST"])
-def reject_registration(name, reason):
+def reject_registration(name: str, reason: str):
 	require_player_access()
 	registration_settings(for_update=True)
 	doc = review_record(name, write=True)

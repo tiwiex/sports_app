@@ -11,6 +11,7 @@ from uuid import uuid4
 from zoneinfo import ZoneInfo
 
 import frappe
+from frappe import _
 
 STATES = (
 	"Proposed",
@@ -104,16 +105,16 @@ def _table_update(source, sid, state, priority):
 def update(root, path, revision, state=None, priority=None, note=""):
 	"""Called only after management authorization and allowlisted file resolution."""
 	if not STORY.fullmatch(path):
-		frappe.throw("Only individual Sports user stories can be updated.", frappe.PermissionError)
+		frappe.throw(_("Only individual Sports user stories can be updated."), frappe.PermissionError)
 	if state is None and priority is None:
-		frappe.throw("Choose a status or MoSCoW priority.")
+		frappe.throw(_("Choose a status or MoSCoW priority."))
 	if state is not None and state not in STATES:
-		frappe.throw("Select a valid story status.")
+		frappe.throw(_("Select a valid story status."))
 	if priority is not None and priority not in PRIORITIES:
-		frappe.throw("Select a valid MoSCoW priority.")
+		frappe.throw(_("Select a valid MoSCoW priority."))
 	note = str(note or "").strip()
 	if len(note) > 1000:
-		frappe.throw("Keep the review note within 1,000 characters.")
+		frappe.throw(_("Keep the review note within 1,000 characters."))
 	target = root / path
 	# A stable lock serializes edits and derived-index updates across workers.
 	lockpath = root / ".sports-story-edit.lock"
@@ -121,11 +122,11 @@ def update(root, path, revision, state=None, priority=None, note=""):
 	with os.fdopen(fd, "r+") as lock:
 		fcntl.flock(lock, fcntl.LOCK_EX)
 		if target.is_symlink() or not target.resolve().is_relative_to(root.resolve()):
-			frappe.throw("Invalid story path.", frappe.PermissionError)
+			frappe.throw(_("Invalid story path."), frappe.PermissionError)
 		source = target.read_text(encoding="utf-8")
 		before = metadata(path, source)
 		if not revision or revision != before["revision"]:
-			frappe.throw("This story changed. Reopen it before saving your edit.")
+			frappe.throw(_("This story changed. Reopen it before saving your edit."))
 		nextstate = state if state is not None else before["state"]
 		nextpriority = priority if priority is not None else before["priority"]
 		if nextstate == before["state"] and nextpriority == before["priority"]:
@@ -199,7 +200,7 @@ An authorized reviewer changed backlog metadata. This audit records the reviewer
 		backups = {}
 		for p in writes:
 			if p.is_symlink() or not p.resolve().is_relative_to(root.resolve()):
-				frappe.throw("Invalid documentation target.", frappe.PermissionError)
+				frappe.throw(_("Invalid documentation target."), frappe.PermissionError)
 			backups[p] = p.read_text(encoding="utf-8") if p.exists() else None
 		try:
 			for p, content in writes.items():

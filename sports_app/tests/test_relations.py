@@ -16,6 +16,11 @@ class Doc(SimpleNamespace):
 
 class TestRelationships(TestCase):
 	def setUp(self):
+		for module in (relations, relations_api):
+			active = patch.object(module, "_", lambda s: s)
+			active.start()
+			self.addCleanup(active.stop)
+
 		def throw(message, exc=frappe.ValidationError):
 			raise exc(message)
 

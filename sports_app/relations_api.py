@@ -1,6 +1,7 @@
 """Read-only catalogue API; writes use native documents and controllers."""
 
 import frappe
+from frappe import _
 from frappe.utils import cint
 
 from sports_app.academy import require_settings_access, validate_company
@@ -55,20 +56,20 @@ SORT_FIELDS = {
 
 @frappe.whitelist()
 def list_records(
-	doctype="Sports Organization",
-	company=None,
-	search="",
-	rating="",
-	country="",
-	start=0,
-	has_email=0,
-	sort_by="",
-	sort_order="asc",
-	relationship="",
+	doctype: str = "Sports Organization",
+	company: str | None = None,
+	search: str = "",
+	rating: str | int = "",
+	country: str = "",
+	start: str | int = 0,
+	has_email: str | int = 0,
+	sort_by: str = "",
+	sort_order: str = "asc",
+	relationship: str = "",
 ):
 	require_settings_access()
 	if doctype not in DOCTYPES:
-		frappe.throw("Select a Sports relationship record.")
+		frappe.throw(_("Select a Sports relationship record."))
 	if not company:
 		from sports_app.academy import get_configured_settings
 
@@ -76,16 +77,16 @@ def list_records(
 	validate_company(company)
 	sort_by = sort_by or SORT_FIELDS[doctype][0]
 	if sort_by not in SORT_FIELDS[doctype] or sort_order not in ("asc", "desc"):
-		frappe.throw("Select a valid sort column and direction.")
+		frappe.throw(_("Select a valid sort column and direction."))
 	filters = {"company": company}
 	if doctype == "Sports Organization":
 		if rating:
 			if rating not in ("Unrated", "1", "2", "3", "4", "5"):
-				frappe.throw("Invalid priority rating.")
+				frappe.throw(_("Invalid priority rating."))
 			filters["priority_rating"] = rating
 		if relationship:
 			if relationship not in ("Prospect", "Contacted", "Active", "Paused", "Closed"):
-				frappe.throw("Invalid relationship status.")
+				frappe.throw(_("Invalid relationship status."))
 			filters["relationship_status"] = relationship
 		if country:
 			filters["country"] = str(country)[:100]
@@ -146,7 +147,7 @@ def list_records(
 
 
 @frappe.whitelist(methods=["POST"])
-def import_club_directory(company=None):
+def import_club_directory(company: str | None = None):
 	"""Explicit, idempotent opt-in import; never sends messages or rates clubs."""
 	import json
 	from pathlib import Path
@@ -201,7 +202,7 @@ def contact_updates(existing, row):
 
 
 @frappe.whitelist(methods=["POST"])
-def enrich_club_contacts(company=None):
+def enrich_club_contacts(company: str | None = None):
 	"""Apply reviewed public contact data only; no email delivery/probing occurs."""
 	import json
 	from pathlib import Path

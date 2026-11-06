@@ -140,9 +140,12 @@ def _response(app, payment):
 	}
 
 
-@frappe.whitelist(allow_guest=True, methods=["POST"])
+# Reviewed public endpoint: minimal anonymous bootstrap or rate-limited token-bound enrollment; see tests/build logs.
+@frappe.whitelist(  # nosemgrep: frappe-semgrep-rules.rules.security.guest-whitelisted-method
+	allow_guest=True, methods=["POST"]
+)
 @rate_limit(limit=15, seconds=3600, methods=["POST"])
-def make_payment(player, pathway, request_key, website=""):
+def make_payment(player: str | dict, pathway: str, request_key: str, website: str = ""):
 	from sports_app.enrollment_invoices import prepare_invoice
 
 	return prepare_invoice(player, pathway, request_key, website)
@@ -190,9 +193,12 @@ def validate_sports_payment(doc, method=None):
 			frappe.throw(_("Enrollment receipts must settle their linked invoice in full."))
 
 
-@frappe.whitelist(allow_guest=True, methods=["POST"])
+# Reviewed public endpoint: minimal anonymous bootstrap or rate-limited token-bound enrollment; see tests/build logs.
+@frappe.whitelist(  # nosemgrep: frappe-semgrep-rules.rules.security.guest-whitelisted-method
+	allow_guest=True, methods=["POST"]
+)
 @rate_limit(limit=30, seconds=3600, methods=["POST"])
-def payment_made(reference, request_key):
+def payment_made(reference: str, request_key: str):
 	if frappe.db.exists("Sales Invoice", {"name": str(reference), "sports_registration": ["is", "set"]}):
 		from sports_app.enrollment_invoices import claim_invoice
 

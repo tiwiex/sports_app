@@ -70,7 +70,7 @@ def get_documents():
 
 
 @frappe.whitelist()
-def get_document(path):
+def get_document(path: str):
 	require_settings_access()
 	target = _file(path, {".md", ".txt"})
 	if target.stat().st_size > 512 * 1024:
@@ -92,7 +92,7 @@ def get_document(path):
 
 
 @frappe.whitelist()
-def get_asset(path):
+def get_asset(path: str):
 	require_settings_access()
 	target = _file(path, {".png", ".jpg", ".jpeg"})
 	if target.stat().st_size > 2 * 1024 * 1024:
@@ -102,7 +102,9 @@ def get_asset(path):
 
 
 @frappe.whitelist(methods=["POST"])
-def update_story(path, revision, state=None, priority=None, note=""):
+def update_story(
+	path: str, revision: str, state: str | None = None, priority: str | None = None, note: str = ""
+):
 	require_settings_access()
 	target = _file(path, {".md"})
 	from sports_app.story_tracking import update

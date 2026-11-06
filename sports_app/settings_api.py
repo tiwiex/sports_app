@@ -46,7 +46,7 @@ def get_configuration():
 
 
 @frappe.whitelist()
-def save_configuration(settings):
+def save_configuration(settings: str | dict):
 	require_settings_access()
 	values = frappe.parse_json(settings)
 	if not isinstance(values, dict) or set(values) - set(SETTINGS_FIELDS) - {"modified"}:
@@ -66,7 +66,7 @@ def save_configuration(settings):
 
 
 @frappe.whitelist()
-def save_program(program):
+def save_program(program: str | dict):
 	require_settings_access()
 	values = frappe.parse_json(program)
 	allowed = {"name", "program_name", "sport", "company", "enabled"}
@@ -84,7 +84,7 @@ def save_program(program):
 
 
 @frappe.whitelist()
-def save_group(group):
+def save_group(group: str | dict):
 	require_settings_access()
 	values = frappe.parse_json(group)
 	if not isinstance(values, dict) or set(values) - {"name", "group_name", "program", "enabled"}:

@@ -40,7 +40,7 @@ def configuration():
 
 
 @frappe.whitelist(methods=["POST"])
-def create_session(values, request_key):
+def create_session(values: str | dict, request_key: str):
 	policy.require_access()
 	values = frappe.parse_json(values)
 	if not isinstance(values, dict) or set(values) - set(policy.SESSION_FIELDS):
@@ -69,31 +69,27 @@ def create_session(values, request_key):
 				frappe.throw(_("The retried session details changed. Start a new session request."))
 			return doc.name
 		doc = frappe.get_doc(
-			dict(
-				doctype="Sports Session",
-				**values,
-				company=settings.company,
-				timezone=settings.timezone,
-				status="Scheduled",
-				operator=frappe.session.user,
-				request_key=key,
-				request_hash=digest,
-			)
+			doctype="Sports Session",
+			**values,
+			company=settings.company,
+			timezone=settings.timezone,
+			status="Scheduled",
+			operator=frappe.session.user,
+			request_key=key,
+			request_hash=digest,
 		)
 		doc.flags.sports_attendance_service = policy.CAPABILITY
 		doc.insert()
 		for player, enrollment in policy.eligible_roster(doc).items():
 			row = frappe.get_doc(
-				dict(
-					doctype="Sports Attendance",
-					session=doc.name,
-					player=player,
-					enrollment=enrollment,
-					company=doc.company,
-					identity=policy.identity(doc.name, player),
-					status="Unmarked",
-					source="Roster",
-				)
+				doctype="Sports Attendance",
+				session=doc.name,
+				player=player,
+				enrollment=enrollment,
+				company=doc.company,
+				identity=policy.identity(doc.name, player),
+				status="Unmarked",
+				source="Roster",
 			)
 			row.flags.sports_attendance_service = policy.CAPABILITY
 			row.insert()
@@ -101,7 +97,7 @@ def create_session(values, request_key):
 
 
 @frappe.whitelist()
-def list_sessions(status="", start=0):
+def list_sessions(status: str = "", start: str | int = 0):
 	policy.require_access()
 	settings = get_configured_settings()
 	validate_company(settings.company)
@@ -144,7 +140,7 @@ def list_sessions(status="", start=0):
 
 
 @frappe.whitelist()
-def roster(name):
+def roster(name: str):
 	session = policy.get_session(name)
 	rows = frappe.get_list(
 		"Sports Attendance",
@@ -182,10 +178,11 @@ def roster(name):
 		row["player_name"] = players[row.player]
 		row["modified"] = str(row.modified)
 	counts = {status: sum(r.status == status for r in rows) for status in ("Unmarked", *policy.STATUSES)}
+	can_write_attendance = frappe.has_permission("Sports Attendance", "write")
 	can_mark = bool(
 		session.status != "Cancelled"
 		and session.has_permission("write")
-		and frappe.has_permission("Sports Attendance", "write")
+		and can_write_attendance
 		and getdate(session.session_date) <= policy.datetime.now(policy.ZoneInfo(session.timezone)).date()
 	)
 	return dict(
@@ -216,7 +213,7 @@ def roster(name):
 
 
 @frappe.whitelist(methods=["POST"])
-def save_attendance(name, marks):
+def save_attendance(name: str, marks: str | list):
 	session = policy.get_session(name, write=True)
 	policy.ensure_markable(session)
 	marks = frappe.parse_json(marks)
@@ -244,7 +241,7 @@ def save_attendance(name, marks):
 
 
 @frappe.whitelist(methods=["POST"])
-def finalize_session(name):
+def finalize_session(name: str):
 	session = policy.get_session(name, write=True)
 	policy.ensure_markable(session)
 	if session.status == "Finalized":
@@ -273,7 +270,7 @@ def finalize_session(name):
 
 
 @frappe.whitelist(methods=["POST"])
-def cancel_session(name, reason):
+def cancel_session(name: str, reason: str):
 	session = policy.get_session(name, write=True)
 	if not isinstance(reason, str) or not reason.strip() or len(reason) > 1000:
 		frappe.throw(_("Enter a cancellation reason of up to 1000 characters."))

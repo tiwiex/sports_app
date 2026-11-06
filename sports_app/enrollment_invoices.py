@@ -110,25 +110,23 @@ def prepare_invoice(player, pathway, request_key, website=""):
 			prospect, frappe.get_doc("Company", app.company), group, "SPORTS-CUST-REG-" + app.name
 		)
 		invoice = frappe.get_doc(
-			dict(
-				doctype="Sales Invoice",
-				company=app.company,
-				customer=customer.name,
-				posting_date=today(),
-				due_date=today(),
-				currency=config["currency"],
-				conversion_rate=1,
-				debit_to=config["paid_from"],
-				cost_center=config["cost_center"],
-				update_stock=0,
-				is_pos=0,
-				taxes=[],
-				taxes_and_charges=None,
-				workflow_state="Draft",
-				sports_registration=app.name,
-				remarks="Enrollment fees for registration " + app.name,
-				items=config["items"],
-			)
+			doctype="Sales Invoice",
+			company=app.company,
+			customer=customer.name,
+			posting_date=today(),
+			due_date=today(),
+			currency=config["currency"],
+			conversion_rate=1,
+			debit_to=config["paid_from"],
+			cost_center=config["cost_center"],
+			update_stock=0,
+			is_pos=0,
+			taxes=[],
+			taxes_and_charges=None,
+			workflow_state="Draft",
+			sports_registration=app.name,
+			remarks="Enrollment fees for registration " + app.name,
+			items=config["items"],
 		)
 		invoice.flags.sports_invoice_service = INVOICE_CAPABILITY
 		invoice.flags.ignore_boost_access_control = True
@@ -270,7 +268,7 @@ def require_finance_access(company=None):
 
 
 @frappe.whitelist()
-def completion_access(name):
+def completion_access(name: str):
 	doc = frappe.get_doc("Sales Invoice", name)
 	doc.check_permission("read")
 	validate_company(doc.company)
@@ -289,7 +287,7 @@ def completion_access(name):
 
 
 @frappe.whitelist(methods=["POST"])
-def complete_payment(name):
+def complete_payment(name: str):
 	require_finance_access()
 	# Same settings → application → invoice lock order as public preparation/claim.
 	intake_settings()

@@ -1,6 +1,7 @@
 """Install additive Sports links and a default review workflow, never replace one."""
 
 import frappe
+from frappe import _
 
 
 def setup_payment_fields():
@@ -48,7 +49,9 @@ def ensure_payment_workflow():
 			or states.get("Pending Review") != 0
 		):
 			frappe.throw(
-				"Enrollment payments require Draft and Pending Review states with docstatus 0 in the active Payment Entry workflow."
+				_(
+					"Enrollment payments require Draft and Pending Review states with docstatus 0 in the active Payment Entry workflow."
+				)
 			)
 		return
 	for state, style in [
@@ -58,66 +61,64 @@ def ensure_payment_workflow():
 		("Cancelled", "Danger"),
 	]:
 		if not frappe.db.exists("Workflow State", state):
-			frappe.get_doc(dict(doctype="Workflow State", workflow_state_name=state, style=style)).insert(
+			frappe.get_doc(doctype="Workflow State", workflow_state_name=state, style=style).insert(
 				ignore_permissions=True
 			)
 	for action in ("Complete", "Approve", "Cancel"):
 		if not frappe.db.exists("Workflow Action Master", action):
-			frappe.get_doc(dict(doctype="Workflow Action Master", workflow_action_name=action)).insert(
+			frappe.get_doc(doctype="Workflow Action Master", workflow_action_name=action).insert(
 				ignore_permissions=True
 			)
 	workflow = frappe.get_doc(
-		dict(
-			doctype="Workflow",
-			workflow_name="Sports Payment Entry Review",
-			document_type="Payment Entry",
-			workflow_state_field="workflow_state",
-			is_active=1,
-			send_email_alert=0,
-			states=[
-				dict(state="Draft", doc_status=0, allow_edit="Accounts User"),
-				dict(state="Pending Review", doc_status=0, allow_edit="Accounts User"),
-				dict(state="Submitted", doc_status=1, allow_edit="Accounts Manager"),
-				dict(state="Cancelled", doc_status=2, allow_edit="Accounts Manager"),
-			],
-			transitions=[
-				dict(
-					state="Draft",
-					action="Complete",
-					next_state="Pending Review",
-					allowed="Accounts User",
-					allow_self_approval=1,
-				),
-				dict(
-					state="Pending Review",
-					action="Approve",
-					next_state="Submitted",
-					allowed="Boost Finance Manager",
-					allow_self_approval=1,
-				),
-				dict(
-					state="Pending Review",
-					action="Approve",
-					next_state="Submitted",
-					allowed="System Manager",
-					allow_self_approval=1,
-				),
-				dict(
-					state="Submitted",
-					action="Cancel",
-					next_state="Cancelled",
-					allowed="Boost Finance Manager",
-					allow_self_approval=1,
-				),
-				dict(
-					state="Submitted",
-					action="Cancel",
-					next_state="Cancelled",
-					allowed="System Manager",
-					allow_self_approval=1,
-				),
-			],
-		)
+		doctype="Workflow",
+		workflow_name="Sports Payment Entry Review",
+		document_type="Payment Entry",
+		workflow_state_field="workflow_state",
+		is_active=1,
+		send_email_alert=0,
+		states=[
+			dict(state="Draft", doc_status=0, allow_edit="Accounts User"),
+			dict(state="Pending Review", doc_status=0, allow_edit="Accounts User"),
+			dict(state="Submitted", doc_status=1, allow_edit="Accounts Manager"),
+			dict(state="Cancelled", doc_status=2, allow_edit="Accounts Manager"),
+		],
+		transitions=[
+			dict(
+				state="Draft",
+				action="Complete",
+				next_state="Pending Review",
+				allowed="Accounts User",
+				allow_self_approval=1,
+			),
+			dict(
+				state="Pending Review",
+				action="Approve",
+				next_state="Submitted",
+				allowed="Boost Finance Manager",
+				allow_self_approval=1,
+			),
+			dict(
+				state="Pending Review",
+				action="Approve",
+				next_state="Submitted",
+				allowed="System Manager",
+				allow_self_approval=1,
+			),
+			dict(
+				state="Submitted",
+				action="Cancel",
+				next_state="Cancelled",
+				allowed="Boost Finance Manager",
+				allow_self_approval=1,
+			),
+			dict(
+				state="Submitted",
+				action="Cancel",
+				next_state="Cancelled",
+				allowed="System Manager",
+				allow_self_approval=1,
+			),
+		],
 	)
 	workflow.transitions = [row for row in workflow.transitions if frappe.db.exists("Role", row.allowed)]
 	workflow.insert(ignore_permissions=True)
@@ -179,22 +180,20 @@ def setup_invoice_support():
 				"UOM", {}, "name"
 			)
 			if not group or not uom:
-				frappe.throw("Configure an Item Group and unit of measure for enrollment fees.")
+				frappe.throw(_("Configure an Item Group and unit of measure for enrollment fees."))
 			frappe.get_doc(
-				dict(
-					doctype="Item",
-					item_code=code,
-					item_name=code,
-					item_group=group,
-					stock_uom=uom,
-					is_stock_item=0,
-					is_sales_item=1,
-					include_item_in_manufacturing=0,
-				)
+				doctype="Item",
+				item_code=code,
+				item_name=code,
+				item_group=group,
+				stock_uom=uom,
+				is_stock_item=0,
+				is_sales_item=1,
+				include_item_in_manufacturing=0,
 			).insert(ignore_permissions=True)
 		item = frappe.get_doc("Item", code)
 		if item.disabled or item.is_stock_item or not item.is_sales_item:
-			frappe.throw("Configure compatible active non-stock enrollment fee items.")
+			frappe.throw(_("Configure compatible active non-stock enrollment fee items."))
 		frappe.db.set_single_value("Sports Academy Settings", field, code)
 	ensure_invoice_workflow()
 
@@ -213,7 +212,9 @@ def ensure_invoice_workflow():
 			for t in workflow.transitions
 		):
 			frappe.throw(
-				"The existing Sales Invoice workflow must include an authorised Complete Payment transition from Pending Review to a submitted state. Existing workflows are not replaced automatically."
+				_(
+					"The existing Sales Invoice workflow must include an authorised Complete Payment transition from Pending Review to a submitted state. Existing workflows are not replaced automatically."
+				)
 			)
 		if workflow.name == "Sports Enrollment Invoice Review":
 			_ensure_standard_draft_transitions(workflow)
@@ -225,12 +226,12 @@ def ensure_invoice_workflow():
 		("Cancelled", "Danger"),
 	):
 		if not frappe.db.exists("Workflow State", state):
-			frappe.get_doc(dict(doctype="Workflow State", workflow_state_name=state, style=style)).insert(
+			frappe.get_doc(doctype="Workflow State", workflow_state_name=state, style=style).insert(
 				ignore_permissions=True
 			)
 	for action in ("Complete", "Approve", "Complete Payment", "Cancel"):
 		if not frappe.db.exists("Workflow Action Master", action):
-			frappe.get_doc(dict(doctype="Workflow Action Master", workflow_action_name=action)).insert(
+			frappe.get_doc(doctype="Workflow Action Master", workflow_action_name=action).insert(
 				ignore_permissions=True
 			)
 	roles = [
@@ -269,21 +270,19 @@ def ensure_invoice_workflow():
 			),
 		]
 	workflow = frappe.get_doc(
-		dict(
-			doctype="Workflow",
-			workflow_name="Sports Enrollment Invoice Review",
-			document_type="Sales Invoice",
-			workflow_state_field="workflow_state",
-			is_active=1,
-			send_email_alert=0,
-			states=[
-				dict(state="Draft", doc_status=0, allow_edit="Accounts User"),
-				dict(state="Pending Review", doc_status=0, allow_edit="Accounts User"),
-				dict(state="Approved", doc_status=1, allow_edit="Accounts Manager"),
-				dict(state="Cancelled", doc_status=2, allow_edit="Accounts Manager"),
-			],
-			transitions=transitions,
-		)
+		doctype="Workflow",
+		workflow_name="Sports Enrollment Invoice Review",
+		document_type="Sales Invoice",
+		workflow_state_field="workflow_state",
+		is_active=1,
+		send_email_alert=0,
+		states=[
+			dict(state="Draft", doc_status=0, allow_edit="Accounts User"),
+			dict(state="Pending Review", doc_status=0, allow_edit="Accounts User"),
+			dict(state="Approved", doc_status=1, allow_edit="Accounts Manager"),
+			dict(state="Cancelled", doc_status=2, allow_edit="Accounts Manager"),
+		],
+		transitions=transitions,
 	).insert(ignore_permissions=True)
 	_ensure_standard_draft_transitions(workflow)
 	frappe.clear_cache(doctype="Sales Invoice")

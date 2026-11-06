@@ -8,6 +8,11 @@ from sports_app import payment_setup
 
 
 class TestInvoiceWorkflowCompatibility(TestCase):
+	def setUp(self):
+		active = patch.object(payment_setup, "_", lambda s: s)
+		active.start()
+		self.addCleanup(active.stop)
+
 	def workflow(self):
 		return SimpleNamespace(
 			name="Existing customer workflow",

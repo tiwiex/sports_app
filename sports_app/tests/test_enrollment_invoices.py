@@ -1,5 +1,5 @@
 import json
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -137,12 +137,18 @@ class TestEnrollmentInvoiceGuards(TestCase):
 				self.assertTrue(invoices.can_complete_payment("finance@example.invalid"))
 
 	def test_boost_approver_configuration_is_not_bypassed_for_administrator(self):
+		# Boost is optional: this contract test must also run on a Sports-only bench.
+		boost_api = ModuleType("erp_boost.api")
+		boost_api.is_valid_invoice_approver = Mock(return_value=False)
+		boost_api.is_valid_payment_entry_approver = Mock(return_value=True)
+		boost = ModuleType("erp_boost")
+		boost.__path__ = []
+		boost.api = boost_api
 		with (
 			patch.object(frappe, "get_roles", return_value=["System Manager"]),
 			patch.object(frappe, "has_permission", return_value=True),
 			patch.object(frappe, "get_installed_apps", return_value=["erp_boost"]),
-			patch("erp_boost.api.is_valid_invoice_approver", return_value=False),
-			patch("erp_boost.api.is_valid_payment_entry_approver", return_value=True),
+			patch.dict("sys.modules", {"erp_boost": boost, "erp_boost.api": boost_api}),
 		):
 			self.assertFalse(invoices.can_complete_payment("Administrator"))
 

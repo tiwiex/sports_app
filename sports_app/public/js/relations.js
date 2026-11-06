@@ -265,8 +265,8 @@ frappe.boost_console_views["sports_app:relations"] = () => {
 						render();
 					}
 				);
-				control.title = __("Sort by ") + __(label);
-				control.setAttribute("aria-label", __("Sort by ") + __(label));
+				control.title = __("Sort by {0}", [__(label)]);
+				control.setAttribute("aria-label", __("Sort by {0}", [__(label)]));
 				control.style.cssText =
 					"font:inherit;color:inherit;background:transparent;border:0;padding:0;text-align:left;white-space:nowrap";
 				th.append(control);

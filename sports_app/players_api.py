@@ -44,7 +44,9 @@ def get_registration_defaults():
 
 
 @frappe.whitelist()
-def list_players(search="", start=0, sort_by="registered_on", sort_order="desc"):
+def list_players(
+	search: str = "", start: str | int = 0, sort_by: str = "registered_on", sort_order: str = "desc"
+):
 	require_player_access()
 	if sort_by not in ("name", "full_name", "birth_date", "company", "registered_on") or sort_order not in (
 		"asc",
@@ -63,15 +65,15 @@ def list_players(search="", start=0, sort_by="registered_on", sort_order="desc")
 		page_length=20,
 	)
 	for row in rows:
+		can_create_enrollment = frappe.has_permission("Sports Enrollment", "create")
 		row["can_enroll"] = bool(
-			frappe.has_permission("Sports Enrollment", "create")
-			and frappe.get_doc("Sports Player", row.name).has_permission("write")
+			can_create_enrollment and frappe.get_doc("Sports Player", row.name).has_permission("write")
 		)
 	return rows
 
 
 @frappe.whitelist()
-def get_player(name, start=0):
+def get_player(name: str, start: str | int = 0):
 	require_player_access()
 	doc = frappe.get_doc("Sports Player", name)
 	doc.check_permission("read")
@@ -125,7 +127,7 @@ def get_player(name, start=0):
 
 
 @frappe.whitelist(methods=["POST"])
-def register_player(player, enrollment, request_key):
+def register_player(player: str | dict, enrollment: str | dict, request_key: str):
 	require_player_access()
 	values = _payload(player, PLAYER_FIELDS)
 	initial = _payload(enrollment, ENROLLMENT_FIELDS)
@@ -191,7 +193,7 @@ def register_player(player, enrollment, request_key):
 
 
 @frappe.whitelist(methods=["POST"])
-def save_player(name, player, modified):
+def save_player(name: str, player: str | dict, modified: str):
 	require_player_access()
 	doc = frappe.get_doc("Sports Player", name)
 	doc.check_permission("write")
@@ -203,7 +205,9 @@ def save_player(name, player, modified):
 
 
 @frappe.whitelist(methods=["POST"])
-def save_enrollment(player, enrollment, name=None, modified=None):
+def save_enrollment(
+	player: str, enrollment: str | dict, name: str | None = None, modified: str | None = None
+):
 	require_player_access()
 	parent = frappe.get_doc("Sports Player", player)
 	parent.check_permission("write")
