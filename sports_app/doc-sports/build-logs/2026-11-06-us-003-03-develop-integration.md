@@ -4,7 +4,7 @@
 - Story / epic: US-003-03 / EPIC-003
 - Requirements: SPORTS-FR-005, SPORTS-NFR-005/006/007
 - Affected apps / branch: Sports App / story/us-003-03-central-player-record → develop
-- Pull request: Pending creation; GitHub PR state is authoritative for merge outcome.
+- Pull request: [Sports PR #3](https://github.com/tiwiex/sports_app/pull/3), targeting develop; GitHub PR state is authoritative for merge outcome.
 - Status: Pre-merge verification passed; integration in progress
 
 ## Intended outcome and starting context
@@ -24,7 +24,8 @@ Collect the central linked profile, native financial history permissions, append
 - Fetched origin/develop: local develop matches remote at `9c8efed1ee28ce6f3afacc9978be94e8e4f8fa10`; feature branch has this base.
 - Full local Python suite: 196 checks passed immediately before commit.
 - Desktop/phone actual-source browser fixtures passed after profile/tab/photo implementation. Native permission/privacy/retry/rollback and 75-player provisional sample evidence remains in the central-record build log.
-- Pinned formatter/linter and Frappe Semgrep feature checks passed during implementation; staged checks and GitHub CI reviewed during integration.
+- All staged pinned checks passed; implementation committed as `13e5158` and feature branch pushed. Initial GitHub Frappe Linter, dependency audit and attendance build passed; native Server job was still running when this record was written. Recheck the final PR head before merging.
+- GitHub connector creation returned repository integration access denied (403); the configured GitHub CLI successfully created PR #3. No required-check bypass.
 - Earlier development asset publication is already verified over HTTPS. No new schema sync or site data operation is needed for the Git merge.
 
 ## Verification evidence
@@ -41,4 +42,4 @@ No Boost edits or commits; no core finance rights, real player changes or produc
 
 ## Remaining work and release impact
 
-Create/push PR, assess CI, merge to develop and fast-forward local develop. Do not bypass required checks or force-push develop. Preserve explicit limitations and the story's In progress state.
+PR #3 is open. Assess final-head CI, merge to develop and fast-forward local develop. Do not bypass required checks or force-push develop. Preserve explicit limitations and the story's In progress state.

@@ -38,7 +38,7 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 
 ## Completion evidence
 
-- Pull request(s): Not opened.
+- Pull request(s): [Sports PR #3](https://github.com/tiwiex/sports_app/pull/3); GitHub state is authoritative for merge status.
 - Build log: [Player list and profile layout](../../build-logs/2026-11-03-us-003-03-player-profile-layout.md).
 - Verification summary: Invoice-style reference menu, sortable list and grouped responsive profile verified with automated desktop/phone browser fixtures and protected native read APIs. Central linked histories are now implemented; see the additional delivery evidence below.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
@@ -86,3 +86,5 @@ User requested distinct tabs for details and histories. Group the modal into Pla
 Header-photo refinement (6 November 2026): move the authorized private portrait beside the name, above the tabs, so it remains immediately visible while switching sections. [Build log](../../build-logs/2026-11-06-us-003-03-profile-header-photo.md).
 
 User-authorized develop integration (6 November 2026): [integration evidence](../../build-logs/2026-11-06-us-003-03-develop-integration.md). Merge status follows the linked GitHub PR; broader story remains In progress.
+
+Backlog review (6 November 2026): the console reads this story and the synchronized epic/inventory. Central profile, histories, tabs and header photo are verified. Keep the whole story In progress for the explicitly outstanding injury/absence, returning-player and retention-policy refinements; do not label those complete. Future complete stories should be marked Done with linked acceptance evidence. Recommended next refinement: US-004-02 fee plans, then US-004-03 monthly obligations/invoices after cadence, proration and arrears decisions.
