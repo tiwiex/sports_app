@@ -4,7 +4,7 @@
 - Stories: US-001-01, US-002-01, US-003-01, US-003-02, US-005-01, US-008-03, US-009-01
 - Requirements: SPORTS-FR-001/003/004/019/020/024/029/030/031; SPORTS-NFR-003/006/009
 - Apps / branches: Sports App story/us-003-01-enrollment-image-and-invoice-acceptance; ERP Boost story/console-table-auto-refresh
-- Pull requests: Links added after creation; final merge status is authoritative in GitHub.
+- Pull requests: [Sports #2](https://github.com/tiwiex/sports_app/pull/2); [Boost #2](https://github.com/tiwiex/erp_boost/pull/2). Final check/merge status is authoritative in these PRs.
 - Status: Pre-merge verification
 
 ## Intended outcome and starting context
@@ -21,7 +21,7 @@ Sports includes private enrollment portraits, inline/server age/email checks, sh
 
 ## Commands and observations
 
-- Sports unittest discovery: 179 tests passed. Repository-wide pinned hooks passed before staging new files; final staged checks recorded in PR.
+- Sports unittest discovery: 179 tests passed. Repository-wide pinned hooks passed again with all new files staged.
 - Boost provider VM passed; 22 provider/optional-dimension Python checks passed. Syntax and applicable pinned hooks passed; legacy whole-file Prettier skipped, new sections were formatted when implemented.
 - Prior actual-source desktop/phone fixtures and native rollback integration are linked in individual logs. Native ID correction QA preserved account IDs, updated links/attachments and derived roster identities, rejected stale/unauthorized/duplicate operations and restored original counts. No real roster imported or renamed, no finance posted by QA.
 
@@ -31,8 +31,8 @@ Sports includes private enrollment portraits, inline/server age/email checks, sh
 |---|---|---|
 | Local Sports / Boost regressions | 179 / 22 tests plus provider VM | Passed |
 | Formatting / lint / security | Staged-file hooks and PR checks | Tracked in PR |
-| Cross-app watcher and UI | Actual-source Chromium fixture and refinement logs | Tracked in PR |
-| Reviewed integration / local develop | GitHub PR links and final merge commit | Pending PR creation |
+| Cross-app watcher and UI | Final desktop/phone combined watcher fixture plus refinement logs | Passed |
+| Reviewed integration / local develop | Sports #2 and Boost #2; GitHub records final merge commit | PRs opened; checks/merge tracked in GitHub |
 
 ## Decisions, deviations and recovery
 
