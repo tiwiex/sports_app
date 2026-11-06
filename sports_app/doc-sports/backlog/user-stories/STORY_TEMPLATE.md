@@ -14,6 +14,10 @@
 ## Traceability
 
 - Requirements: SPORTS-FR-NNN, SPORTS-NFR-NNN
+- Origin: Original baseline only / Questionnaire only / Both
+- Source references: source ID + exact question links
+- Discovery impact: Confirmed / Expanded / Changed / Conflicting / Needs clarification / New
+- Reconciliation / open decisions:
 - Dependencies:
 - Planned branch: `story/us-nnn-nn-short-description`
 - Planned build log: `YYYY-MM-DD-us-nnn-nn-short-description.md`

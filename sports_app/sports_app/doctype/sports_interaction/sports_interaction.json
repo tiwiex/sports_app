@@ -1,0 +1,112 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Interaction",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "autoname": "SPORTS-INT-.#####",
+ "field_order": [
+  "company",
+  "subject",
+  "organization",
+  "opportunity",
+  "interaction_type",
+  "direction",
+  "occurred_on",
+  "next_follow_up",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "label": "Academy company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "subject",
+   "label": "Subject",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "organization",
+   "label": "Organization",
+   "fieldtype": "Link",
+   "options": "Sports Organization",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "opportunity",
+   "label": "Opportunity",
+   "fieldtype": "Link",
+   "options": "Sports Opportunity"
+  },
+  {
+   "fieldname": "interaction_type",
+   "label": "Interaction type",
+   "fieldtype": "Select",
+   "options": "Email\nCall\nMeeting\nNote",
+   "default": "Note",
+   "reqd": 1
+  },
+  {
+   "fieldname": "direction",
+   "label": "Direction",
+   "fieldtype": "Select",
+   "options": "Internal\nIncoming\nOutgoing",
+   "default": "Internal"
+  },
+  {
+   "fieldname": "occurred_on",
+   "label": "Occurred on",
+   "fieldtype": "Datetime",
+   "reqd": 1,
+   "default": "Now"
+  },
+  {
+   "fieldname": "next_follow_up",
+   "label": "Next follow-up",
+   "fieldtype": "Date"
+  },
+  {
+   "fieldname": "notes",
+   "label": "Correspondence / outcome",
+   "fieldtype": "Small Text",
+   "reqd": 1,
+   "description": "Record an interaction or draft. Saving never sends email, shares profiles or contacts a club."
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "export": 0,
+   "delete": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "report": 1,
+   "export": 0,
+   "delete": 0,
+   "share": 0
+  }
+ ],
+ "title_field": "subject",
+ "show_title_field_in_link": 1,
+ "search_fields": "subject,organization",
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

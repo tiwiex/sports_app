@@ -1,0 +1,137 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Attendance",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "track_changes": 1,
+ "allow_rename": 0,
+ "autoname": "SPORTS-ATT-.#####",
+ "field_order": [
+  "session",
+  "player",
+  "enrollment",
+  "company",
+  "status",
+  "source",
+  "marked_by",
+  "marked_on",
+  "correction_reason",
+  "identity"
+ ],
+ "fields": [
+  {
+   "fieldname": "session",
+   "label": "Session",
+   "fieldtype": "Link",
+   "options": "Sports Session",
+   "reqd": 1,
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "player",
+   "label": "Player",
+   "fieldtype": "Link",
+   "options": "Sports Player",
+   "reqd": 1,
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "enrollment",
+   "label": "Roster enrollment",
+   "fieldtype": "Link",
+   "options": "Sports Enrollment",
+   "reqd": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "options": "Company",
+   "reqd": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "label": "Attendance",
+   "fieldtype": "Select",
+   "options": "Unmarked\nPresent\nLate\nAbsent\nExcused",
+   "default": "Unmarked",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "source",
+   "label": "Source",
+   "fieldtype": "Select",
+   "options": "Roster\nManual\nFinalization",
+   "default": "Roster",
+   "read_only": 1
+  },
+  {
+   "fieldname": "marked_by",
+   "label": "Marked by",
+   "fieldtype": "Link",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "marked_on",
+   "label": "Marked on",
+   "fieldtype": "Datetime",
+   "read_only": 1
+  },
+  {
+   "fieldname": "correction_reason",
+   "label": "Latest correction reason",
+   "fieldtype": "Small Text",
+   "read_only": 1
+  },
+  {
+   "fieldname": "identity",
+   "label": "Session/player key",
+   "fieldtype": "Data",
+   "unique": 1,
+   "hidden": 1,
+   "read_only": 1,
+   "reqd": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  },
+  {
+   "role": "Sports Registrar",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "share": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}

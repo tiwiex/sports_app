@@ -60,3 +60,36 @@ Authorised Finance users can use Confirm Payment directly from an enrollment inv
 ## Develop integration — 2 November 2026
 
 [Authorised merges, post-merge checks and push record](../../build-logs/2026-11-02-us-005-01-develop-integration.md).
+
+## Payment review email adjustment — 3 November 2026
+
+- Sports Academy Settings and its console expose Payment review email addresses as comma-separated text. Invalid addresses are rejected; duplicates and surrounding spaces are normalized. Blank disables this notification.
+- The first website payment claim queues a review email linked to its Sales Invoice (or legacy Payment Entry) in the same transaction as Pending Review. No duplicate on retries and no mail after rollback. Applicant claims remain unposted.
+- The email asks staff to verify the bank credit; receiving it grants no read, approval or posting permissions.
+- [Build evidence and release notes](../../build-logs/2026-11-03-us-005-01-payment-review-emails.md). Wider billing/reconciliation scope remains open.
+
+## Administrator payment review diagnosis — 3 November 2026
+
+[Read-only diagnosis](../../build-logs/2026-11-03-us-005-01-administrator-payment-review-diagnosis.md): the pending invoice remains unposted; Administrator lacks explicit invoice approver configuration, while the configured Finance reviewer is eligible. Additional Administrator approval access awaits the user's decision; no payment was completed during investigation.
+
+## Administrator approval enabled — 3 November 2026
+
+Following explicit user approval, Administrator is now an additional Sales Invoice approver on Moyours. Completion eligibility for ACC-SINV-2026-00003 was verified without posting payment; the existing Finance reviewer remains enabled. [Applied configuration and preservation checks](../../build-logs/2026-11-03-us-005-01-administrator-approver-enabled.md). This supersedes the pending decision recorded in the earlier diagnosis.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q02-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-01), [BA-QNR-001-Q02-09](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-09), [BA-QNR-001-Q04-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-01), [BA-QNR-001-Q04-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-02), [BA-QNR-001-Q04-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-03), [BA-QNR-001-Q04-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-04).
+- Impact: Confirmed / needs clarification; Conflicting / needs clarification; Expanded.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q02-01: Online and staff intake; payment confirms admission subject to approved scholarship/part-payment exceptions. No automatic bank clearance from a claim.
+  - BA-QNR-001-Q02-09: Online and staff intake; payment confirms admission subject to approved scholarship/part-payment exceptions. No automatic bank clearance from a claim.
+  - BA-QNR-001-Q04-01: Source mentions 150k/220k including 30k kit and 40k subscription; PoC uses 220k registration +30k kit =250k excluding monthly40k. Obtain approved itemized fee schedule before changes.
+  - BA-QNR-001-Q04-02: Bank transfer and downloadable receipts; admin confirms payment. Map authorized admins to existing approver controls, not general admin finance access.
+  - BA-QNR-001-Q04-03: Bank transfer and downloadable receipts; admin confirms payment. Map authorized admins to existing approver controls, not general admin finance access.
+  - BA-QNR-001-Q04-04: Bank transfer and downloadable receipts; admin confirms payment. Map authorized admins to existing approver controls, not general admin finance access.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-005-payments-and-financial-history.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

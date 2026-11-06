@@ -1,0 +1,19 @@
+{
+  "name": "sports-attendance",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --webpack && node scripts/prepare.mjs",
+    "publish": "node scripts/publish.mjs"
+  },
+  "dependencies": {
+    "jsbarcode": "3.12.3",
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
+}

@@ -45,3 +45,11 @@ One requested adjustment and the fixes needed to verify it share one adjustment 
 ## DocType naming
 
 All new app-owned DocTypes, including registration/application and child-table types, must start with `Sports`. Extend existing Sports Player/Sports Enrollment where appropriate. Do not rename ERPNext core Customer, User, Contact or other installed-app DocTypes.
+
+## Discovery reconciliation
+
+Register each questionnaire immutably under `discovery/` with source ID, source hash, received/ingested date and question-level transcript. Use the [source register](discovery/README.md) provenance rules and reconciliation table; carry origin, exact references and unresolved conflicts into affected stories. Preserve stable IDs, delivered evidence and prior accepted rules. New/changed scope remains proposed until ambiguities, acceptance and delivery/commercial impact are resolved. Never infer acceptance from a blank, TBD, N/A or examples embedded in a question.
+
+## Console story review
+
+Management users may use [story review controls](story-review-guide.md) to update status/MoSCoW or Mark Done while reading. These write narrow Markdown metadata and synchronized inventories with version checks and indexed reviewer audit. They do not replace acceptance evidence, run tests or certify delivery. Other console documentation remains read-only. Include generated review logs with the normal repository review/commit workflow.

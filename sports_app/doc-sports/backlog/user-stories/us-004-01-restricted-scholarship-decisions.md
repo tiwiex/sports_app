@@ -42,3 +42,24 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Build log: Not started.
 - Verification summary: Not implemented or verified.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q02-06](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-06), [BA-QNR-001-Q03-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-01), [BA-QNR-001-Q03-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-02), [BA-QNR-001-Q03-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-03), [BA-QNR-001-Q03-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-04), [BA-QNR-001-Q03-05](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-05), [BA-QNR-001-Q03-06](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-06), [BA-QNR-001-Q03-07](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-07), [BA-QNR-001-Q03-08](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-08).
+- Impact: Changed / needs clarification; Expanded; Expanded / needs clarification; Needs clarification.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q02-06: Coach/technical director assesses scholarship trials and financial need; criteria and final approval authority need confirmation against admin approval responses.
+  - BA-QNR-001-Q03-01: Scholarship/non-scholarship; full scholarship includes kits, trips/trials/tournaments. Separate fee coverage and benefits; no forced extra categories. About half current players are beneficiaries.
+  - BA-QNR-001-Q03-02: Coach/technical director assesses scholarship trials and financial need; criteria and final approval authority need confirmation against admin approval responses.
+  - BA-QNR-001-Q03-03: Scholarship/non-scholarship; full scholarship includes kits, trips/trials/tournaments. Separate fee coverage and benefits; no forced extra categories. About half current players are beneficiaries.
+  - BA-QNR-001-Q03-04: Review/expiry TBD and payment-free registration approval unanswered; do not invent approval or expiry rules.
+  - BA-QNR-001-Q03-05: Scholarship/non-scholarship; full scholarship includes kits, trips/trials/tournaments. Separate fee coverage and benefits; no forced extra categories. About half current players are beneficiaries.
+  - BA-QNR-001-Q03-06: Explicit scholarship visibility: admin, director and finance only. Confirm exact role mapping; coach assessment does not imply access to scholarship status. No permission changes yet.
+  - BA-QNR-001-Q03-07: Review/expiry TBD and payment-free registration approval unanswered; do not invent approval or expiry rules.
+  - BA-QNR-001-Q03-08: Scholarship/non-scholarship; full scholarship includes kits, trips/trials/tournaments. Separate fee coverage and benefits; no forced extra categories. About half current players are beneficiaries.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-004-scholarships-and-monthly-billing.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

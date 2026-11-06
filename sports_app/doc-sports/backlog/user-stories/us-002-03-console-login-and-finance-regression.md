@@ -42,3 +42,12 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Build log: Not started.
 - Verification summary: Not implemented or verified.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Original baseline only** (including subsequent user direction); no direct questionnaire response establishes this story’s specific scope. Preserve existing state and acceptance evidence.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-002-shared-console-integration.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

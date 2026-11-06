@@ -42,3 +42,29 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Build log: Not started.
 - Verification summary: Not implemented or verified.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
+
+## Prototype dependency evidence — 3 November 2026
+
+The manual prototype supplies saved session rosters, per-status counts and per-record comment/Version history. Cross-session player history, date-range reports, attendance rates and group-restricted coach access are not implemented; this story remains Proposed. [Related evidence](../../build-logs/2026-11-03-us-006-01-manual-attendance-prototype.md).
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q01-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q01-01), [BA-QNR-001-Q01-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q01-02), [BA-QNR-001-Q05-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-01), [BA-QNR-001-Q05-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-02), [BA-QNR-001-Q05-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-03), [BA-QNR-001-Q05-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-04), [BA-QNR-001-Q05-14](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-14), [BA-QNR-001-Q06-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q06-01), [BA-QNR-001-Q10-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q10-02), [BA-QNR-001-Q10-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q10-03).
+- Impact: Confirmed / expanded; Expanded.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q01-01: Payment, attendance and exportable reporting remain priorities; player performance is separately proposed under FR-038.
+  - BA-QNR-001-Q01-02: Payment, attendance and exportable reporting remain priorities; player performance is separately proposed under FR-038.
+  - BA-QNR-001-Q05-01: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-02: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-03: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-04: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-14: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q06-01: Payment, attendance and exportable reporting remain priorities; player performance is separately proposed under FR-038.
+  - BA-QNR-001-Q10-02: Payment, attendance and exportable reporting remain priorities; player performance is separately proposed under FR-038.
+  - BA-QNR-001-Q10-03: Payment, attendance and exportable reporting remain priorities; player performance is separately proposed under FR-038.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-006-sessions-and-attendance.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

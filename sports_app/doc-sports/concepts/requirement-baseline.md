@@ -1,5 +1,9 @@
 # Sports requirement baseline
 
+2026-11-05 addition: `SPORTS-FR-037`, administrator-only fingerprint consent/preparation metadata without hardware capture, templates, device mapping or biometric attendance. [US-007-01](../backlog/user-stories/us-007-01-biometric-provider-and-identity.md); live provider acceptance remains pending.
+
+2026-11-03 addition: `SPORTS-FR-036`, dedicated Next.js attendance frontend with trusted-device roster download, offline manual capture and explicit authenticated conflict-aware sync. [US-006-04](../backlog/user-stories/us-006-04-attendance-pwa.md). This is separate from withdrawn enrollment PWA requirement `SPORTS-FR-035`; HTML enrollment remains unchanged.
+
 Captured 2026-11-01. Initial planning status for the original rows: **Proposed**; current delivery state is recorded by the linked stories and build logs. Requirement IDs are prefixed `SPORTS-` to avoid ambiguity with ERP Boost's separate `FR-*` and `NFR-*` register. Epic/story IDs are local to this folder; qualify them as `sports_app:US-...` in cross-app issues.
 
 The [original brief](../requirements.txt) remains unchanged. “Client brief” identifies directly requested outcomes; “User direction” identifies the accompanying IDE request; “Proposed” identifies analysis or design detail requiring refinement. This table is a documentation register, not a live Frappe DocType. Requirement behavior and release tests are developed in the [PRD](../PRD.md) and linked stories.
@@ -62,10 +66,34 @@ The [original brief](../requirements.txt) remains unchanged. “Client brief” 
 |---|---|---|
 | SPORTS-FR-026 | Background, atomic creation of one Customer per player from registration details; no manual/shared payer selection | US-003-02 |
 | SPORTS-FR-027 | Customer Group named for the initial program, created/reused during registration | US-003-02 |
-| SPORTS-FR-028 | Management-only read-only Sports Development Tools documentation hub | US-002-04 |
+| SPORTS-FR-028 | Management-only Sports Development Tools documentation hub; audited status/MoSCoW story controls | US-002-04 |
 | SPORTS-FR-029 | Require unique player email; automatically provision a disabled non-Desk Website User for future self-service, without invitation or staff/finance roles | US-003-02 |
 | SPORTS-FR-030 | Shared public-demo/staff registration fields based on reference enrollment; new DocTypes prefixed Sports | US-001-02, US-003-02 |
 | SPORTS-FR-031 | Enrollment draft invoice with invoice-series transfer reference; applicant claim sends invoice to unposted review; Finance completes invoice and allocated receipt atomically | US-005-01 |
 | SPORTS-NFR-009 | A separate dated, indexed build log after every story implementation or adjustment | US-002-04 and all subsequent work |
 
 See [current requirements](../REQUIREMENTS.md) for the governing rules and [adjustment evidence](../build-logs/2026-11-01-us-002-04-guardrails-docs-and-program-categories.md).
+
+## Club relations addition — 2 November 2026
+
+SPORTS-FR-032: generic Company-scoped organisation/opportunity/correspondence workspace. SPORTS-FR-033: sourced directory and attributable staff relationship-priority assessment. Both map to EPIC-009 / US-009-01.
+
+## Website payment review notifications — 3 November 2026
+
+| ID | Requirement | Story |
+|---|---|---|
+| SPORTS-FR-034 | Configurable comma-separated review email list; transactional, duplicate-safe notification on first website payment claim; preserve Finance authorization | US-005-01 |
+
+## BA questionnaire discovery — 6 November 2026
+
+[BA-QNR-001 source register](../discovery/README.md) and [question-by-question reconciliation](../discovery/BA-QNR-001-reconciliation.md) preserve exact responses and classify overlap/new scope. These are proposed refinements; current implemented fees, IDs, role permissions, disabled Users and admission/payment behavior remain authoritative until a recorded decision changes them. Original-only scope is not removed.
+
+| Requirement | Proposed discovery addition | Origin / delivery |
+|---|---|---|
+| SPORTS-FR-038 | Player performance assessments | Questionnaire only; [US-003-04](../backlog/user-stories/us-003-04-player-performance-assessments.md), Proposed |
+| SPORTS-FR-039 | Procurement and player kit distribution | Both; [US-008-04](../backlog/user-stories/us-008-04-procurement-and-player-kit-distribution.md), Proposed |
+| SPORTS-FR-040 | Arrival, departure and absence review | Both; [US-006-05](../backlog/user-stories/us-006-05-arrival-departure-and-absence-review.md), Proposed |
+| SPORTS-FR-041 | Parent reminders and receipt delivery | Questionnaire only; [US-005-04](../backlog/user-stories/us-005-04-parent-reminders-and-receipt-delivery.md), Proposed |
+| SPORTS-FR-042 | Payment gateway discovery and reconciliation | Questionnaire only; [US-005-05](../backlog/user-stories/us-005-05-payment-gateway-discovery-and-reconciliation.md), Proposed |
+
+6 November 2026 refinement to SPORTS-FR-028: [story review controls](../story-review-guide.md) add narrowly editable status/MoSCoW and Mark Done, revision checks and indexed reviewer audit. Story narrative and other documents remain read-only.

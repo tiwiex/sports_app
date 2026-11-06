@@ -1,8 +1,15 @@
 """Permission-checked endpoints for the Sports-owned settings console."""
+
 import frappe
 import pytz
 from frappe import _
-from sports_app.academy import SETTINGS_FIELDS, get_configured_settings, require_settings_access, validate_company
+
+from sports_app.academy import (
+	SETTINGS_FIELDS,
+	get_configured_settings,
+	require_settings_access,
+	validate_company,
+)
 
 
 def _values(doc):
@@ -23,13 +30,23 @@ def get_configuration():
 		"settings": _values(doc),
 		"companies": frappe.get_list("Company", fields=["name", "default_currency"], limit_page_length=0),
 		"timezones": pytz.all_timezones,
-		"programs": frappe.get_list("Sports Program", fields=["name", "program_name", "sport", "company", "enabled"], order_by="program_name", limit_page_length=0),
-		"groups": frappe.get_list("Sports Group", fields=["name", "group_name", "program", "company", "enabled"], order_by="group_name", limit_page_length=0),
+		"programs": frappe.get_list(
+			"Sports Program",
+			fields=["name", "program_name", "sport", "company", "enabled"],
+			order_by="program_name",
+			limit_page_length=0,
+		),
+		"groups": frappe.get_list(
+			"Sports Group",
+			fields=["name", "group_name", "program", "company", "enabled"],
+			order_by="group_name",
+			limit_page_length=0,
+		),
 	}
 
 
 @frappe.whitelist()
-def save_configuration(settings):
+def save_configuration(settings: str | dict):
 	require_settings_access()
 	values = frappe.parse_json(settings)
 	if not isinstance(values, dict) or set(values) - set(SETTINGS_FIELDS) - {"modified"}:
@@ -37,7 +54,10 @@ def save_configuration(settings):
 	doc = get_configured_settings()
 	doc.check_permission("write")
 	if str(doc.modified or "") != str(values.pop("modified", "") or ""):
-		frappe.throw(_("Settings changed since this view was loaded. Refresh before saving."), frappe.TimestampMismatchError)
+		frappe.throw(
+			_("Settings changed since this view was loaded. Refresh before saving."),
+			frappe.TimestampMismatchError,
+		)
 	# Validate the submitted scope before any update, even when moving company.
 	validate_company(values.get("company"))
 	doc.update(values)
@@ -46,7 +66,7 @@ def save_configuration(settings):
 
 
 @frappe.whitelist()
-def save_program(program):
+def save_program(program: str | dict):
 	require_settings_access()
 	values = frappe.parse_json(program)
 	allowed = {"name", "program_name", "sport", "company", "enabled"}
@@ -64,7 +84,7 @@ def save_program(program):
 
 
 @frappe.whitelist()
-def save_group(group):
+def save_group(group: str | dict):
 	require_settings_access()
 	values = frappe.parse_json(group)
 	if not isinstance(values, dict) or set(values) - {"name", "group_name", "program", "enabled"}:

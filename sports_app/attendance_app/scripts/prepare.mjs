@@ -1,0 +1,31 @@
+import { readFile, readdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+const output = new URL("../out/", import.meta.url);
+const html = await readFile(new URL("index.html", output));
+const hash = createHash("sha256").update(html).digest("hex").slice(0, 16);
+const files = await readdir(new URL("_next/static/", output), {
+  recursive: true,
+});
+const urls = files
+  .filter((name) => /\.(js|css)$/.test(name))
+  .map((name) => "/assets/sports_app/attendance/_next/static/" + name);
+const source = await readFile(
+  new URL("../public/sw.js", import.meta.url),
+  "utf8"
+);
+await writeFile(
+  new URL("sw.js", output),
+  source
+    .replace("shell-v1", "shell-" + hash)
+    .replace(
+      "const STATIC = [];",
+      "const STATIC = " + JSON.stringify(urls) + ";"
+    )
+);
+console.log(
+  "Prepared offline shell",
+  hash,
+  "with",
+  urls.length,
+  "public assets"
+);

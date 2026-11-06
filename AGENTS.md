@@ -32,5 +32,5 @@
 
 - Run meaningful checks for privacy, Company scope, rollback, idempotency/concurrency and ERP linkage when changed. UI changes need browser checks at desktop and phone widths as appropriate.
 - Use authorized temporary QA accounts only; revoke sessions and delete test accounts/data in guaranteed cleanup, restore temporary settings, and record the result without credentials or player PII.
-- Documentation endpoints require an explicit management role, remain read-only, and serve only allowlisted app documentation. Reject path traversal/symlinks outside that root; sanitize rendered Markdown and handle links safely.
+- Documentation endpoints require an explicit management role and serve only allowlisted app documentation. Documents and narrative remain read-only; the user-authorized Sports story status/MoSCoW editor may change only individual story metadata, with source-revision checks, serialized writes, synchronized inventories and an indexed audit log. Mark Done records the reviewer decision, not automatic acceptance verification. Reject path traversal/symlinks outside that root; sanitize rendered Markdown and handle links safely.
 - Follow session permissions and approvals. These guardrails add no separate approval step for already authorized work.

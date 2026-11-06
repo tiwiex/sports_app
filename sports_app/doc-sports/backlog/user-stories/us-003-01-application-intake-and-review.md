@@ -44,3 +44,32 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Remaining decisions / follow-up work: Production acceptance/hardening, verified communications, full consent/contract versioning, portal activation and payments remain separate scope. This slice completes the requested PoC intake workflow.
 
 New user refinement: [multi-step enrollment and draft Payment Entry review](../../build-logs/2026-11-01-us-005-01-enrollment-payment-review.md). This supersedes the previous no-payment PoC boundary; finance submission, invoice allocation and production acceptance remain separate.
+
+## Registration context menu refinement — 3 November 2026
+
+- Present the queue using the shared invoice table styling, status badges and allowlisted server sorting before pagination.
+- Reference dropdown offers View in a modal; Pending rows with native write permission additionally offer Accept registration and Reject registration. Read-only or completed rows offer View only.
+- Fetch current state/permissions before review confirmation. Accept shows possible player matches and enrollment controls; Reject requires a reason. Refresh the list and displayed profile after completion.
+- Preserve all server authorization, admission idempotency and financial boundaries.
+- [Build evidence](../../build-logs/2026-11-03-us-003-01-registration-context-menu.md).
+
+## Enrollment naming and modal formatting — 3 November 2026
+
+- Label the application queue **Enrollments** and its actions Accept/Reject enrollment. Use Enrollment application in the profile to distinguish intake from accepted program membership.
+- Group the profile into readable summary, admission/match, billing/payment, player, guardian/emergency and consent sections; use responsive label/value columns with safe multiline wrapping.
+- Preserve existing application IDs, program membership links, admission and Finance permissions. No DocType rename or migration.
+- [Build evidence](../../build-logs/2026-11-03-us-003-01-enrollment-review-layout.md).
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q02-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-01), [BA-QNR-001-Q02-09](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-09).
+- Impact: Expanded.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q02-01: Online and staff intake; payment confirms admission subject to approved scholarship/part-payment exceptions. No automatic bank clearance from a claim.
+  - BA-QNR-001-Q02-09: Online and staff intake; payment confirms admission subject to approved scholarship/part-payment exceptions. No automatic bank clearance from a claim.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-003-registration-and-player-record.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

@@ -16,7 +16,7 @@ No proof-file upload or automated bank verification is included. The reviewer mu
 
 ## Staff review and admission
 
-Open Sports → Registrations, select the application and review its details and possible matches. Accepting creates one Player, disabled Website User and enrollment, reusing the exact prospective Customer. Admission remains separate from finance approval. A registrar can review the invoice state but gains no general invoice/payment creation or submission rights. Finance users can open the invoice directly from the standard Sales Invoice list; registration reviewers with financial read access also receive an invoice link.
+Open Sports → Enrollments, select the application and review its details and possible matches. Accepting creates one Player, disabled Website User and enrollment, reusing the exact prospective Customer. Admission remains separate from finance approval. A registrar can review the invoice state but gains no general invoice/payment creation or submission rights. Finance users can open the invoice directly from the standard Sales Invoice list; registration reviewers with financial read access also receive an invoice link.
 
 ## Finance permissions and action
 
@@ -39,3 +39,21 @@ The earlier Sports Payment Entry Review workflow remains for receipt submission 
 See the [invoice-first implementation build log](build-logs/2026-11-01-us-005-01-invoice-first-payment-completion.md) for real native accounting, failure rollback, access and browser evidence. The prototype does not activate user accounts, send welcome/approval emails from applicant claims or establish production acceptance. Device integration, monthly billing and full production reconciliation remain in the backlog.
 
 Finance can also use **Confirm Payment** directly in the Boost invoice context menu. It appears only for eligible Pending Review enrollment invoices and authorised reviewers, and disappears after confirmation. The existing **Complete Payment** action under View remains available. Both actions use the same financial completion service.
+
+## Payment review emails
+
+In **Sports → Academy Settings → Website enrollment payments**, enter **Payment review email addresses**, separated by commas, and save. The same field is available on the native Sports Academy Settings form. Leave it blank to disable these notifications. Addresses are validated and duplicates removed. An enabled outgoing Email Account and normal email scheduler are needed for delivery.
+
+When an applicant clicks **I've made payment** for the first time, the system queues one review email with the payment reference, expected amount and a link to its invoice (or legacy receipt). This does not confirm bank clearance or create a payment posting. Repeated clicks do not send another message. If queuing fails, the claim transaction rolls back and can be retried after the mail configuration is corrected. Delivery failures after queuing are handled by Frappe's Email Queue. Reviewers still need normal document access and Finance approval rights; this recipient list does not assign roles or approvers.
+
+## Registration list actions
+
+Open **Sports → Enrollments** and use the reference dropdown, matching the invoice views. **View** opens a modal and leaves the list in place. For a Pending application you can write, **Accept registration** opens enrollment choices and shows possible player matches before confirmation; **Reject registration** requires a reason. Accepted, rejected and read-only entries offer View only. Admission does not confirm a bank transfer.
+
+Click a column heading to sort the full filtered result before pagination; click again to reverse direction. The status filter and page are preserved when reviewing a record. After a decision, the list refreshes and the modal shows the updated registration. Keyboard users can open a reference menu with Enter/Space or Arrow Down, move with arrow keys and close with Escape.
+
+## Enrollment terminology and review layout
+
+The **Enrollments** queue contains enrollment applications awaiting an admission decision. **Accept enrollment** creates the player and their dated program membership; the Players view shows those memberships. Admission remains separate from payment verification. Earlier references to the Registrations queue describe this same application queue.
+
+**View** opens a grouped application profile: summary/status, admission review and possible matches, billing/payment, player details, guardian/emergency contacts and consent choices. Fields use two columns on desktop and one on small screens; long addresses/notes wrap and consent answers remain explicit Yes/No.
