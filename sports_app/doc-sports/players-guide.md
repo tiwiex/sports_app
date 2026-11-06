@@ -99,3 +99,19 @@ After correction, refresh online attendance/fingerprint lists and downloaded att
 The previous immutable-ID guidance has this explicit, audited management exception. During initial setup, importing the correct legacy ID remains preferable to correcting IDs later. No existing real players were renamed when enabling this feature.
 
 [Build evidence](build-logs/2026-11-06-us-003-02-audited-player-id-correction.md).
+
+## Linked histories and development observations
+
+Open **Players → Player ID → View**. Each history has its own More/Previous controls and links to its source records. Invoices, receipts and submitted-invoice outstanding balances follow your existing finance access. Balances stay separate by currency; they exclude draft/cancelled invoices and do not include unallocated advances. A Restricted section means your access does not permit that history, not that the player's balance is zero. Attendance links show permitted session details. Management can also read fingerprint preparation history; demo references are not captured fingerprints.
+
+Use **Edit preferred foot** for a current preference. Use **Add measurement** to record assessment date, height (cm), weight (kg), or both. Values must be at least 0.01; future dates and dates before birth are rejected. History is append-only: record a new observation instead of editing an old measurement.
+
+Management uses **Add private document** for a birth certificate, medical report or other supporting file. Enter a title and optionally the source document date. Choose an unencrypted, inactive PDF (up to 5 MB/100 pages) or JPEG/PNG/WebP image (up to 2 MB). The private archive is created automatically and retains uploader/time provenance. Files cannot be made public, moved, replaced or deleted through ordinary controls. A repeated save with the same request creates one archive, not duplicates. This archive submission does not submit an invoice. A retention/deletion process still needs policy agreement before production medical-document use.
+
+These features create no invoices/payments, activate no player/guardian login, and grant no extra ERPNext finance permissions. [Build log](build-logs/2026-11-06-us-003-03-central-player-record.md).
+
+## Player profile tabs — 6 November 2026
+
+The central profile uses **Player details**, **Program enrollments**, **Invoices & receipts**, **Attendance & fingerprint**, **Measurements**, and **Documents** tabs. Player identity and common actions remain visible above the tab strip. Choose a tab or use arrow/Home/End keys while focusing the tab strip; on phones, scroll the strip horizontally. Only the selected panel is displayed. Same-player membership paging/refresh retains the active tab; a different player starts at Player details. Creating a program enrollment opens Program enrollments. Each history retains its own pagination and existing permission restrictions. This is a Sports-only presentation refinement, with no financial, document-security or public-enrollment behavior change. [Build log](build-logs/2026-11-06-us-003-03-tabbed-player-profile.md).
+
+Player photo placement refinement (6 November 2026): a permitted private portrait appears beside the player name in the persistent header above the tabs, remaining visible across sections. Age and preferred foot stay within Player details. No photo duplication or privacy changes. [Build log](build-logs/2026-11-06-us-003-03-profile-header-photo.md).

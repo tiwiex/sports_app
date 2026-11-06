@@ -18,7 +18,7 @@ This is the complete current epic inventory, including proposed additions and wi
 |---|---|---|---|
 | [US-003-01: Capture and review player registrations](../user-stories/us-003-01-application-intake-and-review.md) | In progress — PoC workflow | Both | Must |
 | [US-003-02: Assign stable player IDs and enrollment dates](../user-stories/us-003-02-player-numbering-and-enrollment.md) | In progress | Both | Must |
-| [US-003-03: Present the private central player record](../user-stories/us-003-03-central-player-profile.md) | In progress — profile presentation slice | Both | Must |
+| [US-003-03: Present the private central player record](../user-stories/us-003-03-central-player-profile.md) | In progress — central record slice verified | Both | Must |
 | [US-003-04: Player performance assessments](../user-stories/us-003-04-player-performance-assessments.md) | Proposed | Questionnaire only | Proposed launch candidate; estimate and sequence pending clarification |
 
 ## Exit criteria

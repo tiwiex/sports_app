@@ -124,3 +124,7 @@ Fee schedule, registration and guardian consent forms, attendance sample, redact
 User-confirmed numbering and separate 4–18 public age policy: [build evidence](../build-logs/2026-11-06-us-003-02-player-series-and-public-age-policy.md). Original questionnaire responses remain unchanged.
 
 User clarification (6 November): prepare/reuse a guardian User alongside the player User, with multiple children linked to one guardian; player email must be unique before public submission. This does not resolve or implement full parent portal access/activation. Original responses remain immutable. [Build evidence](../build-logs/2026-11-06-us-003-01-email-preflight-and-guardian-users.md).
+
+## US-003-03 implementation evidence — 6 November 2026
+
+The accepted central-record slice now delivers derived age, optional preferred foot, dated cm/kg measurements, private portrait display and management-only birth/medical/other supporting archives for Q02-03/04/05 and Q06-02, alongside permission-scoped financial/attendance/fingerprint histories. Origin remains **Both**; questionnaire transcript and provenance are unchanged. Q02-11/13 returning-player policies and injury/absence/retention decisions remain outstanding. [Story](../backlog/user-stories/us-003-03-central-player-profile.md) · [Build log](../build-logs/2026-11-06-us-003-03-central-player-record.md).

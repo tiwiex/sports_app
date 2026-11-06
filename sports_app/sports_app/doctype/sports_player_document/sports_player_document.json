@@ -1,0 +1,133 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Player Document",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "custom": 0,
+ "autoname": "hash",
+ "allow_rename": 0,
+ "track_changes": 1,
+ "field_order": [
+  "player",
+  "company",
+  "title",
+  "document_type",
+  "document_date",
+  "file_url",
+  "recorded_on",
+  "recorded_by",
+  "request_key",
+  "request_hash"
+ ],
+ "fields": [
+  {
+   "fieldname": "player",
+   "label": "Player",
+   "fieldtype": "Link",
+   "read_only": 1,
+   "reqd": 1,
+   "options": "Sports Player",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "read_only": 1,
+   "reqd": 1,
+   "options": "Company"
+  },
+  {
+   "fieldname": "title",
+   "label": "Title",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "document_type",
+   "label": "Document type",
+   "fieldtype": "Select",
+   "read_only": 1,
+   "reqd": 1,
+   "options": "Birth certificate\nMedical report\nOther",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "document_date",
+   "label": "Document date",
+   "fieldtype": "Date",
+   "read_only": 1,
+   "reqd": 0
+  },
+  {
+   "fieldname": "file_url",
+   "label": "Private document",
+   "fieldtype": "Attach",
+   "read_only": 1,
+   "reqd": 0
+  },
+  {
+   "fieldname": "recorded_on",
+   "label": "Recorded on",
+   "fieldtype": "Datetime",
+   "read_only": 1,
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "recorded_by",
+   "label": "Recorded by",
+   "fieldtype": "Link",
+   "read_only": 1,
+   "reqd": 1,
+   "options": "User"
+  },
+  {
+   "fieldname": "request_key",
+   "label": "Request key",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "reqd": 1,
+   "unique": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "request_hash",
+   "label": "Request hash",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "reqd": 1,
+   "hidden": 1
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "create": 1,
+   "write": 1,
+   "delete": 0,
+   "export": 0,
+   "share": 0,
+   "report": 1,
+   "submit": 1
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "create": 1,
+   "write": 1,
+   "delete": 0,
+   "export": 0,
+   "share": 0,
+   "report": 1,
+   "submit": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "is_submittable": 1,
+ "protect_attached_files": 1
+}

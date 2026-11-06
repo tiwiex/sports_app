@@ -59,7 +59,7 @@ Updated 6 November 2026: **9 epics, 33 story records**, including the withdrawn 
 |---|---|---|
 | [US-003-01: Capture and review player registrations](user-stories/us-003-01-application-intake-and-review.md) | In progress — PoC workflow | Both |
 | [US-003-02: Assign stable player IDs and enrollment dates](user-stories/us-003-02-player-numbering-and-enrollment.md) | In progress | Both |
-| [US-003-03: Present the private central player record](user-stories/us-003-03-central-player-profile.md) | In progress — profile presentation slice | Both |
+| [US-003-03: Present the private central player record](user-stories/us-003-03-central-player-profile.md) | In progress — central record slice verified | Both |
 | [US-003-04: Player performance assessments](user-stories/us-003-04-player-performance-assessments.md) | Proposed | Questionnaire only |
 
 ### EPIC-004: Scholarships, fee policy and recurring billing
@@ -123,7 +123,7 @@ Updated 6 November 2026: **9 epics, 33 story records**, including the withdrawn 
 - In progress — invoice-first enrollment PoC: 1
 - In progress — manual attendance prototype: 2
 - In progress — preparation metadata only; hardware/provider validation pending: 1
-- In progress — profile presentation slice: 1
+- In progress — central record slice verified: 1
 - In review: 1
 - Proposed: 18
 - Withdrawn — user clarified Next.js is for attendance: 1

@@ -21,6 +21,7 @@
   "birth_date",
   "gender",
   "preferred_position",
+  "preferred_foot",
   "school_name",
   "contact_email",
   "contact_phone",
@@ -260,6 +261,13 @@
    "label": "Guardian self-service account",
    "read_only": 1,
    "description": "Server-owned guardian identity reference. May be shared by siblings; does not authorize portal access."
+  },
+  {
+   "fieldname": "preferred_foot",
+   "label": "Preferred foot",
+   "fieldtype": "Select",
+   "options": "\nLeft\nRight\nBoth\nNot specified",
+   "description": "Optional sport-specific profile preference. Updated by authorised staff."
   }
  ],
  "permissions": [
