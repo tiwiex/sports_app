@@ -2,15 +2,16 @@ import frappe
 from frappe import _
 from frappe.model.document import Document
 
-from sports_app.academy import validate_company
+from sports_app.academy import get_configured_settings, validate_company
 from sports_app.players import immutable, require_player_access, validate_enrollment_values
 
 
 class SportsEnrollment(Document):
 	def validate(self):
 		require_player_access()
+		get_configured_settings(for_update=True)
 		immutable(self, ("player", "company"))
-		player = frappe.get_doc("Sports Player", self.player)
+		player = frappe.get_doc("Sports Player", self.player, for_update=True)
 		player.check_permission("read")
 		if not player.customer:
 			frappe.throw(_("The player has no linked Customer. Contact the academy administrator."))

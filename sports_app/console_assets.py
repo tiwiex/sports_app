@@ -7,6 +7,7 @@ FILES = (
 	"console_navigation.js",
 	"console_overview.js",
 	"players.js",
+	"player_id_change.js",
 	"registrations.js",
 	"academy_settings.js",
 	"development_tools.js",

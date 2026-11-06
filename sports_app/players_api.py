@@ -9,6 +9,7 @@ from frappe import _
 from frappe.utils import CallbackManager, cint
 
 from sports_app.academy import validate_company
+from sports_app.player_ids import can_change
 from sports_app.players import (
 	ENROLLMENT_FIELDS,
 	PLAYER_FIELDS,
@@ -66,6 +67,7 @@ def list_players(
 	)
 	for row in rows:
 		can_create_enrollment = frappe.has_permission("Sports Enrollment", "create")
+		row["can_change_id"] = can_change(frappe.get_doc("Sports Player", row.name))
 		row["can_enroll"] = bool(
 			can_create_enrollment and frappe.get_doc("Sports Player", row.name).has_permission("write")
 		)
@@ -115,11 +117,13 @@ def get_player(name: str, start: str | int = 0):
 				"modified",
 				"customer",
 				"portal_user",
+				"guardian_user",
 				*PLAYER_FIELDS,
 			)
 		},
 		"enrollments": enrollments,
 		"fields": get_registration_fields(),
+		"can_change_id": can_change(doc),
 		"can_enroll": bool(
 			doc.has_permission("write") and frappe.has_permission("Sports Enrollment", "create")
 		),

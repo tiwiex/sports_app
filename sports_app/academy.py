@@ -7,6 +7,8 @@ import pytz
 from frappe import _
 from frappe.utils import cint, flt
 
+DEFAULT_ENROLLMENT_SERIES = "MSA-ENR-.YYYY.-.#####"
+
 SETTINGS_ROLE = "Sports Academy Administrator"
 SETTINGS_FIELDS = (
 	"academy_name",
@@ -15,6 +17,8 @@ SETTINGS_FIELDS = (
 	"timezone",
 	"registration_prefix",
 	"registration_digits",
+	"player_starting_sequence",
+	"enrollment_naming_series",
 	"default_enrollment_status",
 	"default_program",
 	"default_group",
@@ -63,8 +67,11 @@ def validate_company(company):
 def validate_settings_values(values):
 	"""Validate reusable policy without selecting site- or client-specific defaults."""
 	from sports_app.payment_notifications import review_recipients
+	from sports_app.player_numbering import starting_sequence
 
 	review_recipients(values.get("payment_review_emails"))
+	enrollment_series(values.get("enrollment_naming_series"))
+	starting_sequence(values.get("player_starting_sequence"))
 	required = {
 		"academy_name": "Academy name",
 		"company": "Company",
@@ -84,8 +91,8 @@ def validate_settings_values(values):
 				"Registration prefix must be 2-20 uppercase letters, digits or hyphens, starting with a letter."
 			)
 		)
-	if cint(values.get("registration_digits")) not in range(4, 11):
-		frappe.throw(_("Registration digits must be between 4 and 10."))
+	if cint(values.get("registration_digits")) not in range(3, 11):
+		frappe.throw(_("Player sequence digits must be between 3 and 10."))
 	if values.get("default_enrollment_status") not in ("Pending", "Active"):
 		frappe.throw(_("Select Pending or Active as the default enrollment status."))
 	if flt(values.get("default_monthly_fee")) < 0:
@@ -139,3 +146,15 @@ def get_ready_settings():
 	doc.check_permission("read")
 	validate_settings(doc)
 	return doc
+
+
+def enrollment_series(value):
+	"""Restrict configurable references to a literal prefix, optional year and counter."""
+	series = DEFAULT_ENROLLMENT_SERIES if value is None or value == "" else value
+	if not isinstance(series, str) or not re.fullmatch(
+		r"[A-Z][A-Z0-9-]{1,29}\.(?:YYYY\.-\.)?#{4,10}", series
+	):
+		frappe.throw(
+			_("Use an enrollment series such as MSA-ENR-.YYYY.-.##### or MSA-ENR-.##### (4-10 digits).")
+		)
+	return series

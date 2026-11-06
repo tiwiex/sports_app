@@ -78,13 +78,13 @@ def invoice_workflow():
 	return workflow
 
 
-def prepare_invoice(player, pathway, request_key, website=""):
+def prepare_invoice(player, pathway, request_key, website="", image_data=""):
 	from sports_app.players import _ensure_program_category, _insert_identity_customer
 	from sports_app.registrations_api import _submit_registration
 
 	settings = intake_settings()
 	with acceptance_transaction():
-		receipt = _submit_registration(player, pathway, request_key, website)
+		receipt = _submit_registration(player, pathway, request_key, website, image_data)
 		app = frappe.get_doc("Sports Registration", receipt["reference"], for_update=True)
 		if app.get("sales_invoice"):
 			invoice = frappe.get_doc("Sales Invoice", app.sales_invoice, for_update=True)

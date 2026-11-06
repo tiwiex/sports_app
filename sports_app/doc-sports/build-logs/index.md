@@ -2,6 +2,10 @@
 
 | Date | Entry | Status |
 |---|---|---|
+| 2026-11-06 | [Enrollment/player refinements PR integration](2026-11-06-enrollment-player-refinements-pr-integration.md) | Pre-merge verification / PR status authoritative |
+| 2026-11-06 | [Audited player ID correction](2026-11-06-us-003-02-audited-player-id-correction.md) | Verified development refinement / US-003-02 |
+| 2026-11-06 | [Legacy player import and sequence setup](2026-11-06-us-003-02-legacy-import-and-sequence-floor.md) | Verified development refinement / US-003-02 |
+| 2026-11-06 | [Sports menu number badges](2026-11-06-us-002-01-sports-menu-badges.md) | Verified development refinement / US-002-01 |
 | 2026-11-06 | [Develop integration and PR verification](2026-11-06-develop-pr-integration.md) | Local checks verified; PR integration tracked in log |
 | 2026-11-06 | [US-001-02 review metadata](2026-11-06-us-001-02-review-d9edae6a5126.md) | Reviewer update / audited |
 | 2026-11-06 | [US-001-03 review metadata](2026-11-06-us-001-03-review-5b832b672cf9.md) | Reviewer update / audited |
@@ -74,3 +78,13 @@ Implementation evidence begins with US-002-01. Start a log from [TEMPLATE](TEMPL
 - [2026-11-01 — US-001-01: Restore native Chart of Accounts permissions](2026-11-01-us-001-01-coa-native-permissions.md) — Verified / In review.
 
 - [2026-11-02 — US-009-01: Column filters and sorting](2026-11-02-us-009-01-column-filters-and-sorting.md) — Verified development adjustment / In Review.
+
+- [6 November 2026 — Enrollment portrait, naming series and combined invoice acceptance](2026-11-06-us-003-01-enrollment-image-and-invoice-acceptance.md)
+
+- [6 November 2026 — Configurable enrollment naming series](2026-11-06-us-003-01-configurable-enrollment-series.md)
+
+- [6 November 2026 — Continuous player IDs and public age validation](2026-11-06-us-003-02-player-series-and-public-age-policy.md)
+
+- [6 November 2026 — Email preflight and shared guardian User provisioning](2026-11-06-us-003-01-email-preflight-and-guardian-users.md)
+
+- [6 November 2026 — Live operational console tables](2026-11-06-us-002-01-live-console-tables.md)

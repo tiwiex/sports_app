@@ -1,6 +1,7 @@
 /* Sports-owned private intake queue in the optional Boost host. */
 frappe.provide("frappe.boost_console_views");
 frappe.boost_console_views["sports_app:registrations"] = () => {
+	let liveSnapshot;
 	let host,
 		signal,
 		status = "Pending",
@@ -96,7 +97,9 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 				},
 				{ fieldname: "review_notice", fieldtype: "HTML" },
 			],
-			primary_action_label: __("Accept and create player"),
+			primary_action_label: __(
+				record.sales_invoice ? "Accept and confirm payment" : "Accept and create player"
+			),
 			async primary_action(values) {
 				dialog.get_primary_btn().prop("disabled", true);
 				try {
@@ -114,7 +117,7 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 		const notice = node(
 			"div",
 			__(
-				"Review possible player matches before admitting this applicant. Acceptance adds the player to the selected program."
+				"Review possible player matches before admitting this applicant. Acceptance adds the player to the selected program. For a linked invoice, confirm you have verified the transfer: this action submits the invoice and records its payment."
 			),
 			"text-muted"
 		);
@@ -221,6 +224,13 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			node("h3", r.full_name)
 		);
 		hero.append(identity, chip);
+		if (r.player_photo && r.player_photo.startsWith("/private/files/")) {
+			const photo = node("img");
+			photo.src = r.player_photo;
+			photo.alt = __("Player photograph");
+			photo.style.cssText = "width:96px;height:96px;object-fit:cover;border-radius:8px";
+			identity.append(photo);
+		}
 		wrap.append(hero);
 		const summary = grid(card("Application summary", "enrollment-summary"));
 		field(summary, "Enrollment reference", r.name);
@@ -232,7 +242,15 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			if (data.can_review) {
 				const actions = node("div", null, "enrollment-actions");
 				actions.append(
-					button("Accept enrollment", () => accept(r, data.possible_matches), true),
+					...(data.can_accept
+						? [
+								button(
+									"Accept enrollment",
+									() => accept(r, data.possible_matches),
+									true
+								),
+						  ]
+						: []),
 					button("Reject enrollment", () => reject(r)),
 					link("Sports Registration", r.name, __("Edit enrollment details"))
 				);
@@ -242,7 +260,7 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 				node(
 					"p",
 					__(
-						"Review the application and any possible player matches before accepting. Payment approval is handled separately."
+						"Review the application and any possible player matches before accepting. Accepting an application with a linked invoice also confirms its payment. Draft invoices must first be reported paid; Finance approval permissions are required."
 					),
 					"enrollment-note"
 				)
@@ -363,7 +381,11 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 		const current = ++generation,
 			data = await call("get_registration", { name });
 		if (signal.aborted || current !== generation) return;
-		if (!data.can_review || data.registration.status !== "Pending") {
+		if (
+			!data.can_review ||
+			(action === "accept" && !data.can_accept) ||
+			data.registration.status !== "Pending"
+		) {
 			await render();
 			frappe.msgprint(
 				__(
@@ -421,7 +443,7 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 		};
 		add("View", () => show(row.name));
 		if (row.status === "Pending" && row.can_review) {
-			add("Accept enrollment", () => reviewAction(row.name, "accept"));
+			if (row.can_accept) add("Accept enrollment", () => reviewAction(row.name, "accept"));
 			add("Reject enrollment", () => reviewAction(row.name, "reject"), true);
 		}
 		toggle.addEventListener(
@@ -457,16 +479,21 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 		menu.append(toggle, list);
 		return menu;
 	}
-	async function render() {
-		closeMenus();
-		const current = ++generation,
+	async function render(options = {}) {
+		const background = options.background === true;
+		const canApply = options.canApply || (() => true);
+		if (!background) closeMenus();
+		const current = background ? generation : ++generation,
 			rows = await call("list_registrations", {
 				status,
 				start: offset,
 				sort_by: sortBy,
 				sort_order: sortOrder,
 			});
-		if (signal.aborted || current !== generation) return;
+		if (signal.aborted || current !== generation || !canApply()) return false;
+		const snapshot = JSON.stringify(rows);
+		if (background && snapshot === liveSnapshot) return;
+		liveSnapshot = snapshot;
 		const wrap = node("section");
 		wrap.append(
 			node("h3", __("Enrollments")),
@@ -539,6 +566,7 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			th.append(sort);
 			heading.append(th);
 		}
+		for (const title of ["Invoice", "Invoice workflow"]) heading.append(node("th", __(title)));
 		head.append(heading);
 		table.append(head);
 		const body = node("tbody");
@@ -559,7 +587,11 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 					: "is-pending-review"
 			);
 			state.append(chip);
-			tr.append(state);
+			tr.append(
+				state,
+				node("td", row.sales_invoice || "—"),
+				node("td", row.invoice_workflow || "—")
+			);
 			body.append(tr);
 		}
 		table.append(body);
@@ -611,6 +643,15 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			window.addEventListener("resize", closeMenus, { signal });
 			host.addEventListener("scroll", closeMenus, { capture: true, signal });
 			await render();
+			options.watch?.({
+				doctypes: [
+					"Sports Registration",
+					"Sports Player",
+					"Sales Invoice",
+					"Payment Entry",
+				],
+				refresh: ({ canApply }) => render({ background: true, canApply }),
+			});
 		},
 		unmount() {
 			generation++;

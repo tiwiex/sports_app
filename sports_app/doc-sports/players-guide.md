@@ -50,3 +50,52 @@ In the native form, edit first/last names for structured records; full name is d
 Sports → Enrollments holds public submissions for private review. Acceptance creates the same Player/Customer/User/enrollment records as direct registration and adds a Source registration link. Pending/rejected applications create no Player/User/enrollment. When the applicant uses Make Payment, a prospective Customer and draft Sales Invoice exist before admission; acceptance reuses that Customer. Rejection does not automatically cancel an invoice or refund a receipt. See the [complete PoC workflow](website-prototype.md).
 
 Enrollment invoice references and review states appear in the private registration profile. Finance users open the invoice and use Complete Payment after verifying the full bank credit; the invoice and its allocated receipt submit together, without opening Payment Entry separately. Registrars receive no general finance permissions. Applicant claims remain unposted.
+
+## Confirmed player numbering and public age rule — 6 November 2026
+
+User clarification confirms BA-QNR-001-Q02-07/Q02-08: **MSA + two-digit creation year + hyphen + two-digit creation month + continuous serial**, e.g. `MSA26-08005` followed by `MSA26-09006`. The sequence also continues across year boundaries. The backend uses the academy timezone and a locked Company-scoped counter whose key excludes month, year, editable prefix and application series. Minimum sequence width defaults to three digits and expands naturally; prefix/width remain management settings. On first initialization, seed after the highest existing matching player reference in that Company. Existing prototype IDs of another format stay unchanged and are not interpreted as legacy serials. Existing IDs are immutable; no identity, Customer or finance references are renamed.
+
+The player reference is independent of the configurable **enrollment application** series (`MSA-ENR-.YYYY.-.#####`), accepted Sports Enrollment membership IDs and ERPNext invoice numbering. Current development player defaults are MSA / 3 digits. This supersedes the old prefix-plus-counter-only player ID format for new players.
+
+Public HTML enrollment accepts ages **4 through 18 inclusive**, calculated from calendar birthdays against the academy-local date. Show an inline age error and enforce date bounds in the browser; reject invalid ages in the server-owned public application controller before creating a successful application/invoice. Under-4, 19-or-older and future DOBs are rejected. A February 29 birthday reaches the next age on March 1 in a non-leap year. Enforce on new applications/DOB corrections, without retroactively blocking unchanged historical applications or imposing this public intake policy on ordinary updates to existing player records. Private staff intake policy is not broadened by this web-form refinement.
+
+Provenance: numbering is **Both** (baseline plus questionnaire, now user-confirmed); the explicit 4–18 public restriction is user direction informed by the supplied web-form screenshot, not a claim that the questionnaire stated those exact limits.
+
+[Build evidence](build-logs/2026-11-06-us-003-02-player-series-and-public-age-policy.md).
+
+## Player email preflight and shared guardian identity — 6 November 2026
+
+User refinement: a player email must be unique before public enrollment is submitted, not only when staff accepts it. Normalize player email; reject addresses already used by a User (including email-field aliases such as Administrator), Sports Player or another Pending Sports Registration. Rejected applications release their pending reservation. Browser preflight runs on leaving the player-email field and again before Make Payment/Submit, returning only availability; server validation remains authoritative under the existing settings lock. Preserve token-bound unchanged retries. Show a specific inline error and retain entered details. Review older applications again before financial completion, so a known conflicting email does not start the posting process.
+
+At authorized acceptance/direct player registration, create the player's separate disabled Website User and create or reuse the guardian User. A server-owned **guardian_user** link on Sports Player supports many players to one guardian. Siblings retain separate player emails, Users, Customers and enrollment/finance histories. Player and guardian email on one form must differ. New guardian accounts are disabled Website Users without Desk roles or welcome mail; existing guardian accounts retain their original type, enabled state, roles and profile. Guardian email repetition is permitted; it never becomes a shared payer Customer. Account creation/linkage participates in the same admission transaction and rolls back on failure.
+
+A supplied guardian email is an unverified identity reference, not proof of guardianship or permission to access children. This change does not activate accounts, grant guardian portal permissions, send invitations or implement the parent portal. Existing records are not bulk-backfilled or automatically merged; existing duplicate applications require staff/Finance correction. This user-approved account preparation refines the earlier player-only provisioning decision while leaving portal activation/access as separate scope.
+
+[Build evidence](build-logs/2026-11-06-us-003-01-email-preflight-and-guardian-users.md).
+
+
+## Import existing players before launch
+
+1. Configure Company, default program, **Player ID prefix** (for example MSA) and sequence digits in Academy Settings.
+2. Clean the legacy roster: one unique player ID and unique player email per player. Repeated guardian emails are allowed. Resolve conflicts with existing Users/players/pending applications before import; existing player accounts are not automatically reused.
+3. A permitted academy manager with native Data Import access opens `/app/data-import`, selects **Sports Player → Insert New Records**, and downloads/maps the template. Include the **ID** column and place the exact legacy reference there, such as `MSA17-08005`. Include Player name, Company and unique Player email, plus available profile details. Leave Customer, self-service User, guardian User, request metadata and source registration links unset; the server owns those fields. Follow required fields in the template; do not invent missing player/consent data.
+4. Run a small reviewed batch and inspect the native per-row import log. Successful IDs stay unchanged, and matching numeric suffixes advance the continuous Company counter. Failed rows must be corrected, not admitted under replacement identities. Native import handles rows individually; a batch is not all-or-nothing.
+5. In Academy Settings, set **Player starting sequence** to the next reconciled number. For example after suffix 125 use `126`. This is a minimum, not a counter reset; a higher previously issued/imported number wins. A different historical prefix/format is retained but needs this explicit sequence setting. The preview illustrates the configured minimum, not a guaranteed next allocation.
+6. Create program enrollments through the staff workflow and reconcile roster/account totals before opening public intake. No historical fees, payments or attendance are fabricated by importing a player.
+
+Public applicants and ordinary staff registration cannot supply arbitrary player IDs. Existing IDs cannot be renamed/merged. Changing the player prefix or starting sequence only affects future automatic IDs, independently of application/invoice series. Imported users stay disabled without welcome email/portal activation, consistent with ordinary intake. No actual client roster has been imported by this adjustment.
+
+[Build evidence](build-logs/2026-11-06-us-003-02-legacy-import-and-sequence-floor.md).
+
+
+## Correct an existing player ID
+
+An academy administrator with write access can open **Players → player ID menu → Change Player ID**, use the same action inside the profile, or open the native Sports Player form. Enter the corrected unused ID and a reason, then select **Change Player ID**. A stale form must be refreshed before saving. IDs may contain 2–140 letters, digits, hyphens or underscores, starting with a letter/digit. Case-only changes and merges are prohibited.
+
+The action updates linked records and attachments while keeping Customer/User accounts and financial documents unchanged. It does not reset numbering; a higher corrected number advances the sequence. Open **ID change history** in the profile to inspect previous/new IDs, reason, operator and timestamp. Existing and retired IDs cannot be reassigned to another player or used to reverse a correction; choose a fresh ID for any subsequent correction. General native Rename remains disabled.
+
+After correction, refresh online attendance/fingerprint lists and downloaded attendance rosters. Keep pending offline changes for explicit sync/conflict review; do not delete their local queue. A changed stale attendance mark is rejected until reviewed against the refreshed roster. Old-ID fingerprint preparation retries are not automatically replayed under the new identity.
+
+The previous immutable-ID guidance has this explicit, audited management exception. During initial setup, importing the correct legacy ID remains preferable to correcting IDs later. No existing real players were renamed when enabling this feature.
+
+[Build evidence](build-logs/2026-11-06-us-003-02-audited-player-id-correction.md).

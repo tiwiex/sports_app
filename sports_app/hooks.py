@@ -270,7 +270,10 @@ doc_events = {
 }
 
 # App-owned invoice review action; core accounting stays in ERPNext.
-doctype_js = {"Sales Invoice": "public/js/enrollment_invoice.js"}
+doctype_js = {
+	"Sales Invoice": "public/js/enrollment_invoice.js",
+	"Sports Player": "public/js/player_id_change.js",
+}
 
 # Add the app-owned finance shortcut to Boost invoice menus.
 from sports_app.console_assets import asset_url as sports_asset_url

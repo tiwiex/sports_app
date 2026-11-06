@@ -11,9 +11,11 @@
   "company",
   "customer",
   "portal_user",
+  "guardian_user",
   "registration_program",
   "source_registration",
   "player_details",
+  "player_photo",
   "first_name",
   "last_name",
   "birth_date",
@@ -244,6 +246,20 @@
    "read_only": 1,
    "no_copy": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "player_photo",
+   "label": "Player image",
+   "fieldtype": "Attach Image",
+   "read_only": 1
+  },
+  {
+   "fieldname": "guardian_user",
+   "fieldtype": "Link",
+   "options": "User",
+   "label": "Guardian self-service account",
+   "read_only": 1,
+   "description": "Server-owned guardian identity reference. May be shared by siblings; does not authorize portal access."
   }
  ],
  "permissions": [
@@ -255,7 +271,8 @@
    "delete": 0,
    "report": 1,
    "export": 0,
-   "share": 0
+   "share": 0,
+   "import": 1
   },
   {
    "role": "Sports Academy Administrator",
@@ -265,7 +282,8 @@
    "delete": 0,
    "report": 1,
    "export": 0,
-   "share": 0
+   "share": 0,
+   "import": 1
   },
   {
    "role": "Sports Registrar",
@@ -282,5 +300,6 @@
  "sort_order": "DESC",
  "title_field": "full_name",
  "search_fields": "full_name,company",
- "autoname": ""
+ "autoname": "",
+ "allow_import": 1
 }

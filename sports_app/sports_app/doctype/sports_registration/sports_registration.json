@@ -6,7 +6,7 @@
  "custom": 0,
  "track_changes": 1,
  "allow_rename": 0,
- "autoname": "hash",
+ "autoname": "",
  "title_field": "full_name",
  "search_fields": "full_name,contact_email",
  "field_order": [
@@ -28,6 +28,7 @@
   "request_hash",
   "acceptance_key",
   "player_details",
+  "player_photo",
   "first_name",
   "last_name",
   "birth_date",
@@ -50,7 +51,8 @@
   "consent_details",
   "medical_consent",
   "media_consent",
-  "terms_accepted"
+  "terms_accepted",
+  "photo_hash"
  ],
  "fields": [
   {
@@ -332,6 +334,19 @@
    "unique": 1,
    "read_only": 1,
    "no_copy": 1
+  },
+  {
+   "fieldname": "player_photo",
+   "label": "Player image",
+   "fieldtype": "Attach Image",
+   "read_only": 1
+  },
+  {
+   "fieldname": "photo_hash",
+   "label": "Image fingerprint",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "read_only": 1
   }
  ],
  "permissions": [

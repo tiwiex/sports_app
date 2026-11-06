@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 
 import frappe
 
-from sports_app import players, players_api
+from sports_app import enrollment_accounts, players, players_api
 
 
 class TestPlayers(TestCase):
@@ -17,6 +17,7 @@ class TestPlayers(TestCase):
 			(frappe, "_", lambda s: s),
 			(players, "_", lambda s: s),
 			(players_api, "_", lambda s: s),
+			(enrollment_accounts, "_", lambda s: s),
 		):
 			active = patch.object(target, name, value)
 			active.start()
@@ -148,6 +149,7 @@ class TestPlayers(TestCase):
 		with (
 			patch.object(sports_enrollment, "require_player_access"),
 			patch.object(sports_enrollment, "immutable"),
+			patch.object(sports_enrollment, "get_configured_settings"),
 			patch.object(sports_enrollment.frappe, "get_doc", return_value=player),
 			self.assertRaises(frappe.ValidationError),
 		):

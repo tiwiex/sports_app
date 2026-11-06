@@ -36,3 +36,15 @@ Acceptance evidence: [Column filters and sorting](../../build-logs/2026-11-02-us
 - Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
 
 Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-009-club-and-partner-relations.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+## Live operational tables — 6 November 2026
+
+The installed Boost host now offers an optional mounted-table watcher. Sports Enrollments, Players, Attendance sessions and Clubs & Partners declare their own relevant DocTypes and retain their authorized APIs, filters, sorting, page offsets and generation guards. Committed native notifications coalesce into a background reread; a 15-second fallback catches missed notifications or writes without events. Only matching records on the current filtered/sorted page appear. Equal responses keep the existing DOM.
+
+Updates pause while a filter/input/select, context menu or dialog is in use, then catch up. Hidden tabs do not poll; resuming/reconnecting triggers a reread. Host abort/unmount removes timers/listeners; responses recheck signal/generation/application safety. Explicit Refresh remains supported. The compatibility hook is generic and does not hardcode Sports into Boost. On an older host without the hook, manual refresh remains available. This slice updates operational queue tables; editable documentation/settings forms and the separate Next attendance application are not remounted by it.
+
+No permissions, financial state, record identity, schema or website enrollment behavior changes. No production edits/deployment.
+
+Acceptance refinement: matching new/updated/removed queue rows become visible without manual refresh; preserve query/page/scroll, open interactions and read permissions; verify unchanged DOM, stale result rejection, visibility/socket/poll catch-up and abort cleanup. Existing wider story status remains unchanged.
+
+[Build evidence](../../build-logs/2026-11-06-us-002-01-live-console-tables.md).

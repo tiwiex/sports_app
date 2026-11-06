@@ -1,6 +1,7 @@
 /* Sports-owned private registration and enrollment in the shared Boost shell. */
 frappe.provide("frappe.boost_console_views");
 frappe.boost_console_views["sports_app:players"] = () => {
+	let liveSnapshot;
 	let host,
 		signal,
 		search = "",
@@ -137,6 +138,7 @@ frappe.boost_console_views["sports_app:players"] = () => {
 			list.append(li);
 		};
 		add("View", () => showPlayer(row.name));
+		if (row.can_change_id) add("Change Player ID", () => changeId(row.name));
 		if (row.can_enroll) add("New program enrollment", () => startEnrollment(row.name));
 		toggle.addEventListener(
 			"keydown",
@@ -170,6 +172,17 @@ frappe.boost_console_views["sports_app:players"] = () => {
 		);
 		menu.append(toggle, list);
 		return menu;
+	};
+	const changeId = async (name) => {
+		const dialog = await frappe.sports_player_ids.change(name, async (newName) => {
+			if (signal.aborted) return;
+			await render();
+			await showPlayer(newName);
+		});
+		if (dialog) {
+			dialogs.add(dialog);
+			if (signal.aborted) dialog.hide();
+		}
 	};
 	const showPlayer = async (name, start = 0) => {
 		const current = ++generation;
@@ -230,6 +243,12 @@ frappe.boost_console_views["sports_app:players"] = () => {
 		actions.append(link("Sports Player", p.name, __("Open player record")));
 		if (result.can_enroll)
 			actions.append(button("New program enrollment", () => newEnrollment(p), true));
+		if (result.can_change_id) {
+			actions.append(button("Change Player ID", () => changeId(p.name)));
+			const history = node("a", __("ID change history"), "btn btn-default btn-sm");
+			history.href = `/app/sports-player-id-change?player=${encodeURIComponent(p.name)}`;
+			actions.append(history);
+		}
 		wrapper.append(actions);
 		const accounts = grid(card("Linked accounts"));
 		field(
@@ -242,6 +261,7 @@ frappe.boost_console_views["sports_app:players"] = () => {
 				: null
 		);
 		field(accounts, "Self-service account", p.portal_user || null);
+		field(accounts, "Guardian account", p.guardian_user || null);
 		const memberships = card("Program enrollments");
 		memberships.append(
 			table(
@@ -450,16 +470,21 @@ frappe.boost_console_views["sports_app:players"] = () => {
 			}
 		);
 	};
-	async function render() {
-		closeMenus();
-		const current = ++generation;
+	async function render(options = {}) {
+		const background = options.background === true;
+		const canApply = options.canApply || (() => true);
+		if (!background) closeMenus();
+		const current = background ? generation : ++generation;
 		const rows = await call("list_players", {
 			search,
 			start: offset,
 			sort_by: sortBy,
 			sort_order: sortOrder,
 		});
-		if (signal.aborted || current !== generation) return;
+		if (signal.aborted || current !== generation || !canApply()) return false;
+		const snapshot = JSON.stringify(rows);
+		if (background && snapshot === liveSnapshot) return;
+		liveSnapshot = snapshot;
 		const wrapper = node("section");
 		wrapper.append(
 			node("h3", __("Players")),
@@ -582,6 +607,10 @@ frappe.boost_console_views["sports_app:players"] = () => {
 			window.addEventListener("resize", closeMenus, { signal });
 			host.addEventListener("scroll", closeMenus, { capture: true, signal });
 			await render();
+			options.watch?.({
+				doctypes: ["Sports Player", "Sports Enrollment", "User", "Customer"],
+				refresh: ({ canApply }) => render({ background: true, canApply }),
+			});
 		},
 		unmount() {
 			generation++;

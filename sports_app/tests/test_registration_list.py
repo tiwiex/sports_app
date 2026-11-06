@@ -52,7 +52,9 @@ class TestRegistrationList(TestCase):
 				patch.object(api, "require_player_access"),
 				patch.object(frappe, "get_list", return_value=[row]),
 				patch.object(
-					frappe, "get_doc", return_value=SimpleNamespace(has_permission=Mock(return_value=write))
+					frappe,
+					"get_doc",
+					return_value=frappe._dict(status=status, has_permission=Mock(return_value=write)),
 				),
 			):
 				result = api.list_registrations.__wrapped__(status)

@@ -93,3 +93,7 @@ Following explicit user approval, Administrator is now an additional Sales Invoi
 - Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
 
 Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-005-payments-and-financial-history.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+## Combined admission/payment refinement — 6 November 2026
+
+An authorized reviewer may now accept a pending application and complete its linked Pending Review invoice/allocated receipt in one atomic operation. The existing standalone Finance action remains available. Draft/unclaimed invoices remain unposted. Native finance rights and configured Boost approvals still apply. This supersedes the mandatory two-step admission/finance sequence. [Acceptance criteria](us-003-01-application-intake-and-review.md#accepted-enrollment-refinement--6-november-2026); [build evidence](../../build-logs/2026-11-06-us-003-01-enrollment-image-and-invoice-acceptance.md).

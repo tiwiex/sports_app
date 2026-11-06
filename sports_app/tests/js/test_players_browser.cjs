@@ -30,6 +30,7 @@ const apps = path.resolve(__dirname, "../../../..");
       });
       await page.evaluate((fields) => {
         window.__ = (s, a = []) => s.replace(/\{(\d+)\}/g, (_, i) => a[i]);
+        window.crypto.randomUUID = () => "9dca7dcc-8e25-41bc-81a5-8fcc13f830b5";
         window.calls = [];
         window.messages = [];
         window.player = {
@@ -37,6 +38,7 @@ const apps = path.resolve(__dirname, "../../../..");
           full_name: "Sample Player",
           company: "Academy",
           registered_on: "2026-11-03 11:22:28.343411",
+          modified: "v1",
           customer: "CUSTOMER-QA",
           portal_user: "long.player.account@example.invalid",
           first_name: "Sample",
@@ -63,6 +65,7 @@ const apps = path.resolve(__dirname, "../../../..");
         }));
         window.frappe = {
           boost_console_views: {},
+          sports_player_ids: {},
           provide() {},
           router: { slug: (s) => s.toLowerCase().replaceAll(" ", "-") },
           datetime: { get_today: () => "2026-11-03", str_to_user: (s) => s },
@@ -74,7 +77,7 @@ const apps = path.resolve(__dirname, "../../../..");
             if (action === "list_players")
               return {
                 message: [
-                  { ...player, can_enroll: allowed },
+                  { ...player, can_enroll: allowed, can_change_id: allowed },
                   {
                     name: "PLAYER-READ",
                     full_name: "Read Only Player",
@@ -90,8 +93,13 @@ const apps = path.resolve(__dirname, "../../../..");
                   enrollments: args.start >= 20 ? [] : enrollments.slice(0, 20),
                   fields,
                   can_enroll: allowed && args.name !== "PLAYER-READ",
+                  can_change_id: allowed && args.name !== "PLAYER-READ",
                 },
               };
+            if (action === "change_player_id") {
+              player.name = args.new_id;
+              return { message: args.new_id };
+            }
             if (action === "save_enrollment") {
               enrollments.unshift({
                 ...args.enrollment,
@@ -104,6 +112,11 @@ const apps = path.resolve(__dirname, "../../../..");
             throw Error(action);
           },
           ui: {
+            form: {
+              on: (_doctype, events) => {
+                window.nativePlayerRefresh = events.refresh;
+              },
+            },
             Dialog: class {
               constructor(options) {
                 this.fields_dict = {};
@@ -170,6 +183,12 @@ const apps = path.resolve(__dirname, "../../../..");
         };
       }, JSON.parse(fs.readFileSync(path.join(apps, "sports_app/sports_app/registration_fields.json"), "utf8")));
       await page.addScriptTag({
+        path: path.join(
+          apps,
+          "sports_app/sports_app/public/js/player_id_change.js"
+        ),
+      });
+      await page.addScriptTag({
         path: path.join(apps, "sports_app/sports_app/public/js/players.js"),
       });
       await page.evaluate(async () => {
@@ -217,7 +236,7 @@ const apps = path.resolve(__dirname, "../../../..");
         await page
           .locator(".sports-player-menu.is-open [role=menuitem]")
           .allTextContents(),
-        ["View", "New program enrollment"]
+        ["View", "Change Player ID", "New program enrollment"]
       );
       await page.keyboard.press("Enter");
       await page.getByRole("dialog").waitFor();
@@ -328,6 +347,59 @@ const apps = path.resolve(__dirname, "../../../..");
         ),
         true
       );
+      await page.evaluate(() => {
+        allowed = true;
+      });
+      await page
+        .getByRole("button", {
+          name: "Actions for player PLAYER-QA-1",
+          exact: true,
+        })
+        .click();
+      await page
+        .getByRole("menuitem", { name: "Change Player ID", exact: true })
+        .click();
+      await page
+        .getByLabel("New player ID", { exact: true })
+        .fill("MSA17-08042");
+      await page
+        .getByLabel("Reason for change", { exact: true })
+        .fill("Match imported academy roster");
+      await page
+        .getByRole("dialog")
+        .getByRole("button", { name: "Change Player ID", exact: true })
+        .click();
+      await page.waitForFunction(() =>
+        calls.some((c) => c.action === "change_player_id")
+      );
+      const rename = await page.evaluate(
+        () => calls.find((c) => c.action === "change_player_id").args
+      );
+      assert.equal(rename.name, "PLAYER-QA-1");
+      assert.equal(rename.modified, "v1");
+      assert.equal(rename.reason, "Match imported academy roster");
+      assert.match(rename.request_key, /^[0-9a-f-]{36}$/);
+      await page.waitForFunction(() =>
+        document
+          .querySelector(".sports-player-profile")
+          ?.textContent.includes("MSA17-08042")
+      );
+      await page.evaluate(async () => {
+        const labels = [];
+        const frm = {
+          is_new: () => false,
+          doc: { name: player.name },
+          add_custom_button: (label) => labels.push(label),
+        };
+        await window.nativePlayerRefresh(frm);
+        if (labels.join() !== "Change Player ID")
+          throw Error("Native Player action missing");
+        allowed = false;
+        labels.length = 0;
+        await window.nativePlayerRefresh(frm);
+        if (labels.length)
+          throw Error("Native action visible after capability denial");
+      });
       await page.evaluate(() => view.unmount());
       assert.deepEqual(errors, []);
       await page.close();

@@ -9,6 +9,10 @@ from sports_app import players_api as api
 
 class TestPlayerPresentation(TestCase):
 	def setUp(self):
+		capability = patch.object(api, "can_change", return_value=False)
+		capability.start()
+		self.addCleanup(capability.stop)
+
 		def throw(message, exc=frappe.ValidationError):
 			raise exc(message)
 

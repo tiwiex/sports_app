@@ -215,19 +215,38 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 				},
 				{
 					fieldname: "registration_prefix",
-					label: __("Registration prefix"),
+					label: __("Player ID prefix"),
 					fieldtype: "Data",
 					reqd: 1,
 					description: __(
-						"For example ACADEMY. Existing player IDs will never be renumbered."
+						"For example MSA. Backend adds year/month and a continuous counter: MSA26-08001. Existing player IDs stay unchanged."
 					),
 				},
 				{
 					fieldname: "registration_digits",
-					label: __("Registration digits"),
+					label: __("Player sequence digits"),
 					fieldtype: "Int",
-					default: 5,
+					default: 3,
 					reqd: 1,
+				},
+				{
+					fieldname: "player_starting_sequence",
+					label: __("Player starting sequence"),
+					fieldtype: "Data",
+					default: "1",
+					description: __(
+						"Minimum sequence for new players, for example 126 after legacy number 125. Higher issued/imported numbers take precedence. Lowering this never resets numbering or changes existing IDs. Import old players first using their ID column."
+					),
+				},
+				{
+					fieldname: "enrollment_naming_series",
+					label: __("Enrollment naming series"),
+					fieldtype: "Data",
+					default: "MSA-ENR-.YYYY.-.#####",
+					reqd: 1,
+					description: __(
+						"Example: MSA-ENR-.YYYY.-.##### produces MSA-ENR-2026-00001. Optional year; 4-10 counter digits. Applies to new applications; existing references and invoice numbers stay unchanged."
+					),
 				},
 				{
 					fieldname: "default_enrollment_status",
@@ -363,14 +382,17 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 		const updatePreview = () => {
 			const digits = Math.min(
 				10,
-				Math.max(4, Number(form.get_value("registration_digits")) || 5)
+				Math.max(3, Number(form.get_value("registration_digits")) || 3)
 			);
 			preview.textContent = __("Registration example: {0} (preview only)", [
-				`${form.get_value("registration_prefix") || "…"}-${"1".padStart(digits, "0")}`,
+				`${form.get_value("registration_prefix") || "…"}YY-MM${String(
+					form.get_value("player_starting_sequence") || "1"
+				).padStart(digits, "0")}`,
 			]);
 		};
 		form.fields_dict.registration_prefix.df.onchange = updatePreview;
 		form.fields_dict.registration_digits.df.onchange = updatePreview;
+		form.fields_dict.player_starting_sequence.df.onchange = updatePreview;
 		form.fields_dict.company.df.onchange = () => {
 			form.set_value("default_program", "");
 			form.set_value("default_group", "");

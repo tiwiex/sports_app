@@ -95,11 +95,42 @@
 		document.getElementById("payment-made").disabled = busy;
 		submit.disabled = busy || Boolean(paymentData);
 	}
-	const now = new Date();
-	form.elements.birth_date.max = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
-		2,
-		"0"
-	)}-${String(now.getDate()).padStart(2, "0")}`;
+	const academyDate = document.querySelector('meta[name="academy-date"]')?.content;
+	const now = academyDate ? new Date(`${academyDate}T00:00:00Z`) : new Date();
+	const dob = form.elements.birth_date;
+	const ageError = document.getElementById("player-age-error");
+	const anniversary = (years) => {
+		const year = now.getUTCFullYear() - years,
+			month = now.getUTCMonth();
+		return new Date(
+			Date.UTC(
+				year,
+				month,
+				Math.min(now.getUTCDate(), new Date(Date.UTC(year, month + 1, 0)).getUTCDate())
+			)
+		);
+	};
+	const oldest = anniversary(19);
+	oldest.setUTCDate(oldest.getUTCDate() + 1);
+	dob.min = oldest.toISOString().slice(0, 10);
+	dob.max = anniversary(4).toISOString().slice(0, 10);
+	function validateAge() {
+		const birth = dob.value ? new Date(`${dob.value}T00:00:00Z`) : null;
+		const age = birth
+			? now.getUTCFullYear() -
+			  birth.getUTCFullYear() -
+			  (now.getUTCMonth() < birth.getUTCMonth() ||
+			  (now.getUTCMonth() === birth.getUTCMonth() && now.getUTCDate() < birth.getUTCDate())
+					? 1
+					: 0)
+			: null;
+		const invalid = birth && (age < 4 || age > 18);
+		dob.setCustomValidity(invalid ? "Players must be between 4 and 18 years old." : "");
+		ageError.hidden = !invalid;
+		return !invalid;
+	}
+	dob.addEventListener("input", validateAge);
+	dob.addEventListener("change", validateAge);
 	function validateEmergencyContact() {
 		const paired =
 			Boolean(form.elements.emergency_contact_name.value.trim()) ===
@@ -119,6 +150,7 @@
 			(field) => (field.disabled = false)
 		);
 		validateEmergencyContact();
+		validateAge();
 		errorMessage.hidden = true;
 		document.getElementById("payment-action-error").hidden = true;
 		submit.textContent = paymentEnabled ? "Make Payment ↗" : "Submit registration ↗";
@@ -212,19 +244,116 @@
 		showStep(3);
 		result.querySelector("[data-close]").focus({ preventScroll: true });
 	}
+	const playerEmail = form.elements.contact_email;
+	const guardianEmail = form.elements.guardian_email;
+	const emailError = document.getElementById("player-email-error");
+	let emailCheck = 0;
+	function clearEmailError() {
+		emailCheck++;
+		playerEmail.setCustomValidity("");
+		emailError.hidden = true;
+	}
+	playerEmail.addEventListener("input", clearEmailError);
+	guardianEmail.addEventListener("input", clearEmailError);
+	async function checkEmail() {
+		const value = playerEmail.value.trim().toLowerCase();
+		if (!value || playerEmail.validity.typeMismatch) return false;
+		const check = ++emailCheck;
+		let message = "";
+		try {
+			if (value === guardianEmail.value.trim().toLowerCase())
+				message = "Player and guardian must use separate email addresses.";
+			else {
+				const result = await post("registrations_api.check_player_email", {
+					email: value,
+					request_key: requestKey,
+				});
+				if (!result.available)
+					message =
+						"This player email is already in use or has a pending enrollment. Enter a different, unique player email.";
+			}
+		} catch (_) {
+			message = "Unable to check this player email. Please retry before continuing.";
+		}
+		if (check !== emailCheck || value !== playerEmail.value.trim().toLowerCase()) return false;
+		playerEmail.setCustomValidity(message);
+		emailError.textContent = message;
+		emailError.hidden = !message;
+		return !message;
+	}
+	playerEmail.addEventListener("blur", () => {
+		if (requestKey && !paymentData) checkEmail();
+	});
+	form.addEventListener("reset", clearEmailError);
+	const imageInput = form.elements.player_image;
+	const imagePreview = document.getElementById("player-image-preview");
+	const readImage = (file) =>
+		new Promise((resolve, reject) => {
+			if (!file || !file.size) return resolve("");
+			if (
+				file.size > 2 * 1024 * 1024 ||
+				!["image/jpeg", "image/png", "image/webp"].includes(file.type)
+			)
+				return reject(new Error("Choose a JPEG, PNG or WebP image up to 2 MB."));
+			const reader = new FileReader();
+			reader.onload = () => resolve(reader.result);
+			reader.onerror = () => reject(new Error("Unable to read image."));
+			reader.readAsDataURL(file);
+		});
+	imageInput.addEventListener("change", async () => {
+		imagePreview.hidden = true;
+		imageInput.setCustomValidity("");
+		try {
+			const value = await readImage(imageInput.files[0]);
+			if (value) {
+				imagePreview.src = value;
+				imagePreview.hidden = false;
+			}
+		} catch (error) {
+			imageInput.setCustomValidity(error.message);
+			imageInput.reportValidity();
+		}
+	});
+	form.addEventListener("reset", () => {
+		imagePreview.hidden = true;
+		imagePreview.removeAttribute("src");
+		imageInput.setCustomValidity("");
+	});
 	form.addEventListener("submit", async (event) => {
 		event.preventDefault();
 		if (submitting || paymentData) return;
+		if (!validateAge()) {
+			dob.reportValidity();
+			return;
+		}
 		const values = Object.fromEntries(new FormData(form));
+		delete values.player_image;
+		let image_data;
+		try {
+			image_data = await readImage(imageInput.files[0]);
+		} catch (error) {
+			imageInput.setCustomValidity(error.message);
+			imageInput.reportValidity();
+			return;
+		}
 		const pathway = values.program,
 			website = values.website || "";
 		delete values.program;
 		delete values.website;
 		for (const name of ["medical_consent", "media_consent", "terms_accepted"])
 			values[name] = values[name] ? 1 : 0;
-		const payload = JSON.stringify({ player: values, pathway, website });
+		const payload = JSON.stringify({ player: values, pathway, website, image_data });
 		if (retryPayload && retryPayload !== payload) requestKey = crypto.randomUUID();
 		retryPayload = payload;
+		setBusy(true);
+		submit.textContent = "Checking email…";
+		const available = await checkEmail();
+		setBusy(false);
+		submit.textContent = paymentEnabled ? "Make Payment ↗" : "Submit registration ↗";
+		if (!available) {
+			playerEmail.reportValidity();
+			return;
+		}
 		setBusy(true);
 		errorMessage.hidden = true;
 		submit.textContent = "Preparing…";

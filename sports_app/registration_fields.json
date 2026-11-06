@@ -1,26 +1,141 @@
 [
- {"fieldname":"player_details","label":"The player","fieldtype":"Section Break"},
- {"fieldname":"first_name","label":"First name","fieldtype":"Data","reqd":1},
- {"fieldname":"last_name","label":"Last name","fieldtype":"Data","reqd":1},
- {"fieldname":"birth_date","label":"Date of birth","fieldtype":"Date","reqd":1},
- {"fieldname":"gender","label":"Gender","fieldtype":"Select","options":"\nBoy\nGirl","reqd":1},
- {"fieldname":"preferred_position","label":"Preferred position","fieldtype":"Select","options":"\nNo preference\nGoalkeeper\nDefender\nMidfielder\nWinger\nStriker\nNot sure yet"},
- {"fieldname":"school_name","label":"School name","fieldtype":"Data"},
- {"fieldname":"contact_email","label":"Player email","fieldtype":"Data","options":"Email","reqd":1,"description":"A unique player email for the future self-service account; separate from the guardian email."},
- {"fieldname":"contact_phone","label":"Player / contact phone","fieldtype":"Data"},
- {"fieldname":"medical_notes","label":"Medical notes","fieldtype":"Small Text","description":"Allergies or conditions coaches should know about. Private player information."},
- {"fieldname":"guardian_details","label":"Parent / guardian","fieldtype":"Section Break"},
- {"fieldname":"guardian_name","label":"Parent / guardian name","fieldtype":"Data","reqd":1},
- {"fieldname":"guardian_relationship","label":"Relationship to player","fieldtype":"Data"},
- {"fieldname":"guardian_phone","label":"Parent / guardian phone","fieldtype":"Data","reqd":1},
- {"fieldname":"guardian_alt_phone","label":"Alternative guardian phone","fieldtype":"Data"},
- {"fieldname":"guardian_email","label":"Guardian email","fieldtype":"Data","options":"Email","reqd":1},
- {"fieldname":"home_address","label":"Home address","fieldtype":"Small Text","reqd":1},
- {"fieldname":"emergency_details","label":"Emergency contact (if different)","fieldtype":"Section Break"},
- {"fieldname":"emergency_contact_name","label":"Emergency contact name","fieldtype":"Data"},
- {"fieldname":"emergency_contact_phone","label":"Emergency contact phone","fieldtype":"Data"},
- {"fieldname":"consent_details","label":"Consent choices","fieldtype":"Section Break"},
- {"fieldname":"medical_consent","label":"Emergency medical attention consent recorded","fieldtype":"Check","description":"Permission to seek medical help if the guardian cannot be reached."},
- {"fieldname":"media_consent","label":"Photo and video permission recorded","fieldtype":"Check","description":"Permission to use academy training/match photos and video publicly. Optional; never preselected."},
- {"fieldname":"terms_accepted","label":"Academy terms acceptance recorded","fieldtype":"Check","description":"Record only consent actually supplied by the guardian. No payment is taken with this registration."}
+ {
+  "fieldname": "player_details",
+  "label": "The player",
+  "fieldtype": "Section Break"
+ },
+ {
+  "fieldname": "first_name",
+  "label": "First name",
+  "fieldtype": "Data",
+  "reqd": 1
+ },
+ {
+  "fieldname": "last_name",
+  "label": "Last name",
+  "fieldtype": "Data",
+  "reqd": 1
+ },
+ {
+  "fieldname": "birth_date",
+  "label": "Date of birth",
+  "fieldtype": "Date",
+  "reqd": 1
+ },
+ {
+  "fieldname": "gender",
+  "label": "Gender",
+  "fieldtype": "Select",
+  "options": "\nBoy\nGirl",
+  "reqd": 1
+ },
+ {
+  "fieldname": "preferred_position",
+  "label": "Preferred position",
+  "fieldtype": "Select",
+  "options": "\nNo preference\nGoalkeeper\nDefender\nMidfielder\nWinger\nStriker\nNot sure yet"
+ },
+ {
+  "fieldname": "school_name",
+  "label": "School name",
+  "fieldtype": "Data"
+ },
+ {
+  "fieldname": "contact_email",
+  "label": "Player email",
+  "fieldtype": "Data",
+  "options": "Email",
+  "reqd": 1,
+  "description": "One unique player email, separate from the guardian email. Existing users, players and pending enrollments cannot share this address."
+ },
+ {
+  "fieldname": "contact_phone",
+  "label": "Player / contact phone",
+  "fieldtype": "Data"
+ },
+ {
+  "fieldname": "medical_notes",
+  "label": "Medical notes",
+  "fieldtype": "Small Text",
+  "description": "Allergies or conditions coaches should know about. Private player information."
+ },
+ {
+  "fieldname": "guardian_details",
+  "label": "Parent / guardian",
+  "fieldtype": "Section Break"
+ },
+ {
+  "fieldname": "guardian_name",
+  "label": "Parent / guardian name",
+  "fieldtype": "Data",
+  "reqd": 1
+ },
+ {
+  "fieldname": "guardian_relationship",
+  "label": "Relationship to player",
+  "fieldtype": "Data"
+ },
+ {
+  "fieldname": "guardian_phone",
+  "label": "Parent / guardian phone",
+  "fieldtype": "Data",
+  "reqd": 1
+ },
+ {
+  "fieldname": "guardian_alt_phone",
+  "label": "Alternative guardian phone",
+  "fieldtype": "Data"
+ },
+ {
+  "fieldname": "guardian_email",
+  "label": "Guardian email",
+  "fieldtype": "Data",
+  "options": "Email",
+  "reqd": 1,
+  "description": "May be shared by siblings. On acceptance the guardian User is created or reused; account activation and verified portal access are separate."
+ },
+ {
+  "fieldname": "home_address",
+  "label": "Home address",
+  "fieldtype": "Small Text",
+  "reqd": 1
+ },
+ {
+  "fieldname": "emergency_details",
+  "label": "Emergency contact (if different)",
+  "fieldtype": "Section Break"
+ },
+ {
+  "fieldname": "emergency_contact_name",
+  "label": "Emergency contact name",
+  "fieldtype": "Data"
+ },
+ {
+  "fieldname": "emergency_contact_phone",
+  "label": "Emergency contact phone",
+  "fieldtype": "Data"
+ },
+ {
+  "fieldname": "consent_details",
+  "label": "Consent choices",
+  "fieldtype": "Section Break"
+ },
+ {
+  "fieldname": "medical_consent",
+  "label": "Emergency medical attention consent recorded",
+  "fieldtype": "Check",
+  "description": "Permission to seek medical help if the guardian cannot be reached."
+ },
+ {
+  "fieldname": "media_consent",
+  "label": "Photo and video permission recorded",
+  "fieldtype": "Check",
+  "description": "Permission to use academy training/match photos and video publicly. Optional; never preselected."
+ },
+ {
+  "fieldname": "terms_accepted",
+  "label": "Academy terms acceptance recorded",
+  "fieldtype": "Check",
+  "description": "Record only consent actually supplied by the guardian. No payment is taken with this registration."
+ }
 ]
