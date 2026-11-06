@@ -66,6 +66,7 @@ const apps = path.resolve(__dirname, "../../../..");
         window.frappe = {
           boost_console_views: {},
           sports_player_ids: {},
+          sports_player_profile: {},
           provide() {},
           router: { slug: (s) => s.toLowerCase().replaceAll(" ", "-") },
           datetime: { get_today: () => "2026-11-03", str_to_user: (s) => s },
@@ -74,6 +75,15 @@ const apps = path.resolve(__dirname, "../../../..");
           call: async ({ method, args = {} }) => {
             const action = method.split(".").at(-1);
             calls.push({ action, args });
+            if (action === "overview")
+              return {
+                message: {
+                  available: {},
+                  age: 10,
+                  preferred_foot: "Left",
+                  today: "2026-11-06",
+                },
+              };
             if (action === "list_players")
               return {
                 message: [
@@ -189,6 +199,12 @@ const apps = path.resolve(__dirname, "../../../..");
         ),
       });
       await page.addScriptTag({
+        path: path.join(
+          apps,
+          "sports_app/sports_app/public/js/player_profile.js"
+        ),
+      });
+      await page.addScriptTag({
         path: path.join(apps, "sports_app/sports_app/public/js/players.js"),
       });
       await page.evaluate(async () => {
@@ -258,7 +274,11 @@ const apps = path.resolve(__dirname, "../../../..");
       ])
         assert.equal(
           await page
-            .getByRole("heading", { name: heading, exact: true })
+            .getByRole("heading", {
+              name: heading,
+              exact: true,
+              includeHidden: true,
+            })
             .count(),
           1,
           heading
@@ -289,6 +309,9 @@ const apps = path.resolve(__dirname, "../../../..");
       await page
         .getByRole("dialog")
         .screenshot({ path: `/tmp/sports-player-profile-${width}.png` });
+      await page
+        .getByRole("tab", { name: "Program enrollments", exact: true })
+        .click();
       await page
         .getByRole("button", { name: "More enrollments", exact: true })
         .click();

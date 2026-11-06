@@ -2,6 +2,10 @@
 
 | Date | Entry | Status |
 |---|---|---|
+| 2026-11-06 | [Central profile develop integration](2026-11-06-us-003-03-develop-integration.md) | Pre-merge verification / PR state authoritative |
+| 2026-11-06 | [Player photo in profile header](2026-11-06-us-003-03-profile-header-photo.md) | Verified development adjustment / US-003-03 |
+| 2026-11-06 | [Tabbed player profile](2026-11-06-us-003-03-tabbed-player-profile.md) | Verified development adjustment / US-003-03 |
+| 2026-11-06 | [Central player record and protected histories](2026-11-06-us-003-03-central-player-record.md) | Verified development slice / US-003-03 |
 | 2026-11-06 | [Enrollment/player refinements PR integration](2026-11-06-enrollment-player-refinements-pr-integration.md) | Pre-merge verification / PR status authoritative |
 | 2026-11-06 | [Audited player ID correction](2026-11-06-us-003-02-audited-player-id-correction.md) | Verified development refinement / US-003-02 |
 | 2026-11-06 | [Legacy player import and sequence setup](2026-11-06-us-003-02-legacy-import-and-sequence-floor.md) | Verified development refinement / US-003-02 |

@@ -8,6 +8,9 @@ frappe.boost_console_views["sports_app:players"] = () => {
 		offset = 0,
 		generation = 0,
 		profileDialog,
+		profileController,
+		profileTab = "details",
+		profileName,
 		sortBy = "registered_on",
 		sortOrder = "desc";
 	const lifecycle = new AbortController();
@@ -186,14 +189,19 @@ frappe.boost_console_views["sports_app:players"] = () => {
 	};
 	const showPlayer = async (name, start = 0) => {
 		const current = ++generation;
+		profileController?.abort();
 		const result = await call("get_player", { name, start });
 		if (signal.aborted || current !== generation) return;
+		if (profileName !== name) profileTab = "details";
+		profileName = name;
 		const p = result.player,
 			wrapper = node("section", null, "sports-player-profile");
 		const style = node("style");
 		style.textContent = `
    .sports-player-profile{color:var(--text-color,#173042);font-size:14px;line-height:1.5}
    .sports-player-profile .player-hero{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+   .sports-player-profile .player-identity{display:flex;align-items:center;gap:14px;min-width:0;max-width:100%}
+   .sports-player-profile .player-identity>div{min-width:0}
    .sports-player-profile .player-hero h3{margin:3px 0 5px;font-size:24px;overflow-wrap:anywhere}
    .sports-player-profile .player-eyebrow{color:var(--text-muted,#607287);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
    .sports-player-profile .player-card{border:1px solid var(--border-color,#d7e2ed);border-radius:8px;padding:18px;margin-bottom:16px;background:var(--card-bg,#fff)}
@@ -228,18 +236,20 @@ frappe.boost_console_views["sports_app:players"] = () => {
 			dl.append(cell);
 		};
 		const hero = node("header", null, "player-hero"),
+			portraitTarget = node("div", null, "player-identity"),
 			identity = node("div");
 		identity.append(
 			node("div", __("Player profile"), "player-eyebrow"),
 			node("h3", p.full_name)
 		);
-		hero.append(identity, node("span", p.name, "ing-console-status-chip"));
+		portraitTarget.append(identity);
+		hero.append(portraitTarget, node("span", p.name, "ing-console-status-chip"));
 		wrapper.append(hero);
 		const summary = grid(card("Player summary", "player-summary"));
 		field(summary, "Player ID", p.name);
 		field(summary, "Academy company", p.company);
 		field(summary, "Registered on", formatDate(p.registered_on));
-		const actions = node("div", null, "player-actions");
+		const actions = node("div", null, "player-actions player-profile-global-actions");
 		actions.append(link("Sports Player", p.name, __("Open player record")));
 		if (result.can_enroll)
 			actions.append(button("New program enrollment", () => newEnrollment(p), true));
@@ -263,6 +273,7 @@ frappe.boost_console_views["sports_app:players"] = () => {
 		field(accounts, "Self-service account", p.portal_user || null);
 		field(accounts, "Guardian account", p.guardian_user || null);
 		const memberships = card("Program enrollments");
+		memberships.dataset.playerEnrollments = "true";
 		memberships.append(
 			table(
 				["Enrollment", "Program", "Group", "Start", "End", "Status", "Eligible today"],
@@ -316,7 +327,14 @@ frappe.boost_console_views["sports_app:players"] = () => {
 				item.fieldtype === "Small Text"
 			);
 		}
+		const panels = frappe.sports_player_profile?.create_tabs(wrapper, profileTab, (key) => {
+			profileTab = key;
+		});
+		const linked = node("div");
+		(panels?.details || wrapper).append(linked);
 		if (profileDialog) profileDialog.hide();
+		profileController = new AbortController();
+		const currentController = profileController;
 		profileDialog = new frappe.ui.Dialog({
 			title: __("Player: {0}", [p.name]),
 			size: "extra-large",
@@ -324,7 +342,15 @@ frappe.boost_console_views["sports_app:players"] = () => {
 		});
 		profileDialog.fields_dict.player_view.$wrapper.append(wrapper);
 		dialogs.add(profileDialog);
+		profileDialog.onhide = () => currentController.abort();
 		profileDialog.show();
+		frappe.sports_player_profile?.mount({
+			container: linked,
+			name,
+			signal: currentController.signal,
+			panels,
+			portraitTarget,
+		});
 	};
 	const enrollmentFields = (company) => [
 		{
@@ -399,7 +425,10 @@ frappe.boost_console_views["sports_app:players"] = () => {
 				player: player.name,
 				enrollment: values,
 			});
-			if (!signal.aborted) await showPlayer(player.name);
+			if (!signal.aborted) {
+				profileTab = "enrollments";
+				await showPlayer(player.name);
+			}
 		});
 	const register = async () => {
 		const defaults = await call("get_registration_defaults");
@@ -616,6 +645,7 @@ frappe.boost_console_views["sports_app:players"] = () => {
 			generation++;
 			closeMenus();
 			lifecycle.abort();
+			profileController?.abort();
 			for (const dialog of dialogs) dialog.hide();
 			dialogs.clear();
 		},

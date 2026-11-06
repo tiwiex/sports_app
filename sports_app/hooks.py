@@ -257,6 +257,11 @@ required_apps = ["erpnext"]
 
 # Protect Sports-linked ERPNext receipt provenance without changing ERPNext core.
 doc_events = {
+	"File": {
+		"before_insert": "sports_app.player_documents.protect_file",
+		"before_validate": "sports_app.player_documents.protect_file",
+		"validate": "sports_app.player_documents.protect_file",
+	},
 	"Sales Invoice": {
 		"validate": "sports_app.enrollment_invoices.validate_enrollment_invoice",
 		"before_submit": "sports_app.enrollment_invoices.validate_finance_submission",
@@ -282,3 +287,11 @@ app_include_js = [
 	"/assets/sports_app/js/invoice_context_payment.js",
 	sports_asset_url("console_navigation.js"),
 ]
+
+# Supporting-file access must not survive removal of management capability.
+has_permission = {"Sports Player Document": "sports_app.player_documents.has_permission"}
+
+permission_query_conditions = {
+	"Sports Player Document": "sports_app.player_documents.permission_query",
+	"File": "sports_app.player_documents.file_permission_query",
+}
