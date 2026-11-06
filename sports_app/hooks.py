@@ -257,16 +257,16 @@ required_apps = ["erpnext"]
 
 # Protect Sports-linked ERPNext receipt provenance without changing ERPNext core.
 doc_events = {
-    "Sales Invoice": {
-        "validate": "sports_app.enrollment_invoices.validate_enrollment_invoice",
-        "before_submit": "sports_app.enrollment_invoices.validate_finance_submission",
-        "on_submit": "sports_app.enrollment_invoices.record_invoice_payment",
-        "before_update_after_submit": "sports_app.enrollment_invoices.validate_enrollment_invoice",
-    },
-    "Payment Entry": {
-        "validate": "sports_app.enrollment_payments.validate_sports_payment",
-        "before_submit": "sports_app.enrollment_payments.validate_sports_payment",
-    },
+	"Sales Invoice": {
+		"validate": "sports_app.enrollment_invoices.validate_enrollment_invoice",
+		"before_submit": "sports_app.enrollment_invoices.validate_finance_submission",
+		"on_submit": "sports_app.enrollment_invoices.record_invoice_payment",
+		"before_update_after_submit": "sports_app.enrollment_invoices.validate_enrollment_invoice",
+	},
+	"Payment Entry": {
+		"validate": "sports_app.enrollment_payments.validate_sports_payment",
+		"before_submit": "sports_app.enrollment_payments.validate_sports_payment",
+	},
 }
 
 # App-owned invoice review action; core accounting stays in ERPNext.
@@ -274,4 +274,8 @@ doctype_js = {"Sales Invoice": "public/js/enrollment_invoice.js"}
 
 # Add the app-owned finance shortcut to Boost invoice menus.
 from sports_app.console_assets import asset_url as sports_asset_url
-app_include_js = ["/assets/sports_app/js/invoice_context_payment.js", sports_asset_url("console_navigation.js")]
+
+app_include_js = [
+	"/assets/sports_app/js/invoice_context_payment.js",
+	sports_asset_url("console_navigation.js"),
+]

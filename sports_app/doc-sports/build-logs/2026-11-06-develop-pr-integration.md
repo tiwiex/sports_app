@@ -46,3 +46,11 @@ No schema migration, permission repair, financial posting, email, actual biometr
 ## Remaining work and release impact
 
 Full hardware/provider, policy, commercial acceptance and proposed questionnaire stories remain open. Marking this integration merged must not mark whole epics or proposed stories Done. Fresh deployments require the documented Node22 attendance build/publish step and migration for the new Sports Biometric Enrollment DocType; the designated development site already has the preparation schema. This PR is repository integration, not production release.
+
+## PR verification follow-up
+
+PR: https://github.com/tiwiex/sports_app/pull/1. The GitHub connector could read but lacked PR-write access; the authenticated GitHub CLI created the PR.
+
+Initial remote attendance build and dependency audit passed. Server setup then exposed CI-container TLS/client defaults; the local test-container CLI now explicitly skips SSL and the test site uses TCP 127.0.0.1. These settings apply only to the GitHub CI container. Initial lint exposed accumulated formatting and missing JSX parsing. Applied the repository-pinned Ruff/Prettier formatting, enabled JSX parsing, documented browser-page fixture globals, replaced an accidental undeclared fixture temporary with a const and fixed the remaining small Ruff diagnostics. Normalized an en dash in a validation message and used the Python3.10 union form for isinstance; no business policy changed.
+
+All pinned pre-commit hooks pass locally. Rechecked 138 Python tests and all six desktop/phone browser suites (attendance PWA, development controls, navigation, players, registrations and native attendance); all passed. Next static production build also passed after formatting. Generated content-addressed console assets are republished from formatted source; old assets remain available. Remote check results are recorded on the PR, separately from this local evidence.

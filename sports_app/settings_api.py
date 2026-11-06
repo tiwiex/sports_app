@@ -1,8 +1,15 @@
 """Permission-checked endpoints for the Sports-owned settings console."""
+
 import frappe
 import pytz
 from frappe import _
-from sports_app.academy import SETTINGS_FIELDS, get_configured_settings, require_settings_access, validate_company
+
+from sports_app.academy import (
+	SETTINGS_FIELDS,
+	get_configured_settings,
+	require_settings_access,
+	validate_company,
+)
 
 
 def _values(doc):
@@ -23,8 +30,18 @@ def get_configuration():
 		"settings": _values(doc),
 		"companies": frappe.get_list("Company", fields=["name", "default_currency"], limit_page_length=0),
 		"timezones": pytz.all_timezones,
-		"programs": frappe.get_list("Sports Program", fields=["name", "program_name", "sport", "company", "enabled"], order_by="program_name", limit_page_length=0),
-		"groups": frappe.get_list("Sports Group", fields=["name", "group_name", "program", "company", "enabled"], order_by="group_name", limit_page_length=0),
+		"programs": frappe.get_list(
+			"Sports Program",
+			fields=["name", "program_name", "sport", "company", "enabled"],
+			order_by="program_name",
+			limit_page_length=0,
+		),
+		"groups": frappe.get_list(
+			"Sports Group",
+			fields=["name", "group_name", "program", "company", "enabled"],
+			order_by="group_name",
+			limit_page_length=0,
+		),
 	}
 
 
@@ -37,7 +54,10 @@ def save_configuration(settings):
 	doc = get_configured_settings()
 	doc.check_permission("write")
 	if str(doc.modified or "") != str(values.pop("modified", "") or ""):
-		frappe.throw(_("Settings changed since this view was loaded. Refresh before saving."), frappe.TimestampMismatchError)
+		frappe.throw(
+			_("Settings changed since this view was loaded. Refresh before saving."),
+			frappe.TimestampMismatchError,
+		)
 	# Validate the submitted scope before any update, even when moving company.
 	validate_company(values.get("company"))
 	doc.update(values)

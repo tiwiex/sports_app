@@ -2,7 +2,9 @@ import { cp, mkdir, readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../", import.meta.url));
-const destination = fileURLToPath(new URL("../../public/attendance/", import.meta.url));
+const destination = fileURLToPath(
+  new URL("../../public/attendance/", import.meta.url)
+);
 await mkdir(destination, { recursive: true });
 // Retain old hashed chunks so an already open client can finish its attendance.
 await cp(root + "out/", destination, { recursive: true });
