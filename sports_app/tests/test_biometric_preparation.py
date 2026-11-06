@@ -78,6 +78,10 @@ class TestBiometricPreparation(TestCase):
 		self.assertNotIn("consent_by", result["rows"][0])
 
 	def setUp(self):
+		lock = patch.object(service, "lock_identity_changes")
+		lock.start()
+		self.addCleanup(lock.stop)
+
 		def throw(message, exc=frappe.ValidationError):
 			raise exc(message)
 
@@ -101,7 +105,11 @@ class TestBiometricPreparation(TestCase):
 			service.require_access()
 
 	def test_missing_consent_and_unapproved_extra_fields_cannot_be_registered(self):
-		with patch.object(service, "player_record"), self.assertRaises(frappe.ValidationError):
+		with (
+			patch.object(service, "require_access"),
+			patch.object(service, "player_record"),
+			self.assertRaises(frappe.ValidationError),
+		):
 			service.prepare.__wrapped__("P", self.values, 0, "key")
 		for values in [
 			{**self.values, "template": "not-allowed"},

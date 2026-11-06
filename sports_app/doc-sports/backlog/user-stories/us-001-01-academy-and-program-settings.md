@@ -100,3 +100,16 @@ Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06
 Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-9250c48b7f5c.md).
 
 Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-91b452feaae8.md).
+
+Enrollment naming series refinement: native and console settings now expose the configurable application reference with default `MSA-ENR-.YYYY.-.#####`. [Build evidence](../../build-logs/2026-11-06-us-003-01-configurable-enrollment-series.md).
+
+
+## Legacy player import and numbering setup — 6 November 2026
+
+Player setup refinement: Academy Settings exposes the existing player prefix/digit width plus **Player starting sequence**, a positive whole-number minimum (default 1). Set 126 to continue after legacy sequence 125. The Company counter uses the highest of the configured minimum minus one, existing issued counter and matching imported player suffixes. Changing prefix/month/year or lowering the minimum never resets numbering; existing player IDs and links remain unchanged. Enrollment application and invoice series remain independent.
+
+Native Data Import is enabled for Sports Player, with import permission restricted to System Manager/Sports Academy Administrator roles and management checks enforced in the controller. Native Company/User Permissions still apply; imported Company must match the configured academy. Use Insert New Records with each legacy player number in the **ID** column. Preserve historical IDs verbatim; after successful insertion reserve the matching continuous suffix under the same settings/Series locks, including imports after the counter was already initialized. Nonmatching legacy formats are preserved without guessing their suffix; set the starting sequence explicitly after reconciliation. Blank IDs use automatic numbering. Do not merge duplicates or rewrite existing identities.
+
+Player email/account validation and automatic separate Customer/disabled player User/shared guardian account preparation remain in force for imports. Imports create no invoices, receipts, balances or attendance history; create program memberships separately using staff tools. Missing/duplicate emails require source-data correction rather than placeholders or silent existing-account reuse. Obtain and review the real roster before an actual import; this adjustment prepares tooling and does not complete the migration/pilot story.
+
+SPORTS-FR-001/004/024; SPORTS-NFR-003. User refinement of existing numbering and BA-QNR-001 legacy-roster discovery, not new questionnaire wording. [Build evidence](../../build-logs/2026-11-06-us-003-02-legacy-import-and-sequence-floor.md). Wider delivery states remain unchanged.

@@ -195,12 +195,13 @@ def validate_player_email(player):
 	if "," in email or ";" in email:
 		frappe.throw(_("Enter one unique email address for the player."))
 	frappe.utils.validate_email_address(email, throw=True)
-	if frappe.db.exists("User", email) or frappe.db.exists("Sports Player", {"contact_email": email}):
-		frappe.throw(
-			_(
-				"This email is already in use. Enter a unique player email; existing accounts require administrator review."
-			)
-		)
+	from sports_app.enrollment_accounts import normalize_email, require_available_player_email
+	from sports_app.registration_origin import current_registration
+
+	origin = current_registration()
+	require_available_player_email(email, origin.name if origin else None)
+	if player.get("guardian_email") and normalize_email(player.guardian_email) == email:
+		frappe.throw(_("Player and guardian must use separate email addresses."))
 
 
 def create_player_user(player):

@@ -145,10 +145,10 @@ def _response(app, payment):
 	allow_guest=True, methods=["POST"]
 )
 @rate_limit(limit=15, seconds=3600, methods=["POST"])
-def make_payment(player: str | dict, pathway: str, request_key: str, website: str = ""):
+def make_payment(player: str | dict, pathway: str, request_key: str, website: str = "", image_data: str = ""):
 	from sports_app.enrollment_invoices import prepare_invoice
 
-	return prepare_invoice(player, pathway, request_key, website)
+	return prepare_invoice(player, pathway, request_key, website, image_data)
 
 
 def validate_sports_payment(doc, method=None):

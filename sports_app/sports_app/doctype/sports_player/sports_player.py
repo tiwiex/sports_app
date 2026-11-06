@@ -1,10 +1,10 @@
 import frappe
 from frappe import _
 from frappe.model.document import Document
-from frappe.model.naming import make_autoname
 from frappe.utils import getdate, now_datetime, today
 
 from sports_app.academy import validate_company
+from sports_app.player_numbering import next_player_id, prepare_import, reserve_imported_sequence
 from sports_app.players import (
 	create_player_customer,
 	create_player_user,
@@ -22,21 +22,27 @@ class SportsPlayer(Document):
 		settings = registration_settings(for_update=True)
 		if self.company != settings.company:
 			frappe.throw(_("Player company must match the academy company."))
-		self.name = make_autoname(
-			settings.registration_prefix + "-." + "#" * int(settings.registration_digits)
-		)
+		self.name = next_player_id(settings)
 
 	def before_rename(self, old, new, merge=False):
-		frappe.throw(_("Player registration IDs cannot be renamed or merged."))
+		from sports_app.player_ids import check_rename
+
+		check_rename(self, old, new, merge)
 
 	def after_insert(self):
+		reserve_imported_sequence(self)
 		create_player_customer(self)
 		create_player_user(self)
+		from sports_app.enrollment_accounts import create_guardian_user
+
+		create_guardian_user(self)
 
 	def before_insert(self):
 		require_player_access()
 		if self.get("source_registration"):
 			frappe.throw(_("Registration provenance is assigned by the acceptance service."))
+		if self.get("guardian_user"):
+			frappe.throw(_("The guardian User link is maintained by the registration service."))
 		if self.get("portal_user"):
 			frappe.throw(
 				_("The self-service User is created automatically; existing Users cannot be assigned.")
@@ -45,6 +51,7 @@ class SportsPlayer(Document):
 			frappe.throw(
 				_("A player Customer is created automatically; existing Customers cannot be assigned.")
 			)
+		prepare_import(self)
 		if not self.registration_program:
 			self.registration_program = registration_settings().default_program
 		from sports_app.registration_origin import current_registration
@@ -67,6 +74,7 @@ class SportsPlayer(Document):
 				"customer",
 				"registration_program",
 				"portal_user",
+				"guardian_user",
 				"source_registration",
 			),
 		)
@@ -77,9 +85,16 @@ class SportsPlayer(Document):
 			if program.company != self.company or (self.is_new() and not program.enabled):
 				frappe.throw(_("Registration program must be enabled and belong to the player's company."))
 		if self.is_new():
+			from sports_app.player_ids import validate_new_player_id
+
+			validate_new_player_id(self.name)
 			validate_player_email(self)
 		else:
 			previous = self.get_doc_before_save()
+			if previous and previous.get("guardian_user") and previous.guardian_email != self.guardian_email:
+				frappe.throw(
+					_("Guardian email is linked to a User. Guardian changes require administrator review.")
+				)
 			if previous and previous.portal_user and previous.contact_email != self.contact_email:
 				frappe.throw(
 					_(

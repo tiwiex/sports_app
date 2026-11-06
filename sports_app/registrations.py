@@ -3,7 +3,7 @@
 import hashlib
 import json
 from contextlib import contextmanager
-from uuid import UUID
+from uuid import UUID, uuid4
 
 import frappe
 from frappe import _
@@ -84,6 +84,8 @@ def fingerprint(doc):
 	values = {key: doc.get(key) for key in PUBLIC_FIELDS}
 	if values.get("birth_date"):
 		values["birth_date"] = str(values["birth_date"])
+	if doc.get("photo_hash"):
+		values["_photo_hash"] = doc.photo_hash
 	return hashlib.sha256(
 		json.dumps([values, doc.requested_pathway], sort_keys=True, separators=(",", ":")).encode()
 	).hexdigest()
@@ -101,7 +103,8 @@ def review_record(name, write=False):
 def acceptance_transaction():
 	# User hooks queue work after commit. Drop only this operation's callbacks
 	# along with its records if the final registration transition fails.
-	frappe.db.savepoint("sports_acceptance")
+	savepoint = "sports_acceptance_" + uuid4().hex
+	frappe.db.savepoint(savepoint)
 	original = frappe.db.after_commit
 	callbacks = CallbackManager()
 	frappe.db.after_commit = callbacks
@@ -109,7 +112,7 @@ def acceptance_transaction():
 		yield
 	except Exception:
 		callbacks.reset()
-		frappe.db.rollback(save_point="sports_acceptance")
+		frappe.db.rollback(save_point=savepoint)
 		raise
 	else:
 		original.add(callbacks.run)

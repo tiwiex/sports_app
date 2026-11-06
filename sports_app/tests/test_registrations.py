@@ -13,6 +13,8 @@ from sports_app import registrations, registrations_api
 
 class TestPublicRegistrations(TestCase):
 	def setUp(self):
+		from sports_app.sports_app.doctype.sports_registration import sports_registration as controller
+
 		def throw(message, exc=frappe.ValidationError):
 			raise exc(message)
 
@@ -21,6 +23,7 @@ class TestPublicRegistrations(TestCase):
 			(frappe, "_", lambda s: s),
 			(registrations, "_", lambda s: s),
 			(registrations_api, "_", lambda s: s),
+			(controller, "_", lambda s: s),
 		]:
 			active = patch.object(target, name, value)
 			active.start()
@@ -125,7 +128,7 @@ class TestPublicRegistrations(TestCase):
 		original.run()
 		prior.assert_called_once()
 		orphan.assert_not_called()
-		db.rollback.assert_called_once_with(save_point="sports_acceptance")
+		db.rollback.assert_called_once_with(save_point=db.savepoint.call_args.args[0])
 
 	def test_successful_acceptance_preserves_deferred_callbacks(self):
 		original = CallbackManager()

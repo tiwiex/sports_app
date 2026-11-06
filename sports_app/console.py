@@ -50,7 +50,7 @@ def get_provider():
 				"key": "sports_app:players",
 				"label": "Players",
 				"group": "Sports",
-				"assets": [asset_url("players.js")],
+				"assets": [asset_url("player_id_change.js"), asset_url("players.js")],
 			}
 		)
 	if can_manage_players():

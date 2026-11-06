@@ -40,6 +40,9 @@ const apps = path.resolve(__dirname, "../../../..");
             full_name: "Sample Player",
             status: "Pending",
             can_review: true,
+            can_accept: true,
+            sales_invoice: "INV-QA",
+            invoice_workflow: "Pending Review",
             company: "Academy",
             program: "PROGRAM",
             requested_pathway: "Foundations",
@@ -100,6 +103,7 @@ const apps = path.resolve(__dirname, "../../../..");
                 message: {
                   registration: { ...row },
                   can_review: row.can_review,
+                  can_accept: row.can_accept,
                   possible_matches: [
                     {
                       name: "PLAYER-MATCH",
@@ -245,6 +249,19 @@ const apps = path.resolve(__dirname, "../../../..");
           .allTextContents(),
         ["View", "Accept enrollment", "Reject enrollment"]
       );
+      assert.equal(
+        await page
+          .getByRole("columnheader", { name: "Invoice", exact: true })
+          .count(),
+        1
+      );
+      assert.equal(
+        await page
+          .getByRole("columnheader", { name: "Invoice workflow", exact: true })
+          .count(),
+        1
+      );
+      assert.match(await page.locator("tbody").innerText(), /INV-QA/);
       const box = await page
         .locator(".sports-registration-menu.is-open .dropdown-menu")
         .boundingBox();
@@ -322,7 +339,10 @@ const apps = path.resolve(__dirname, "../../../..");
         "opening menu/dialog must not accept"
       );
       await page
-        .getByRole("button", { name: "Accept and create player", exact: true })
+        .getByRole("button", {
+          name: "Accept and confirm payment",
+          exact: true,
+        })
         .click();
       await page.waitForFunction(
         () =>
@@ -365,6 +385,7 @@ const apps = path.resolve(__dirname, "../../../..");
       // Simulate a concurrent acceptance after list rendering; no stale review dialog.
       await page.evaluate(() => {
         records[1].can_review = true;
+        records[1].can_accept = true;
       });
       await page.getByRole("button", { name: "Refresh enrollments" }).click();
       await page.evaluate(() => {
@@ -386,6 +407,7 @@ const apps = path.resolve(__dirname, "../../../..");
       await page.evaluate(() => {
         records[1].status = "Pending";
         records[1].can_review = true;
+        records[1].can_accept = true;
       });
       await page.getByRole("button", { name: "Refresh enrollments" }).click();
       await page

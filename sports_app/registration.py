@@ -52,3 +52,12 @@ def validate_registration_details(player):
 			frappe.throw(_("Player name is too long."))
 	if bool(player.get("emergency_contact_name")) != bool(player.get("emergency_contact_phone")):
 		frappe.throw(_("Enter both the emergency contact name and phone, or leave both blank."))
+
+
+def validate_application_age(birth_date, on_date):
+	"""Public intake admits ages 4 through 18 inclusive, using calendar birthdays."""
+	birth = frappe.utils.getdate(birth_date)
+	age = on_date.year - birth.year - ((on_date.month, on_date.day) < (birth.month, birth.day))
+	if age < 4 or age > 18:
+		frappe.throw(_("Players must be between 4 and 18 years old."))
+	return age

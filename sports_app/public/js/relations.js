@@ -1,6 +1,7 @@
 /* Private Sports relationship workspace; logging does not send correspondence. */
 frappe.provide("frappe.boost_console_views");
 frappe.boost_console_views["sports_app:relations"] = () => {
+	let liveSnapshot;
 	let host,
 		signal,
 		company,
@@ -53,8 +54,10 @@ frappe.boost_console_views["sports_app:relations"] = () => {
 		dialogs.add(dialog);
 		dialog.show();
 	}
-	async function render() {
-		const token = ++generation;
+	async function render(options = {}) {
+		const background = options.background === true;
+		const canApply = options.canApply || (() => true);
+		const token = background ? generation : ++generation;
 		const data = await call("list_records", {
 			doctype: kind,
 			company,
@@ -67,7 +70,10 @@ frappe.boost_console_views["sports_app:relations"] = () => {
 			sort_by: sortBy,
 			sort_order: sortOrder,
 		});
-		if (signal.aborted || token !== generation) return;
+		if (signal.aborted || token !== generation || !canApply()) return false;
+		const snapshot = JSON.stringify(data);
+		if (background && snapshot === liveSnapshot) return;
+		liveSnapshot = snapshot;
 		company = data.company;
 		sortBy = data.sort_by || sortBy;
 		host.replaceChildren();
@@ -394,6 +400,10 @@ frappe.boost_console_views["sports_app:relations"] = () => {
 			signal = options.signal;
 			company = options.context.company;
 			await render();
+			options.watch?.({
+				doctypes: ["Sports Organization", "Sports Opportunity", "Sports Interaction"],
+				refresh: ({ canApply }) => render({ background: true, canApply }),
+			});
 		},
 		unmount() {
 			generation++;

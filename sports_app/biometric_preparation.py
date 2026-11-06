@@ -19,6 +19,10 @@ FINGERS = ("Right thumb", "Left thumb", "Right index", "Left index")
 CONSENT_FIELDS = ("finger", "consent_by", "relationship", "notice_reference", "consent_date")
 
 
+def lock_identity_changes():
+	get_configured_settings(for_update=True)
+
+
 def require_access():
 	if not can_manage_settings():
 		frappe.throw(_("Biometric preparation requires an academy administrator."), frappe.PermissionError)
@@ -215,6 +219,8 @@ def records(player: str):
 
 @frappe.whitelist(methods=["POST"])
 def prepare(player: str, values: str | dict, consent_confirmed: str | int | bool, request_key: str):
+	require_access()
+	lock_identity_changes()
 	player = player_record(player, lock=True)
 	if consent_confirmed not in (1, "1", True):
 		frappe.throw(_("Confirm only consent actually supplied for biometric registration."))
@@ -249,6 +255,7 @@ def prepare(player: str, values: str | dict, consent_confirmed: str | int | bool
 @frappe.whitelist(methods=["POST"])
 def demo_capture(name: str):
 	require_access()
+	lock_identity_changes()
 	doc = frappe.get_doc(DOCTYPE, name, for_update=True)
 	doc.check_permission("write")
 	player_record(doc.player)
@@ -277,6 +284,7 @@ def demo_capture(name: str):
 @frappe.whitelist(methods=["POST"])
 def withdraw(name: str, reason: str):
 	require_access()
+	lock_identity_changes()
 	if not isinstance(reason, str) or not reason.strip() or len(reason) > 1000:
 		frappe.throw(_("Supply a withdrawal reason, up to 1000 characters."))
 	doc = frappe.get_doc(DOCTYPE, name, for_update=True)

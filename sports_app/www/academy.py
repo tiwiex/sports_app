@@ -14,6 +14,9 @@ def get_context(context):
 	from sports_app.academy import get_configured_settings
 
 	settings = get_configured_settings()
+	from sports_app.player_numbering import academy_date
+
+	context.admission_date = str(academy_date(settings))
 	context.payment_enabled = bool(settings.get("enrollment_payments_enabled"))
 	context.website_css = asset_url("css/academy.css")
 	context.website_js = asset_url("js/academy.js")

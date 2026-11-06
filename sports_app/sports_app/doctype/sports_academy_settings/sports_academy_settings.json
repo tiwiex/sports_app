@@ -13,6 +13,8 @@
   "registration_section",
   "registration_prefix",
   "registration_digits",
+  "player_starting_sequence",
+  "enrollment_naming_series",
   "default_enrollment_status",
   "default_program",
   "default_group",
@@ -65,17 +67,19 @@
   },
   {
    "fieldname": "registration_prefix",
-   "label": "Registration prefix",
+   "label": "Player ID prefix",
    "fieldtype": "Data",
    "reqd": 1,
-   "description": "Uppercase letters, digits and hyphens; for example ACADEMY. Existing player IDs are never renumbered."
+   "description": "For example MSA: MSA26-08001. Year/month are assigned by the backend; one continuous player counter spans months and years. Existing IDs stay unchanged.",
+   "default": "MSA"
   },
   {
    "fieldname": "registration_digits",
-   "label": "Registration digits",
+   "label": "Player sequence digits",
    "fieldtype": "Int",
-   "default": 5,
-   "reqd": 1
+   "default": 3,
+   "reqd": 1,
+   "description": "3\u201310 minimum digits for the continuous player sequence. This is independent of enrollment application naming."
   },
   {
    "fieldname": "default_enrollment_status",
@@ -181,6 +185,21 @@
    "label": "Jersey fee item",
    "fieldtype": "Link",
    "options": "Item"
+  },
+  {
+   "fieldname": "enrollment_naming_series",
+   "label": "Enrollment naming series",
+   "fieldtype": "Data",
+   "default": "MSA-ENR-.YYYY.-.#####",
+   "reqd": 1,
+   "description": "New application references only. For example MSA-ENR-.YYYY.-.##### produces MSA-ENR-2026-00001. Optional year; 4-10 counter digits. Existing references and invoice numbers stay unchanged."
+  },
+  {
+   "fieldname": "player_starting_sequence",
+   "label": "Player starting sequence",
+   "fieldtype": "Data",
+   "default": "1",
+   "description": "Minimum sequence for new players, for example 126 after legacy number 125. Existing issued/imported numbers take precedence; lowering this never resets numbering. Prefix, year and month are separate. Existing IDs stay unchanged."
   }
  ],
  "permissions": [

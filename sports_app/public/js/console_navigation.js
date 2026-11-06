@@ -22,6 +22,58 @@
  `;
 	document.head.append(style);
 	let boostExpanded = true;
+	let counts = {};
+	let pending = false;
+	let lastRead = 0;
+	let requestVersion = 0;
+	const countKeys = ["registrations", "players", "attendance", "relations"];
+	const visibleMenu = () =>
+		[...document.querySelectorAll(".sports-nav-extension")].some(
+			(menu) => menu.getClientRects().length && !document.hidden
+		);
+	function paintCounts() {
+		for (const key of countKeys) {
+			for (const item of document.querySelectorAll(`[data-view="sports_app:${key}"]`)) {
+				const value = counts[`sports_app:${key}`];
+				let badge = item.querySelector(".sports-nav-count");
+				if (!value || !Number.isSafeInteger(value.count) || value.count < 0) {
+					badge?.remove();
+					continue;
+				}
+				if (!badge) {
+					badge = document.createElement("span");
+					badge.className = "ing-console-nav-badge sports-nav-count";
+					item.append(badge);
+				}
+				const text = value.count.toLocaleString();
+				if (badge.textContent !== text) badge.textContent = text;
+				badge.title = `${value.title}: ${text}`;
+				badge.setAttribute("aria-label", badge.title);
+			}
+		}
+	}
+	async function refreshCounts(force = false) {
+		if (!visibleMenu() || pending || !window.frappe?.call) return;
+		if (!force && Date.now() - lastRead < 15000) return;
+		pending = true;
+		lastRead = Date.now();
+		const version = requestVersion;
+		try {
+			const response = await window.frappe.call({
+				method: "sports_app.navigation_api.get_counts",
+				args: {},
+				quiet: true,
+			});
+			if (version !== requestVersion || !visibleMenu()) return;
+			counts = response.message || {};
+			paintCounts();
+		} catch {
+			counts = {};
+			paintCounts();
+		} finally {
+			pending = false;
+		}
+	}
 	function arrange() {
 		for (const menu of document.querySelectorAll(".ing-console-nav-groups")) {
 			let boost = menu.querySelector(":scope > .sports-nav-boost");
@@ -100,6 +152,8 @@
 		requestAnimationFrame(() => {
 			scheduled = false;
 			arrange();
+			paintCounts();
+			refreshCounts();
 		});
 	}
 	const relevant = (node) =>
@@ -119,6 +173,29 @@
 				schedule();
 		}).observe(document.body, { childList: true, subtree: true });
 		schedule();
+		window.setInterval(() => refreshCounts(), 15000);
+		window.addEventListener("focus", () => refreshCounts(true));
+		document.addEventListener("visibilitychange", () => {
+			if (document.hidden) {
+				requestVersion += 1;
+				counts = {};
+				paintCounts();
+			} else refreshCounts(true);
+		});
+		const realtime = window.frappe?.realtime;
+		const changed = (event) => {
+			if (
+				[
+					"Sports Registration",
+					"Sports Player",
+					"Sports Session",
+					"Sports Organization",
+				].includes(event?.doctype)
+			)
+				refreshCounts(true);
+		};
+		realtime?.on("list_update", changed);
+		realtime?.on("doc_update", changed);
 	};
 	if (document.body) start();
 	else document.addEventListener("DOMContentLoaded", start, { once: true });

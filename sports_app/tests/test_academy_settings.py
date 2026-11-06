@@ -64,7 +64,7 @@ class TestAcademySettings(TestCase):
 	def test_invalid_numbering_timezone_and_fees_rejected(self):
 		for change in (
 			dict(registration_prefix="../x"),
-			dict(registration_digits=3),
+			dict(registration_digits=2),
 			dict(timezone="Invalid/Zone"),
 			dict(default_monthly_fee=0),
 			dict(default_monthly_fee=-1),
@@ -186,3 +186,40 @@ class TestAcademySettings(TestCase):
 		):
 			self.assertIs(academy.get_configured_settings(), doc)
 		doc.set.assert_not_called()
+
+	def test_enrollment_series_defaults_and_supported_patterns(self):
+		self.assertEqual(academy.enrollment_series(None), "MSA-ENR-.YYYY.-.#####")
+		self.assertEqual(academy.enrollment_series(""), "MSA-ENR-.YYYY.-.#####")
+		for series in ("MSA-ENR-.YYYY.-.#####", "RIVER-ENR-.######"):
+			self.assertEqual(academy.enrollment_series(series), series)
+			academy.validate_settings_values(valid_values(enrollment_naming_series=series))
+
+	def test_enrollment_series_rejects_expressions_and_invalid_counters(self):
+		for series in (
+			"field:company",
+			"format:{company}",
+			"MSA-ENR-.###",
+			"MSA-ENR-.###########",
+			"MSA-ENR-.MM.-.#####",
+			"../../MSA-.#####",
+			"msa-.#####",
+			123,
+		):
+			with self.subTest(series=series), self.assertRaises(frappe.ValidationError):
+				academy.enrollment_series(series)
+
+	def test_application_autoname_uses_saved_setting_without_touching_other_references(self):
+		from sports_app.sports_app.doctype.sports_registration import sports_registration as controller
+
+		doc = SimpleNamespace(name=None)
+		with (
+			patch.object(
+				controller,
+				"get_configured_settings",
+				return_value=frappe._dict(enrollment_naming_series="RIVER-ENR-.######"),
+			),
+			patch("frappe.model.naming.make_autoname", return_value="RIVER-ENR-000001") as autoname,
+		):
+			controller.SportsRegistration.autoname(doc)
+			self.assertEqual(doc.name, "RIVER-ENR-000001")
+			autoname.assert_called_once_with("RIVER-ENR-.######", doc=doc)

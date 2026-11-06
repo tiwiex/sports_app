@@ -1,6 +1,7 @@
 /* Sports-owned manual attendance prototype; no biometric capture or finance calls. */
 frappe.provide("frappe.boost_console_views");
 frappe.boost_console_views["sports_app:attendance"] = () => {
+	let liveSnapshot;
 	let host,
 		signal,
 		config,
@@ -396,10 +397,15 @@ frappe.boost_console_views["sports_app:attendance"] = () => {
 		paint(data);
 		d.show();
 	}
-	async function render() {
-		const current = ++generation,
+	async function render(options = {}) {
+		const background = options.background === true;
+		const canApply = options.canApply || (() => true);
+		const current = background ? generation : ++generation,
 			data = await call("list_sessions", { status, start: offset });
-		if (signal.aborted || current !== generation) return;
+		if (signal.aborted || current !== generation || !canApply()) return false;
+		const snapshot = JSON.stringify(data);
+		if (background && snapshot === liveSnapshot) return;
+		liveSnapshot = snapshot;
 		const wrap = node("section");
 		wrap.append(
 			node("h3", __("Attendance")),
@@ -509,6 +515,16 @@ frappe.boost_console_views["sports_app:attendance"] = () => {
 			});
 			config = await call("configuration");
 			if (!signal.aborted) await render();
+			options.watch?.({
+				doctypes: [
+					"Sports Session",
+					"Sports Attendance",
+					"Sports Biometric Enrollment",
+					"Sports Player",
+					"Sports Enrollment",
+				],
+				refresh: ({ canApply }) => render({ background: true, canApply }),
+			});
 		},
 		unmount() {
 			generation++;

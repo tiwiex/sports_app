@@ -21,6 +21,29 @@ const apps = path.resolve(__dirname, "../../../..");
         ),
       });
       await page.evaluate(() => {
+        window.badgeCalls = 0;
+        window.badgeCount = 31;
+        window.failCounts = false;
+        window.badgeEvents = {};
+        window.frappe = {
+          call: async () => {
+            window.badgeCalls++;
+            if (window.failCounts) throw new Error("denied");
+            return {
+              message: {
+                "sports_app:players": {
+                  count: window.badgeCount,
+                  title: "Players — Academy",
+                },
+              },
+            };
+          },
+          realtime: {
+            on: (name, callback) => {
+              window.badgeEvents[name] = callback;
+            },
+          },
+        };
         window.draw = (sports) => {
           const native = ["Dashboard", "Sales"]
             .map(
@@ -55,6 +78,7 @@ const apps = path.resolve(__dirname, "../../../..");
         await page.locator("[data-nav-group]").allTextContents(),
         ["Dashboard", "Sales"]
       );
+      assert.equal(await page.evaluate(() => window.badgeCalls), 0);
       await page.evaluate(() => draw(true));
       await page.waitForFunction(
         () =>
@@ -76,6 +100,23 @@ const apps = path.resolve(__dirname, "../../../..");
       assert.equal(
         await page.locator(".sports-nav-boost .sports-nav-core").count(),
         2
+      );
+      await page.waitForFunction(
+        () => document.querySelector(".sports-nav-count")?.textContent === "31"
+      );
+      assert.match(
+        await page.locator(".sports-nav-count").getAttribute("aria-label"),
+        /Players.*31/
+      );
+      const calls = await page.evaluate(() => window.badgeCalls);
+      await page.waitForTimeout(100);
+      assert.equal(await page.evaluate(() => window.badgeCalls), calls);
+      await page.evaluate(() => {
+        window.badgeCount = 32;
+        window.badgeEvents.list_update({ doctype: "Sports Player" });
+      });
+      await page.waitForFunction(
+        () => document.querySelector(".sports-nav-count")?.textContent === "32"
       );
       const boost = page.locator("[data-sports-boost-toggle]");
       assert.equal(await boost.getAttribute("aria-expanded"), "true");
@@ -151,6 +192,29 @@ const apps = path.resolve(__dirname, "../../../..");
         1
       );
       assert.equal(await page.locator(".sports-nav-boost").count(), 1);
+      assert.equal(await page.locator(".sports-nav-count").count(), 1);
+      assert.equal(await page.locator(".sports-nav-count").textContent(), "32");
+      await page.evaluate(() => {
+        window.badgeCount = 0;
+        window.dispatchEvent(new Event("focus"));
+      });
+      await page.waitForFunction(
+        () => document.querySelector(".sports-nav-count")?.textContent === "0"
+      );
+      await page.evaluate(() => {
+        window.failCounts = true;
+        window.dispatchEvent(new Event("focus"));
+      });
+      await page.waitForFunction(
+        () => !document.querySelector(".sports-nav-count")
+      );
+      await page.evaluate(() => {
+        window.failCounts = false;
+        window.dispatchEvent(new Event("focus"));
+      });
+      await page.waitForFunction(
+        () => document.querySelector(".sports-nav-count")?.textContent === "0"
+      );
       await page.evaluate(() => draw(false));
       await page.waitForFunction(
         () => !document.querySelector(".sports-console-navigation")
@@ -164,7 +228,7 @@ const apps = path.resolve(__dirname, "../../../..");
       await page.close();
     }
     console.log(
-      "PASS Sports sidebar desktop/phone: Sports-first ordering, distinct group colours, indentation, preserved collapse handlers, dynamic rerender, no duplicates and native-only navigation unchanged. Synthetic sidebar; no ERP writes."
+      "PASS Sports sidebar desktop/phone: Sports-first ordering, distinct group colours, indentation, preserved collapse handlers, dynamic rerender, no duplicates and native-only navigation unchanged. Badges include scoped totals, event updates, zero counts, rerender persistence, error clearing/recovery and no observer fetch loop. Synthetic sidebar; no ERP writes."
     );
   } finally {
     await browser.close();
