@@ -93,7 +93,8 @@ frappe.boost_console_views['sports_app:attendance'] = () => {
   const toolbar=node('div');toolbar.style.cssText='display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin-bottom:16px';
   const label=node('label',__('Session status')),select=node('select',null,'form-control');select.id='sports-session-status';label.htmlFor=select.id;
   for(const value of ['','Scheduled','Finalized','Cancelled']){const option=node('option',value?__(value):__('All sessions'));option.value=value;select.append(option);}select.value=status;select.addEventListener('change',()=>{status=select.value;offset=0;render();},{signal});
-  const filter=node('div');filter.append(label,select);toolbar.append(filter,button('New session',newSession,true),button('Refresh sessions',render));wrap.append(toolbar);
+  const mobile=node('a',__('Open attendance app'),'btn btn-default btn-sm');mobile.href='/sports-attendance';mobile.target='_blank';mobile.rel='noopener';
+  const filter=node('div');filter.append(label,select);toolbar.append(filter,button('New session',newSession,true),button('Refresh sessions',render),mobile);wrap.append(toolbar);
   const {scroll,body}=table(['Session','Date / time','Program / group','Venue','Status']);
   for(const r of data.rows){const tr=node('tr'),ref=node('td');ref.append(button(r.title,()=>open(r.name)),node('div',r.name,'text-muted'));tr.append(ref,node('td',`${date(r.session_date)} · ${r.start_time}–${r.end_time} (${r.timezone})`),node('td',`${r.program_label}${r.group?' / '+groupLabel(r.group):''}`),node('td',r.venue||'—'),node('td',__(r.status)));body.append(tr);}
   wrap.append(scroll);if(!data.rows.length)wrap.append(node('p',__('No sessions yet. Create a session to generate its eligible roster.'),'text-muted'));

@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-001](../epics/EPIC-001-academy-configuration-and-access.md)
-- State: In progress — prototype slice
+- State: In progress
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -55,3 +55,21 @@ User refinement: [Full menu and shared registration fields](../../build-logs/202
 Superseding refinement: public enrollment now submits Sports Registration for staff review/acceptance, documented in [US-003-01 evidence](../../build-logs/2026-11-01-us-003-01-public-submission-and-review.md). Earlier demo-only submission scope is historical; wider publishing/production scope remains open.
 
 New user refinement: [multi-step enrollment and draft Payment Entry review](../../build-logs/2026-11-01-us-005-01-enrollment-payment-review.md). This supersedes the previous no-payment PoC boundary; finance submission, invoice allocation and production acceptance remain separate.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q08-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q08-02), [BA-QNR-001-Q08-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q08-03).
+- Impact: Confirmed / needs clarification.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q08-02: Web delivery requested; No integrations answer does not remove the existing website or HTML enrollment direction. Confirm website migration/integration boundary; no native app implied.
+  - BA-QNR-001-Q08-03: Web delivery requested; No integrations answer does not remove the existing website or HTML enrollment direction. Confirm website migration/integration boundary; no native app implied.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-001-academy-configuration-and-access.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-02-review-013d8070d2b1.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-02-review-d9edae6a5126.md).

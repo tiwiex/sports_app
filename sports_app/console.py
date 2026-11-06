@@ -30,6 +30,7 @@ def get_provider():
 			"assets": [asset_url("players.js")]})
 	if can_manage_players():
 		views.append({"key": "sports_app:attendance", "label": "Attendance", "group": "Sports", "assets": [asset_url("attendance.js")]})
+		views.append({"key": "sports_app:attendance_app", "label": "Attendance App", "group": "Sports", "assets": [asset_url("attendance_app_link.js")]})
 	if can_manage_settings():
 		views.append({"key": "sports_app:relations", "label": "Clubs & Partners", "group": "Sports", "assets": [asset_url("relations.js")]})
 	if can_manage_settings():

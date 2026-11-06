@@ -14,6 +14,7 @@ def configuration():
     settings = get_configured_settings()
     validate_company(settings.company)
     return dict(company=settings.company, timezone=settings.timezone, today=str(policy.datetime.now(policy.ZoneInfo(settings.timezone)).date()),
+        can_create=bool(frappe.has_permission('Sports Session', 'create') and frappe.has_permission('Sports Attendance', 'create')),
         programs=frappe.get_list('Sports Program', filters={'company': settings.company, 'enabled': 1}, fields=['name','program_name'], page_length=0),
         groups=frappe.get_list('Sports Group', filters={'company': settings.company, 'enabled': 1}, fields=['name','group_name','program'], page_length=0))
 
@@ -85,7 +86,10 @@ def roster(name):
         row['player_name'] = players[row.player]
         row['modified'] = str(row.modified)
     counts = {status:sum(r.status==status for r in rows) for status in ('Unmarked',*policy.STATUSES)}
-    return dict(session={k:session.get(k) for k in ('name','title','company','program','group','session_date','start_time','end_time','timezone','venue','status','operator','finalized_by','finalized_on','cancellation_reason')}, rows=rows, counts=counts)
+    can_mark = bool(session.status != 'Cancelled' and session.has_permission('write')
+        and frappe.has_permission('Sports Attendance', 'write')
+        and getdate(session.session_date) <= policy.datetime.now(policy.ZoneInfo(session.timezone)).date())
+    return dict(session={k:session.get(k) for k in ('name','title','company','program','group','session_date','start_time','end_time','timezone','venue','status','operator','finalized_by','finalized_on','cancellation_reason')}, rows=rows, counts=counts, can_mark=can_mark)
 
 
 @frappe.whitelist(methods=['POST'])

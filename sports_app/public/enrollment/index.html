@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Academy enrollment</title></head>
+<body><p>Enrollment is available on the <a href="/academy">academy website</a>.</p>
+<script>
+// Existing installed clients can update to the retirement worker before redirect.
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/assets/sports_app/enrollment/sw.js", {scope:"/assets/sports_app/enrollment/", updateViaCache:"none"}).catch(() => {});
+window.location.replace("/academy");
+</script></body></html>

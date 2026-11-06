@@ -1,0 +1,11 @@
+{
+  "id": "/assets/sports_app/attendance/",
+  "name": "Sports Academy Attendance",
+  "short_name": "Attendance",
+  "start_url": "/assets/sports_app/attendance/index.html",
+  "scope": "/assets/sports_app/attendance/",
+  "display": "standalone",
+  "background_color": "#f4f1e8",
+  "theme_color": "#153e32",
+  "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]
+}

@@ -1,5 +1,7 @@
 # Manual attendance prototype
 
+For a separate phone app with downloaded rosters and offline manual capture, use [Next.js attendance app](https://moyours.ideltatech.com/sports-attendance). See the [device/sync guide](attendance-app-guide.md). Session creation and finalization remain in Boost; enrollment remains HTML.
+
 Open **Sports → Attendance** in the Boost console. Access currently uses Sports Registrar, Sports Academy Administrator or System Manager, with native document and Company permissions. A coach-specific role/assigned-group scope is not implemented in this prototype.
 
 ## Create a training session

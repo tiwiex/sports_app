@@ -1,5 +1,15 @@
 # Sports App product and delivery documents
 
+Consolidated scope (6 November 2026): the [complete backlog](backlog/README.md) merges baseline and questionnaire work into **9 existing epics and 33 story records**. Each epic now has the full story table, source coverage and unresolved decisions; proposed additions remain unestimated.
+
+[Story review guide](story-review-guide.md): edit status/MoSCoW and mark a story Done while reading, with indexed audit evidence.
+
+Questionnaire discovery (6 November 2026): [BA-QNR-001](discovery/README.md), [reconciliation register](discovery/BA-QNR-001-reconciliation.md). Responses refine existing scope and propose new performance, inventory, arrival/departure, notification and gateway stories. Conflicting fees, role/admission rules and unresolved provider/consent details remain decisions, not automatic product changes.
+
+Fingerprint workflow: [preparation-only guide](fingerprint-preparation-guide.md). Hardware capture and matching are not implemented.
+
+Dedicated attendance app: [staff guide](attendance-app-guide.md), [US-006-04](backlog/user-stories/us-006-04-attendance-pwa.md) and [build evidence](build-logs/2026-11-03-us-006-04-attendance-pwa.md). Enrollment remains the HTML academy website.
+
 Planning baseline for the generic `sports_app`, with Moyours Sports Academy as the first proposed implementation. Created 2026-11-01. The source request spells the academy “Moyours”; confirm the trading name before publishing branding.
 
 | Document | Purpose |
@@ -41,3 +51,5 @@ Public enrollment is now submittable: [Sports Registration review workflow](webs
 [Club and partner relations](club-relations-guide.md): private organisations, opportunities, correspondence logs and sourced Nigerian/international directory with staff-assessed priority.
 
 - [Manual attendance prototype guide](attendance-guide.md) — sessions, active-enrollment rosters, marking, finalization and audit corrections.
+
+[Shared console navigation](console-navigation-guide.md) explains Sports-first ordering, group colours and indented menu items.

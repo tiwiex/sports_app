@@ -1,4 +1,4 @@
-"""Read-only Sports documentation; no host finance permission or arbitrary file access."""
+"""Protected Sports documentation with narrow audited story metadata controls."""
 from pathlib import Path, PurePosixPath
 from html import escape
 import base64
@@ -46,7 +46,8 @@ def get_documents():
   if not path.resolve().is_relative_to(root) or path.stat().st_size > 512 * 1024: continue
   source = path.read_text(encoding="utf-8")
   title = next((line[2:].strip() for line in source.splitlines() if line.startswith("# ")), path.name)
-  rows.append({"path": relative, "title": title, "category": _category(relative)})
+  from sports_app.story_tracking import metadata
+  rows.append({"path": relative, "title": title, "category": _category(relative), "story": metadata(relative, source)})
  return {"documents": rows, "default_document": "REQUIREMENTS.md"}
 
 
@@ -57,7 +58,9 @@ def get_document(path):
  if target.stat().st_size > 512 * 1024: frappe.throw(_("Documentation file is too large."))
  source = target.read_text(encoding="utf-8")
  html = "<pre>" + escape(source) + "</pre>" if target.suffix.lower() == ".txt" else frappe.utils.md_to_html(source) or ""
- return {"path": target.relative_to(_root()).as_posix(), "html": sanitize_html(html, always_sanitize=True)}
+ from sports_app.story_tracking import metadata
+ relative = target.relative_to(_root()).as_posix()
+ return {"path": relative, "html": sanitize_html(html, always_sanitize=True), "story": metadata(relative, source)}
 
 
 @frappe.whitelist()
@@ -67,3 +70,11 @@ def get_asset(path):
  if target.stat().st_size > 2 * 1024 * 1024: frappe.throw(_("Documentation image is too large."))
  mime = "image/png" if target.suffix.lower() == ".png" else "image/jpeg"
  return {"data_url": "data:" + mime + ";base64," + base64.b64encode(target.read_bytes()).decode("ascii")}
+
+
+@frappe.whitelist(methods=["POST"])
+def update_story(path, revision, state=None, priority=None, note=""):
+ require_settings_access()
+ target = _file(path, {".md"})
+ from sports_app.story_tracking import update
+ return update(_root(), target.relative_to(_root()).as_posix(), revision, state, priority, note)

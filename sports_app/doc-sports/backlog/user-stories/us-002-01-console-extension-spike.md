@@ -42,3 +42,12 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Build log: [2026-11-01 delivery evidence](../../build-logs/2026-11-01-us-002-01-console-extension-spike.md).
 - Verification summary: 31 Python checks and both JavaScript suites pass. Real Sports-only, Finance-only and mixed-role browser/permission checks passed on `moyours.ideltatech.com`; temporary accounts/sessions removed. See the build log for limits.
 - Remaining decisions / follow-up work: User accepted local commit and merge into develop. Full Sports views, richer context, finance workflow configuration and broader regression remain US-002-02/03 and later stories.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Original baseline only** (including subsequent user direction); no direct questionnaire response establishes this story’s specific scope. Preserve existing state and acceptance evidence.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-002-shared-console-integration.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

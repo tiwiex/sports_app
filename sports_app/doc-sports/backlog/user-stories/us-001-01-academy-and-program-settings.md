@@ -68,3 +68,35 @@ Restored missing native Account permissions in development ERP Boost while prese
 ## Payment review recipient setting — 3 November 2026
 
 Academy Settings now includes comma-separated Payment review email addresses for website payment claims. Blank disables notifications. See [US-005-01 notification build evidence](../../build-logs/2026-11-03-us-005-01-payment-review-emails.md); Finance permissions are unchanged.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q01-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q01-04), [BA-QNR-001-Q02-12](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-12).
+- Impact: Expanded / needs clarification.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q01-04: One current location; age bands U6/U8/U10/U13/U15/U17. Confirm progression criteria and shared-session grouping; do not hardcode football bands.
+  - BA-QNR-001-Q02-12: One current location; age bands U6/U8/U10/U13/U15/U17. Confirm progression criteria and shared-session grouping; do not hardcode football bands.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-001-academy-configuration-and-access.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-107558b70445.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-5cb603210414.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-55f190ef493d.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-a7991ce0fe71.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-4c73ea708705.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-e47274efd0fb.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-9fbbe20dc4cb.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-9250c48b7f5c.md).
+
+Review tracking: [2026-11-06 status / MoSCoW update](../../build-logs/2026-11-06-us-001-01-review-91b452feaae8.md).

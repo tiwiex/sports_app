@@ -46,3 +46,20 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Manual prototype — 3 November 2026
 
 Implemented development slice: session scheduling with timezone/operator, fixed date-eligible Active roster, unique player/session identity, manual marking, explicit finalization, reasoned corrections and audit history. Native Company/document restrictions and batch conflict/rollback controls apply. [Build evidence](../../build-logs/2026-11-03-us-006-01-manual-attendance-prototype.md). Full coach/group authorization, roster exceptions and production acceptance remain open; this story is not marked Done.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q05-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-01), [BA-QNR-001-Q05-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-02), [BA-QNR-001-Q05-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-03), [BA-QNR-001-Q05-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-04), [BA-QNR-001-Q05-14](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q05-14).
+- Impact: Expanded.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q05-01: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-02: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-03: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-04: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+  - BA-QNR-001-Q05-14: Training/matches/camps/trials, per-player reporting and monthly coach report; define session frequency and reporting scope before release.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-006-sessions-and-attendance.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

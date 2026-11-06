@@ -60,3 +60,28 @@ User refinement: [Full menu and shared registration fields](../../build-logs/202
 Superseding refinement: public enrollment now submits Sports Registration for staff review/acceptance, documented in [US-003-01 evidence](../../build-logs/2026-11-01-us-003-01-public-submission-and-review.md). Earlier demo-only submission scope is historical; wider publishing/production scope remains open.
 
 Presentation follow-up: [Player reference menu and grouped profile modal](../../build-logs/2026-11-03-us-003-03-player-profile-layout.md). Existing program-membership creation and automatic account linkage are retained.
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q01-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q01-04), [BA-QNR-001-Q02-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-03), [BA-QNR-001-Q02-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-04), [BA-QNR-001-Q02-05](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-05), [BA-QNR-001-Q02-07](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-07), [BA-QNR-001-Q02-08](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-08), [BA-QNR-001-Q02-10](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-10), [BA-QNR-001-Q02-11](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-11), [BA-QNR-001-Q02-12](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-12), [BA-QNR-001-Q02-13](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-13), [BA-QNR-001-Q04-13](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-13), [BA-QNR-001-Q06-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q06-02), [BA-QNR-001-Q07-05](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q07-05).
+- Impact: Changed; Changed / needs clarification; Conflicting / needs clarification; Expanded; Expanded / needs clarification.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q01-04: One current location; age bands U6/U8/U10/U13/U15/U17. Confirm progression criteria and shared-session grouping; do not hardcode football bands.
+  - BA-QNR-001-Q02-03: Add height/weight with units and assessment date, preferred foot, private photo/birth/medical documents and injuries. Derive age from DOB; injury may excuse attendance. Biometric capture remains separate.
+  - BA-QNR-001-Q02-04: Add height/weight with units and assessment date, preferred foot, private photo/birth/medical documents and injuries. Derive age from DOB; injury may excuse attendance. Biometric capture remains separate.
+  - BA-QNR-001-Q02-05: Add height/weight with units and assessment date, preferred foot, private photo/birth/medical documents and injuries. Derive age from DOB; injury may excuse attendance. Biometric capture remains separate.
+  - BA-QNR-001-Q02-07: Source example MSA17-08001 and name+year-month+continuous serial description are ambiguous. Confirm exact format; preserve immutable existing IDs and import legacy references.
+  - BA-QNR-001-Q02-08: Source example MSA17-08001 and name+year-month+continuous serial description are ambiguous. Confirm exact format; preserve immutable existing IDs and import legacy references.
+  - BA-QNR-001-Q02-10: Parent portal is TBD in 2.10 and No in 7.5. Retain disabled future player Users; no parent login/activation or shared-family Customer inferred.
+  - BA-QNR-001-Q02-11: Returning player undertaking and reassessment history; subscription continuation; penalty and retention timeline TBD. Do not delete lifetime history or silently merge returning players.
+  - BA-QNR-001-Q02-12: One current location; age bands U6/U8/U10/U13/U15/U17. Confirm progression criteria and shared-session grouping; do not hardcode football bands.
+  - BA-QNR-001-Q02-13: Returning player undertaking and reassessment history; subscription continuation; penalty and retention timeline TBD. Do not delete lifetime history or silently merge returning players.
+  - BA-QNR-001-Q04-13: No automatic unpaid-fee suspension; misconduct suspension/dismissal is reviewed. Display arrears without automatic exclusion; preserve any manual disciplinary audit.
+  - BA-QNR-001-Q06-02: Add height/weight with units and assessment date, preferred foot, private photo/birth/medical documents and injuries. Derive age from DOB; injury may excuse attendance. Biometric capture remains separate.
+  - BA-QNR-001-Q07-05: Parent portal is TBD in 2.10 and No in 7.5. Retain disabled future player Users; no parent login/activation or shared-family Customer inferred.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-003-registration-and-player-record.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

@@ -59,3 +59,17 @@ New user refinement: [multi-step enrollment and draft Payment Entry review](../.
 - Group the profile into readable summary, admission/match, billing/payment, player, guardian/emergency and consent sections; use responsive label/value columns with safe multiline wrapping.
 - Preserve existing application IDs, program membership links, admission and Finance permissions. No DocType rename or migration.
 - [Build evidence](../../build-logs/2026-11-03-us-003-01-enrollment-review-layout.md).
+
+## Discovery provenance — 6 November 2026
+
+- Origin: **Both** — existing baseline/user direction and BA-QNR-001. Overlap does not imply every questionnaire detail is delivered.
+- Source references: [BA-QNR-001-Q02-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-01), [BA-QNR-001-Q02-09](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-09).
+- Impact: Expanded.
+- Proposed refinements / open decisions:
+  - BA-QNR-001-Q02-01: Online and staff intake; payment confirms admission subject to approved scholarship/part-payment exceptions. No automatic bank clearance from a claim.
+  - BA-QNR-001-Q02-09: Online and staff intake; payment confirms admission subject to approved scholarship/part-payment exceptions. No automatic bank clearance from a claim.
+- Reconciliation: [BA-QNR-001](../../discovery/BA-QNR-001-reconciliation.md).
+- Adjustment evidence: [Discovery build log](../../build-logs/2026-11-06-discovery-questionnaire-reconciliation.md).
+- Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
+
+Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-003-registration-and-player-record.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).

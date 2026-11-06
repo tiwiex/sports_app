@@ -273,4 +273,5 @@ doc_events = {
 doctype_js = {"Sales Invoice": "public/js/enrollment_invoice.js"}
 
 # Add the app-owned finance shortcut to Boost invoice menus.
-app_include_js = ["/assets/sports_app/js/invoice_context_payment.js"]
+from sports_app.console_assets import asset_url as sports_asset_url
+app_include_js = ["/assets/sports_app/js/invoice_context_payment.js", sports_asset_url("console_navigation.js")]

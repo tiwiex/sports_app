@@ -1,5 +1,19 @@
 # Sports App product requirements document
 
+Consolidated scope (6 November 2026): the [complete backlog](backlog/README.md) merges baseline and questionnaire work into **9 existing epics and 33 story records**. Each epic now has the full story table, source coverage and unresolved decisions; proposed additions remain unestimated.
+
+Questionnaire discovery (6 November 2026): [BA-QNR-001](discovery/README.md), [reconciliation register](discovery/BA-QNR-001-reconciliation.md). Responses refine existing scope and propose new performance, inventory, arrival/departure, notification and gateway stories. Conflicting fees, role/admission rules and unresolved provider/consent details remain decisions, not automatic product changes.
+
+Demo refinement (5 November 2026): pending fingerprint preparation can generate a clearly simulated barcode identifier for demonstrations. It does not collect biometric data or establish attendance/authentication; actual capture remains pending hardware integration. [Guide](fingerprint-preparation-guide.md#demo-capture--barcode).
+
+Fingerprint preparation refinement (5 November 2026): the attendance app exposes an administrator-only online consent/preparation workflow while hardware is unavailable. Sports Biometric Enrollment records are Pending capture or Withdrawn only; no biometric data is collected and no scanner identity or attendance event is inferred. Full provider/consent/retention validation remains US-007-01 work before actual capture. [Guide](fingerprint-preparation-guide.md).
+
+Attendance refinement (5 November 2026): the dedicated Next.js app now supports online New session and eligible roster generation through existing Sports services, with same-key retry recovery. This supersedes the initial prototype's console-only session-creation scope; cancellation/finalization remain in Boost. See [US-006-04](backlog/user-stories/us-006-04-attendance-pwa.md).
+
+Attendance frontend delivery (3 November 2026): [US-006-04](backlog/user-stories/us-006-04-attendance-pwa.md) adds a separate statically built Next.js PWA under Sports App, sharing the Frappe origin/authentication. The first slice downloads private session rosters on trusted staff devices and queues manual choices for reviewed online synchronization. Existing server role/Company/document/date/version checks remain authoritative; offline identity is a device cache, not renewed authentication. Enrollment remains HTML. Biometrics, device provisioning and production offline policy remain later acceptance work.
+
+User scope correction (3 November 2026): enrollment remains the existing HTML implementation. The withdrawn Next.js enrollment prototype is historical evidence only; Next.js is intended for attendance. Existing manual attendance in Boost remains available while the dedicated attendance frontend is refined.
+
 | Field | Value |
 |---|---|
 | Product | Generic Sports Academy Management App |
@@ -252,3 +266,5 @@ Sports Session and Sports Attendance now provide a development prototype of US-0
 ## Player presentation refinement — 3 November 2026
 
 The private Players queue uses the Enrollments table/reference-menu style. View opens a grouped responsive modal with identity, linked accounts, paginated program memberships, contacts and consent choices while retaining search/list context. New program enrollment remains permission-controlled and reuses the player's existing Customer; it creates no invoice/payment. Full payment/attendance history aggregation remains US-003-03 follow-up.
+
+Story tracking refinement (6 November 2026): [Sports story review](story-review-guide.md) adds management-only status/MoSCoW and Mark Done controls. Other documentation remains read-only; edits are version-checked, audited and synchronized to epic/master inventories. This is planning metadata, not automatic implementation acceptance.
