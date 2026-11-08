@@ -5,7 +5,7 @@
 - Requirements: Existing requirement mappings in the linked story and feature logs apply.
 - Affected apps / branches / versions: Sports App; `story/epic-004-scholarships-and-monthly-billing` → `develop`.
 - Pull requests: [Sports App PR #4](https://github.com/tiwiex/sports_app/pull/4) → `develop`.
-- Status: Local checks verified; integration pending.
+- Status: Local checks verified; remote CI verification in progress.
 
 ## Intended outcome and starting context
 
@@ -33,6 +33,8 @@ Prepared the existing billing/scholarships, configurable charges, subscription p
 | Existing domain checks remain green | 258 isolated Python tests | Passed |
 | Changed console/public screens render at desktop and phone widths | Eight browser fixtures with synthetic APIs | Passed |
 | Formatting and syntax | Scoped pinned pre-commit suite | Passed |
+
+- Initial remote Frappe Linter failed because Prettier enforced the repository tab/99-column EditorConfig, while the sandboxed local formatter had preserved spaces. Reran the pinned hooks outside the sandbox to apply CI formatting to nine changed JavaScript files; no policy or business behavior changes. Attendance build and dependency audit passed on the initial remote run.
 
 ## Decisions, deviations and recovery
 
