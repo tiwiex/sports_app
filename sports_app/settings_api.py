@@ -14,6 +14,10 @@ from sports_app.academy import (
 
 def _values(doc):
 	result = {key: doc.get(key) for key in SETTINGS_FIELDS}
+	result["enrollment_items"] = [
+		{k: row.get(k) for k in ("item_code", "item_name", "qty", "rate", "amount")}
+		for row in (doc.get("enrollment_items") or [])
+	]
 	result["modified"] = str(doc.modified or "")
 	return result
 
@@ -51,6 +55,18 @@ def save_configuration(settings: str | dict):
 	values = frappe.parse_json(settings)
 	if not isinstance(values, dict) or set(values) - set(SETTINGS_FIELDS) - {"modified"}:
 		frappe.throw(_("Invalid academy settings fields."))
+	if "enrollment_items" in values:
+		rows = values["enrollment_items"]
+		if (
+			not isinstance(rows, list)
+			or len(rows) > 30
+			or any(
+				not isinstance(row, dict) or set(row) - {"item_code", "item_name", "qty", "rate", "amount"}
+				for row in rows
+			)
+		):
+			frappe.throw(_("Invalid enrollment charge fields."))
+
 	doc = get_configured_settings()
 	doc.check_permission("write")
 	if str(doc.modified or "") != str(values.pop("modified", "") or ""):

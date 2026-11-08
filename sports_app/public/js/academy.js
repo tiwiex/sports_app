@@ -202,9 +202,18 @@
 				minimumFractionDigits: 0,
 				maximumFractionDigits: 2,
 			}).format(value);
+		const chargeRows = document.getElementById("enrollment-charge-rows");
+		chargeRows.replaceChildren();
+		for (const row of data.charges || []) {
+			const line = document.createElement("div"),
+				label = document.createElement("dt"),
+				amount = document.createElement("dd");
+			label.textContent = `${row.item_name} (${row.qty} × ${money(row.rate)})`;
+			amount.textContent = money(row.amount);
+			line.append(label, amount);
+			chargeRows.append(line);
+		}
 		for (const [id, value] of Object.entries({
-			"fee-registration": money(data.registration_fee),
-			"fee-jersey": money(data.jersey_fee),
 			"fee-total": money(data.total),
 			"fee-monthly": money(data.monthly_fee),
 			"payment-bank": data.bank,
@@ -342,7 +351,12 @@
 		delete values.website;
 		for (const name of ["medical_consent", "media_consent", "terms_accepted"])
 			values[name] = values[name] ? 1 : 0;
-		const payload = JSON.stringify({ player: values, pathway, website, image_data });
+		const payload = JSON.stringify({
+			player: values,
+			pathway,
+			website,
+			image_data,
+		});
 		if (retryPayload && retryPayload !== payload) requestKey = crypto.randomUUID();
 		retryPayload = payload;
 		setBusy(true);

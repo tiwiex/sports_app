@@ -66,18 +66,18 @@ Updated 6 November 2026: **9 epics, 33 story records**, including the withdrawn 
 
 | Story | Current state | Origin |
 |---|---|---|
-| [US-004-01: Manage effective-dated scholarship and exemption decisions](user-stories/us-004-01-restricted-scholarship-decisions.md) | Proposed | Both |
-| [US-004-02: Configure fee plans and concession-safe charge calculation](user-stories/us-004-02-fee-plans-and-policy.md) | Proposed | Both |
-| [US-004-03: Generate monthly obligations and ERPNext invoices safely](user-stories/us-004-03-monthly-obligations-and-invoices.md) | Proposed | Both |
+| [US-004-01: Manage effective-dated scholarship and exemption decisions](user-stories/us-004-01-restricted-scholarship-decisions.md) | In review | Both |
+| [US-004-02: Configure fee plans and concession-safe charge calculation](user-stories/us-004-02-fee-plans-and-policy.md) | In review | Both |
+| [US-004-03: Generate monthly obligations and ERPNext invoices safely](user-stories/us-004-03-monthly-obligations-and-invoices.md) | In review | Both |
 
 ### EPIC-005: Payments, financial history and controlled communications
 
 | Story | Current state | Origin |
 |---|---|---|
-| [US-005-01: Record player-attributed payments using ERPNext](user-stories/us-005-01-player-receipts-and-allocations.md) | In progress — invoice-first enrollment PoC | Both |
-| [US-005-02: Show monthly payment status and source history](user-stories/us-005-02-monthly-status-and-history.md) | Proposed | Both |
-| [US-005-03: Reconcile credits, refunds and payment corrections](user-stories/us-005-03-corrections-and-reconciliation.md) | Proposed | Both |
-| [US-005-04: Parent reminders and receipt delivery](user-stories/us-005-04-parent-reminders-and-receipt-delivery.md) | Proposed | Questionnaire only |
+| [US-005-01: Record player-attributed payments using ERPNext](user-stories/us-005-01-player-receipts-and-allocations.md) | In review | Both |
+| [US-005-02: Show monthly payment status and source history](user-stories/us-005-02-monthly-status-and-history.md) | In progress | Both |
+| [US-005-03: Reconcile credits, refunds and payment corrections](user-stories/us-005-03-corrections-and-reconciliation.md) | In progress | Both |
+| [US-005-04: Parent reminders and receipt delivery](user-stories/us-005-04-parent-reminders-and-receipt-delivery.md) | In progress | Both |
 | [US-005-05: Payment gateway discovery and reconciliation](user-stories/us-005-05-payment-gateway-discovery-and-reconciliation.md) | Proposed | Questionnaire only |
 
 ### EPIC-006: Sessions, attendance and arrival/departure
@@ -124,8 +124,8 @@ Updated 6 November 2026: **9 epics, 33 story records**, including the withdrawn 
 - In progress — manual attendance prototype: 2
 - In progress — preparation metadata only; hardware/provider validation pending: 1
 - In progress — central record slice verified: 1
-- In review: 1
-- Proposed: 18
+- In review: 4
+- Proposed: 15
 - Withdrawn — user clarified Next.js is for attendance: 1
 
 [Consolidation build log](../build-logs/2026-11-06-backlog-consolidated-epics.md). This overview supersedes earlier baseline-only counts; historical build logs remain unchanged. Enrollment stays HTML; the withdrawn US-001-04 experiment remains traceable and Next.js is attendance only.

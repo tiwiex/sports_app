@@ -5,7 +5,7 @@ from uuid import uuid4
 import frappe
 from frappe import _
 from frappe.rate_limiter import rate_limit
-from frappe.utils import cint, now_datetime, today
+from frappe.utils import cint, get_datetime, now_datetime, today
 
 from sports_app.players import PLAYER_FIELDS, registration_settings, require_player_access
 from sports_app.registration import get_registration_fields
@@ -125,6 +125,41 @@ def list_registrations(
 		row.update(
 			sales_invoice=invoice.name if invoice else None,
 			invoice_workflow=invoice.workflow_state if invoice else None,
+		)
+		from sports_app.receipt_delivery import can_email
+
+		row["elapsed_seconds"] = (
+			max(0, (now_datetime() - get_datetime(doc.submitted_on)).total_seconds())
+			if doc.submitted_on
+			else None
+		)
+		payment = frappe.get_doc("Payment Entry", doc.payment_entry) if doc.payment_entry else None
+		row["invoice_pdf"] = (
+			invoice.name
+			if invoice and frappe.get_doc("Sales Invoice", invoice.name).has_permission("read")
+			else None
+		)
+		row["receipt_pdf"] = (
+			payment.name
+			if payment
+			and payment.docstatus == 1
+			and payment.company == doc.company
+			and payment.get("sports_registration") == doc.name
+			and payment.has_permission("read")
+			else None
+		)
+		row["email_receipt"] = (
+			payment.name
+			if (
+				doc.status == "Accepted"
+				and doc.player
+				and payment
+				and can_email(payment)
+				and payment.company == doc.company
+				and payment.party_type == "Customer"
+				and payment.party == frappe.db.get_value("Sports Player", doc.player, "customer")
+			)
+			else None
 		)
 		row["can_accept"] = can_accept(doc, invoice)
 		row["can_review"] = row.status == "Pending" and doc.has_permission("write")

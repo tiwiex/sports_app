@@ -245,11 +245,28 @@ app_license = "mit"
 
 # Sports contributes views to the optional Boost host; it owns no copied shell.
 boost_console_providers = ["sports_app.console.get_provider"]
-after_install = ["sports_app.console.setup_console", "sports_app.payment_setup.setup_payment_support"]
-after_migrate = ["sports_app.console.setup_console", "sports_app.payment_setup.setup_payment_support"]
+after_install = [
+	"sports_app.console.setup_console",
+	"sports_app.payment_setup.setup_payment_support",
+	"sports_app.billing_setup.setup_billing",
+	"sports_app.billing_setup.setup_monthly_workflow",
+	"sports_app.billing_setup.setup_subscription_payments",
+	"sports_app.scheduled_billing.setup_schedule",
+	"sports_app.printing.setup_formats",
+]
+after_migrate = [
+	"sports_app.console.setup_console",
+	"sports_app.payment_setup.setup_payment_support",
+	"sports_app.billing_setup.setup_billing",
+	"sports_app.billing_setup.setup_monthly_workflow",
+	"sports_app.billing_setup.setup_subscription_payments",
+	"sports_app.scheduled_billing.setup_schedule",
+	"sports_app.printing.setup_formats",
+]
 on_login = "sports_app.console.set_console_login_redirect"
 
-before_install = "sports_app.console.setup_roles"
+before_install = ["sports_app.console.setup_roles", "sports_app.billing_setup.setup_role"]
+before_migrate = "sports_app.billing_setup.setup_role"
 before_migrate = "sports_app.console.setup_roles"
 
 # Academy configuration links to ERPNext company and currency masters.
@@ -257,20 +274,41 @@ required_apps = ["erpnext"]
 
 # Protect Sports-linked ERPNext receipt provenance without changing ERPNext core.
 doc_events = {
+	"Sports Enrollment": {"on_update": "sports_app.scheduled_billing.request_catchup"},
+	"Sports Fee Plan": {"on_update": "sports_app.scheduled_billing.request_catchup"},
+	"Sports Academy Settings": {"on_update": "sports_app.scheduled_billing.request_catchup"},
 	"File": {
 		"before_insert": "sports_app.player_documents.protect_file",
 		"before_validate": "sports_app.player_documents.protect_file",
 		"validate": "sports_app.player_documents.protect_file",
 	},
 	"Sales Invoice": {
-		"validate": "sports_app.enrollment_invoices.validate_enrollment_invoice",
-		"before_submit": "sports_app.enrollment_invoices.validate_finance_submission",
+		"validate": [
+			"sports_app.enrollment_invoices.validate_enrollment_invoice",
+			"sports_app.monthly_billing.validate_invoice",
+		],
+		"before_submit": [
+			"sports_app.enrollment_invoices.validate_finance_submission",
+			"sports_app.monthly_billing.validate_invoice",
+		],
 		"on_submit": "sports_app.enrollment_invoices.record_invoice_payment",
-		"before_update_after_submit": "sports_app.enrollment_invoices.validate_enrollment_invoice",
+		"before_update_after_submit": [
+			"sports_app.enrollment_invoices.validate_enrollment_invoice",
+			"sports_app.monthly_billing.validate_invoice",
+		],
+		"on_trash": "sports_app.monthly_billing.prevent_invoice_delete",
 	},
 	"Payment Entry": {
-		"validate": "sports_app.enrollment_payments.validate_sports_payment",
-		"before_submit": "sports_app.enrollment_payments.validate_sports_payment",
+		"validate": [
+			"sports_app.enrollment_payments.validate_sports_payment",
+			"sports_app.subscription_payments.validate_payment",
+		],
+		"before_submit": [
+			"sports_app.enrollment_payments.validate_sports_payment",
+			"sports_app.subscription_payments.validate_payment",
+		],
+		"before_cancel": "sports_app.subscription_payments.validate_payment",
+		"before_update_after_submit": "sports_app.subscription_payments.validate_payment",
 	},
 }
 
@@ -295,3 +333,10 @@ permission_query_conditions = {
 	"Sports Player Document": "sports_app.player_documents.permission_query",
 	"File": "sports_app.player_documents.file_permission_query",
 }
+
+for _billing_type in ("Sports Scholarship Decision", "Sports Fee Plan", "Sports Billing Obligation"):
+	has_permission[_billing_type] = "sports_app.billing_access.has_permission"
+	permission_query_conditions[_billing_type] = "sports_app.billing_access.permission_query"
+
+# Current and missed monthly receivables, evaluated in the academy timezone.
+scheduler_events = {"daily": ["sports_app.scheduled_billing.run"]}

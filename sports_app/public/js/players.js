@@ -141,6 +141,18 @@ frappe.boost_console_views["sports_app:players"] = () => {
 			list.append(li);
 		};
 		add("View", () => showPlayer(row.name));
+		if (row.latest_invoice)
+			add("View invoice PDF", () =>
+				frappe.sports_finance_documents.openPdf("Sales Invoice", row.latest_invoice)
+			);
+		if (row.latest_receipt)
+			add("View receipt PDF", () =>
+				frappe.sports_finance_documents.openPdf("Payment Entry", row.latest_receipt)
+			);
+		if (row.latest_receipt && row.can_email_receipt)
+			add("Email receipt", () =>
+				frappe.sports_finance_documents.emailReceipt(row.name, row.latest_receipt)
+			);
 		if (row.can_change_id) add("Change Player ID", () => changeId(row.name));
 		if (row.can_enroll) add("New program enrollment", () => startEnrollment(row.name));
 		toggle.addEventListener(
@@ -204,13 +216,14 @@ frappe.boost_console_views["sports_app:players"] = () => {
    .sports-player-profile .player-identity>div{min-width:0}
    .sports-player-profile .player-hero h3{margin:3px 0 5px;font-size:24px;overflow-wrap:anywhere}
    .sports-player-profile .player-eyebrow{color:var(--text-muted,#607287);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
-   .sports-player-profile .player-card{border:1px solid var(--border-color,#d7e2ed);border-radius:8px;padding:18px;margin-bottom:16px;background:var(--card-bg,#fff)}
-   .sports-player-profile .player-summary{background:var(--subtle-fg,#f4f8fb)}
-   .sports-player-profile .player-card h4{font-size:15px;margin:0 0 14px;font-weight:700}
-   .sports-player-profile .player-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 24px;margin:0}
-   .sports-player-profile .player-field{min-width:0}.sports-player-profile .player-field.is-wide{grid-column:1/-1}
-   .sports-player-profile dt{font-size:12px;font-weight:500;color:var(--text-muted,#607287);margin-bottom:4px}
-   .sports-player-profile dd{font-size:14px;font-weight:500;margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+   .sports-player-profile .player-card{border:1px solid var(--border-color,#dce6df);border-left:3px solid #277457;border-radius:10px;padding:18px 20px;margin-bottom:18px;background:var(--card-bg,#fff);box-shadow:0 2px 8px #173f3006}
+   .sports-player-profile .player-summary{background:var(--subtle-fg,#f0f6f2)}
+   .sports-player-profile .player-card h4{font-size:15px;margin:0 0 6px;padding-bottom:10px;border-bottom:1px solid var(--border-color,#e2eae5);font-weight:700;color:var(--text-color,#173f30)}
+   .sports-player-profile .player-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin:0}
+   .sports-player-profile .player-field{display:flex;align-items:baseline;gap:8px;min-width:0;padding:10px 0;border-bottom:1px solid var(--border-color,#edf1ee)}.sports-player-profile .player-field.is-wide{grid-column:1/-1}
+   .sports-player-profile .player-grid dt{flex:0 0 auto;max-width:46%;font-size:13px;font-weight:600;color:var(--text-muted,#617268);margin:0;line-height:1.65}
+   .sports-player-profile .player-grid dd{flex:1 1 0;min-width:0;font-size:14px;font-weight:700;color:var(--text-color,#193d2d);margin:0;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+   .sports-player-profile .player-grid dd a{font-weight:700;color:var(--blue-600,#1769aa);text-decoration:underline;text-underline-offset:3px}
    .sports-player-profile a{overflow-wrap:anywhere}
    .sports-player-profile .player-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
    @media(max-width:640px){.sports-player-profile .player-grid{grid-template-columns:minmax(0,1fr)}.sports-player-profile .player-card{padding:14px}.sports-player-profile .player-hero h3{font-size:21px}}
@@ -232,7 +245,7 @@ frappe.boost_console_views["sports_app:players"] = () => {
 				dd = node("dd");
 			if (value instanceof Node) dd.append(value);
 			else dd.textContent = value == null || value === "" ? "—" : value;
-			cell.append(node("dt", __(label)), dd);
+			cell.append(node("dt", `${__(label)}:`), dd);
 			dl.append(cell);
 		};
 		const hero = node("header", null, "player-hero"),
@@ -554,13 +567,36 @@ frappe.boost_console_views["sports_app:players"] = () => {
 		);
 		wrapper.append(form);
 		const listing = table(
-			["Player ID", "Name", "Date of birth", "Company", "Registered on"],
+			[
+				"Player ID",
+				"Name",
+				"Date of birth",
+				"Company",
+				"Registered on",
+				"Latest invoice",
+				"Latest receipt",
+				"Elapsed",
+			],
 			rows.map((row) => [
 				referenceMenu(row),
 				row.full_name,
 				formatDate(row.birth_date),
 				row.company,
 				formatDate(row.registered_on),
+				row.latest_invoice
+					? frappe.sports_finance_documents.pdfLink("Sales Invoice", row.latest_invoice)
+					: "—",
+				row.latest_receipt
+					? frappe.sports_finance_documents.receiptLink(
+							row.name,
+							{
+								name: row.latest_receipt,
+								can_email_receipt: row.can_email_receipt,
+							},
+							signal
+					  )
+					: "—",
+				frappe.sports_finance_documents.ageCell(row.elapsed_seconds, signal),
 			])
 		);
 		for (const [index, field] of [

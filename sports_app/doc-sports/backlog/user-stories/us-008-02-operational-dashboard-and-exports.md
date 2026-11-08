@@ -64,3 +64,12 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
 
 Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-008-erp-readiness-reporting-and-rollout.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+
+## Sports Academy landing dashboard — 7 November 2026
+
+SPORTS-FR-023 / SPORTS-NFR-002 / SPORTS-NFR-005, US-008-02: replace the Sports Academy introductory text with a read-only dashboard. Coloured cards show visible player counts, current Active program memberships, Pending applications and non-cancelled sessions in the academy's current month. The next five Scheduled sessions from today show title, date/time and venue with native record links. Active memberships are enrollment counts, not unique active players or reconstructed historical eligibility.
+
+Authorized finance users also see selected-year monthly subscription Billed, Settled and Outstanding totals with a twelve-month billed/outstanding chart. Reuse the existing permission-scoped subscription Overview service: submitted monthly invoices only, not enrollment fees/all ERP revenue; Settled includes accounting credits and is not cash receipts. The year filter affects financial totals only. Operational counts remain current. Missing native permissions show Restricted, not zero; no scholarship, biometric or player contact data is included.
+
+Role-scoped shortcuts use the existing host dashboard navigation to Players, Enrollments, Attendance, Scholarships & Billing and Academy Settings. Refresh, year changes and host data-change watchers update the dashboard, with loading, empty, restricted, retry and unmount protection. Desktop and phone layouts use the same coloured summary style. This delivers the landing-dashboard slice; broader date/program filters, exports, attendance outcome reporting and production p95 acceptance remain open. [Build evidence](../../build-logs/2026-11-07-us-008-02-academy-landing-dashboard.md).

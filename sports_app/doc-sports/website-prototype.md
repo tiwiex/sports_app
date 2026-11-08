@@ -57,3 +57,21 @@ Click a column heading to sort the full filtered result before pagination; click
 The **Enrollments** queue contains enrollment applications awaiting an admission decision. **Accept enrollment** creates the player and their dated program membership; the Players view shows those memberships. Admission remains separate from payment verification. Earlier references to the Registrations queue describe this same application queue.
 
 **View** opens a grouped application profile: summary/status, admission review and possible matches, billing/payment, player details, guardian/emergency contacts and consent choices. Fields use two columns on desktop and one on small screens; long addresses/notes wrap and consent answers remain explicit Yes/No.
+
+## PDF receipts and manual delivery — 7 November 2026
+
+User-approved refinement: invoice/receipt references in the player financial history and enrollment review open native PDF downloads in a new tab. Links use an underline, link colour and visible PDF ↗ indicator. The final **Elapsed** column shows minutes/hours/days since finance-record creation or application submission; labels update every 30 seconds while connected, without editing source dates or balances.
+
+Posted positive Customer Receive receipts expose **Email receipt** in the player receipt menu and, for the linked accepted application, its context menu. Require native receipt read/print/email, player access and matching Company/Customer. A dialog defaults the permitted guardian email (or player email) and requires explicit confirmation of one recipient. Server rechecks eligibility and attaches the native receipt print format as PDF. A receipt lock and stable per-dialog request key prevent lost-response duplicates; changed-recipient retries are rejected. Native Communication and Email Queue provide audit and delivery status; queued does not mean delivered. Default outgoing Email Account and working PDF generation are required. No scheduled reminder or automatic acceptance email is enabled.
+
+The transactional email may reach disabled future player/guardian Website Users without activating their accounts. No financial posting, new role grant or Boost change. [Build evidence](build-logs/2026-11-07-us-003-03-pdf-receipts-email-and-elapsed-time.md).
+
+## Main-table document actions and branded PDF modals — 7 November 2026
+
+Subsequent user refinement supersedes the normal new-tab PDF interaction above: ordinary clicks open an in-console **PDF preview** modal with an Open / download fallback. Ctrl/Cmd-click still supports the browser’s normal new-tab behaviour. Main **Players** adds **Latest invoice**, **Latest receipt** and final **Elapsed** columns, plus View invoice PDF / View receipt PDF / Email receipt in the player menu when permitted. Latest refers to newest creation time; the player profile retains access to older documents. Main **Enrollments** has linked invoice and posted receipt columns and matching context actions, without opening the inner profile first.
+
+Financial references use native permission-filtered Company/Customer queries. Sports-only staff without finance access receive no finance IDs. Email retains posted Receive/read/print/email checks and explicit recipient confirmation. No accounting states or dates change.
+
+Backend Print Formats **Sports Academy Invoice** and **Sports Academy Receipt** provide green/gold branding, existing website crest on Moyours, clear reference/date/party/line-item/total sections and draft/cancelled indicators. The receipt shows only its recorded amount and allocations; it does not claim all customer invoices are settled. Sports PDF preview/download and receipt email explicitly choose these formats. They do not replace ERPNext global print defaults. **Academy Settings → General → Document logo** configures the Sports PDF logo; another academy can use its own image, falling back to its Company logo. This deployment reuses Moyours’ existing public crest and leaves Company branding unchanged.
+
+[Build evidence](build-logs/2026-11-07-us-003-03-main-table-finance-and-branded-pdf-modal.md).

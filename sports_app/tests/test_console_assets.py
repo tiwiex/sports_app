@@ -6,26 +6,31 @@ from unittest.mock import patch
 from sports_app import console_assets as assets
 
 
-class TestConsoleAssets(TestCase):
-	def test_changed_source_gets_a_new_url_and_old_content_is_preserved(self):
-		with TemporaryDirectory() as folder, patch.object(assets, "_root", return_value=Path(folder)):
-			for filename in assets.FILES:
-				(Path(folder) / filename).write_text("// first version")
-			assets.publish_assets()
-			old = assets.asset_url("players.js")
-			old_file = Path(folder) / "releases" / old.rsplit("/", 1)[-1]
-			(Path(folder) / "players.js").write_text("// updated, no payer selection")
-			new = assets.asset_url("players.js")
-			self.assertNotEqual(old, new)
-			assets.publish_assets()
-			self.assertEqual(old_file.read_text(), "// first version")
-			self.assertEqual(
-				(Path(folder) / "releases" / new.rsplit("/", 1)[-1]).read_text(),
-				"// updated, no payer selection",
-			)
-			assets.publish_assets()
-			self.assertEqual(assets.asset_url("players.js"), new)
+class TestSportsConsoleAssets(TestCase):
+	def test_url_publishes_new_source_before_advertising_and_retains_old_version(self):
+		with TemporaryDirectory() as directory, patch.object(assets, "_root", return_value=Path(directory)):
+			source = Path(directory) / "subscription_console.js"
+			source.write_text("window.version = 1;")
+			first = assets.asset_url(source.name)
+			published = Path(directory) / "releases" / first.rsplit("/", 1)[1]
+			self.assertEqual(published.read_bytes(), source.read_bytes())
+			source.write_text("window.version = 2;")
+			second = assets.asset_url(source.name)
+			self.assertNotEqual(first, second)
+			self.assertEqual(published.read_text(), "window.version = 1;")
+			self.assertEqual((published.parent / second.rsplit("/", 1)[1]).read_bytes(), source.read_bytes())
+			self.assertEqual(list(published.parent.glob(".sports-asset-*")), [])
 
-	def test_only_known_app_assets_can_be_published(self):
-		with self.assertRaises(ValueError):
-			assets.asset_url("../private.js")
+	def test_missing_or_damaged_release_is_repaired_but_unknown_filename_rejected(self):
+		with TemporaryDirectory() as directory, patch.object(assets, "_root", return_value=Path(directory)):
+			source = Path(directory) / "billing.js"
+			source.write_text("window.billing = true;")
+			url = assets.asset_url(source.name)
+			release = Path(directory) / "releases" / url.rsplit("/", 1)[1]
+			release.write_text("incomplete")
+			release.chmod(0o600)
+			self.assertEqual(assets.asset_url(source.name), url)
+			self.assertEqual(release.read_bytes(), source.read_bytes())
+			self.assertEqual(release.stat().st_mode & 0o777, 0o644)
+			with self.assertRaises(ValueError):
+				assets.asset_url("../private.js")

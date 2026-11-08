@@ -8,7 +8,7 @@ from uuid import UUID
 import frappe
 from frappe import _
 from frappe.model import get_permitted_fields
-from frappe.utils import getdate, now_datetime
+from frappe.utils import get_datetime, getdate, now_datetime
 
 from sports_app.academy import (
 	can_manage_settings,
@@ -30,6 +30,7 @@ SECTIONS = {
 		[
 			"name",
 			"posting_date",
+			"creation",
 			"due_date",
 			"currency",
 			"grand_total",
@@ -43,6 +44,7 @@ SECTIONS = {
 		[
 			"name",
 			"posting_date",
+			"creation",
 			"payment_type",
 			"paid_amount",
 			"paid_from_account_currency",
@@ -180,6 +182,17 @@ def history(name: str, section: str, start: str | int = 0):
 	)
 	more = len(rows) > PAGE_SIZE
 	rows = rows[:PAGE_SIZE]
+	if section in ("invoices", "receipts"):
+		from sports_app.receipt_delivery import can_email
+
+		for row in rows:
+			row["elapsed_seconds"] = (
+				max(0, (now_datetime() - get_datetime(row.creation)).total_seconds())
+				if row.creation
+				else None
+			)
+			if section == "receipts":
+				row["can_email_receipt"] = can_email(frappe.get_doc("Payment Entry", row.name))
 	if section == "attendance":
 		sessions = (
 			{

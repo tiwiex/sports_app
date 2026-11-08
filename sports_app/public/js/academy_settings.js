@@ -1,7 +1,12 @@
 /* Academy configuration belongs to Sports App; Boost only mounts the view. */
 frappe.provide("frappe.boost_console_views");
 frappe.boost_console_views["sports_app:settings"] = () => {
-	let host, signal, form, configuration;
+	let host,
+		signal,
+		form,
+		configuration,
+		activeTab = "general",
+		tabSerial = 0;
 	const node = (tag, text, className) => {
 		const element = document.createElement(tag);
 		if (text) element.textContent = __(text);
@@ -162,12 +167,15 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 	const render = async (preserved) => {
 		configuration = await call("get_configuration");
 		if (signal.aborted) return;
-		const wrapper = node("div");
+		const wrapper = node("div", null, "sports-academy-settings");
+		const style = node("style");
+		style.textContent = `.sports-academy-settings{min-width:0}.sports-academy-settings .academy-tabs{display:flex;gap:6px;overflow-x:auto;max-width:100%;margin:16px 0;border-bottom:1px solid var(--border-color,#d7e2ed);padding-bottom:6px}.sports-academy-settings [role=tab]{flex:0 0 auto;white-space:nowrap;border:0;border-bottom:3px solid transparent;background:transparent;padding:10px 12px;font:inherit;font-weight:600;color:var(--text-muted,#607287);cursor:pointer}.sports-academy-settings [role=tab][aria-selected=true]{border-color:var(--primary,#176b50);color:var(--text-color,#173042);background:var(--subtle-fg,#f4f8fb)}.sports-academy-settings [role=tab]:focus-visible{outline:2px solid var(--primary,#176b50);outline-offset:-2px}.sports-academy-settings [role=tabpanel]{min-width:0}.sports-academy-settings [role=tabpanel][hidden]{display:none!important}.sports-academy-settings .table-responsive{max-width:100%;overflow:auto}`;
+		wrapper.append(style);
 		wrapper.append(
 			node("h3", "Academy Settings"),
 			node(
 				"p",
-				"Choose a company, add programs and groups below, then save the academy's defaults. Saving does not create players or charges.",
+				"Choose a company, manage programs and groups in their tab, then save the academy's defaults. Saving does not create players or charges.",
 				"text-muted"
 			)
 		);
@@ -190,6 +198,12 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 					label: __("Academy name"),
 					fieldtype: "Data",
 					reqd: 1,
+				},
+				{
+					fieldname: "print_logo",
+					label: __("Document logo"),
+					fieldtype: "Attach Image",
+					description: __("Logo for Sports invoice and receipt PDFs."),
 				},
 				{
 					fieldname: "company",
@@ -282,6 +296,35 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 					default: 1,
 				},
 				{
+					fieldname: "automatic_monthly_billing",
+					label: __("Automatically submit monthly invoices"),
+					fieldtype: "Check",
+					description: __(
+						"Posts invoices after each month ends, catching up from enrollment dates. Payments are confirmed separately."
+					),
+				},
+				{
+					fieldname: "monthly_billing_start",
+					label: __("Automatic billing starts"),
+					hidden: 1,
+					fieldtype: "Date",
+					description: __(
+						"First day of the earliest month to bill. Earlier months are not backfilled."
+					),
+				},
+				{
+					fieldname: "monthly_billing_user",
+					label: __("Billing automation user"),
+					fieldtype: "Link",
+					options: "User",
+					get_query: () => ({
+						filters: { enabled: 1, user_type: "System User" },
+					}),
+					description: __(
+						"Requires Sports billing and native invoice submission/workflow rights. No roles are granted."
+					),
+				},
+				{
 					fieldname: "default_monthly_fee",
 					label: __("Default monthly fee"),
 					fieldtype: "Currency",
@@ -315,36 +358,58 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 					options: "Currency",
 				},
 				{
-					fieldname: "enrollment_registration_fee",
-					label: __("Initial registration fee"),
-					fieldtype: "Currency",
-					options: "enrollment_payment_currency",
-				},
-				{
-					fieldname: "enrollment_jersey_fee",
-					label: __("Jersey fee (2 sets)"),
-					fieldtype: "Currency",
-					options: "enrollment_payment_currency",
+					fieldname: "enrollment_items",
+					label: __("Enrollment charges"),
+					fieldtype: "Table",
+					options: "Sports Enrollment Charge",
+					in_place_edit: true,
+					fields: [
+						{
+							fieldname: "item_code",
+							label: __("Item"),
+							fieldtype: "Link",
+							options: "Item",
+							reqd: 1,
+							in_list_view: 1,
+							columns: 4,
+							get_query: () => ({ filters: { disabled: 0, is_sales_item: 1 } }),
+						},
+						{
+							fieldname: "qty",
+							label: __("Quantity"),
+							fieldtype: "Float",
+							precision: 4,
+							default: 1,
+							reqd: 1,
+							in_list_view: 1,
+							columns: 2,
+						},
+						{
+							fieldname: "rate",
+							label: __("Rate"),
+							fieldtype: "Currency",
+							reqd: 1,
+							in_list_view: 1,
+							columns: 2,
+						},
+						{
+							fieldname: "amount",
+							label: __("Amount"),
+							fieldtype: "Currency",
+							read_only: 1,
+							in_list_view: 1,
+							columns: 2,
+						},
+					],
+					description: __(
+						"Select existing Items and set quantity/rate. These rows form the initial invoice; charging stock Items does not issue stock."
+					),
 				},
 				{
 					fieldname: "enrollment_monthly_fee",
 					label: __("Monthly fee (information only)"),
 					fieldtype: "Currency",
 					options: "enrollment_payment_currency",
-				},
-				{
-					fieldname: "enrollment_registration_item",
-					label: __("Registration fee item"),
-					fieldtype: "Link",
-					options: "Item",
-					get_query: () => ({ filters: { is_stock_item: 0, disabled: 0 } }),
-				},
-				{
-					fieldname: "enrollment_jersey_item",
-					label: __("Jersey fee item"),
-					fieldtype: "Link",
-					options: "Item",
-					get_query: () => ({ filters: { is_stock_item: 0, disabled: 0 } }),
 				},
 				{
 					fieldname: "enrollment_bank_account",
@@ -377,6 +442,17 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 		});
 		form.make();
 		await form.set_values(values);
+		const updateCharges = () => {
+			if (signal.aborted) return;
+			for (const row of form.get_value("enrollment_items") || [])
+				row.amount = Math.round(Number(row.qty || 0) * Number(row.rate || 0) * 100) / 100;
+			for (const row of form.fields_dict.enrollment_items.grid?.grid_rows || [])
+				row.refresh_field("amount");
+		};
+		form.fields_dict.enrollment_items.grid?.wrapper.on("change.sportsChargeTotals", () =>
+			setTimeout(updateCharges, 0)
+		);
+		updateCharges();
 		if (signal.aborted) return;
 		const preview = node("p", null, "text-muted");
 		const updatePreview = () => {
@@ -399,12 +475,140 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 		};
 		form.fields_dict.default_program.df.onchange = () => form.set_value("default_group", "");
 		updatePreview();
-		wrapper.append(preview);
+		const groups = [
+			[
+				"general",
+				"General",
+				["academy_name", "print_logo", "company", "currency", "timezone"],
+			],
+			[
+				"numbering",
+				"Player IDs",
+				[
+					"registration_prefix",
+					"registration_digits",
+					"player_starting_sequence",
+					"enrollment_naming_series",
+				],
+			],
+			[
+				"defaults",
+				"Enrollment defaults",
+				["default_enrollment_status", "default_program", "default_group"],
+			],
+			[
+				"fees",
+				"Monthly fees",
+				[
+					"monthly_fees_enabled",
+					"automatic_monthly_billing",
+					"monthly_billing_start",
+					"monthly_billing_user",
+					"default_monthly_fee",
+				],
+			],
+			[
+				"payments",
+				"Website payments",
+				[
+					"enrollment_payments_enabled",
+					"payment_review_emails",
+					"enrollment_payment_currency",
+					"enrollment_items",
+					"enrollment_monthly_fee",
+					"enrollment_bank_account",
+					"enrollment_receivable_account",
+				],
+			],
+			["masters", "Programs & groups", []],
+		];
+		// Keep controls inside their original FieldGroup wrapper so native change,
+		// dependency and validation handlers still operate across all sections.
+		const root = form.wrapper?.[0] || controls;
+		const nav = node("div", null, "academy-tabs"),
+			panels = {},
+			tabs = {},
+			fieldTabs = {};
+		nav.setAttribute("role", "tablist");
+		nav.setAttribute("aria-label", __("Academy settings sections"));
+		root.append(nav);
+		const id = `academy-settings-${Date.now()}-${++tabSerial}`;
+		const selectTab = (key, focus = false) => {
+			activeTab = key;
+			for (const [name] of groups) {
+				const selected = key === name;
+				tabs[name].setAttribute("aria-selected", String(selected));
+				tabs[name].tabIndex = selected ? 0 : -1;
+				panels[name].hidden = !selected;
+			}
+			if (focus) {
+				tabs[key].focus();
+				tabs[key].scrollIntoView({ block: "nearest", inline: "nearest" });
+			}
+		};
+		groups.forEach(([key, label, fields], index) => {
+			const tab = button(label, () => selectTab(key)),
+				panel = node("section");
+			tab.id = `${id}-${key}-tab`;
+			tab.setAttribute("role", "tab");
+			tab.setAttribute("aria-controls", `${id}-${key}`);
+			panel.id = `${id}-${key}`;
+			panel.setAttribute("role", "tabpanel");
+			panel.setAttribute("aria-labelledby", tab.id);
+			panel.tabIndex = 0;
+			panel.append(node("h4", label));
+			tabs[key] = tab;
+			panels[key] = panel;
+			tab.addEventListener(
+				"keydown",
+				(event) => {
+					let next;
+					if (event.key === "ArrowRight") next = (index + 1) % groups.length;
+					if (event.key === "ArrowLeft")
+						next = (index + groups.length - 1) % groups.length;
+					if (event.key === "Home") next = 0;
+					if (event.key === "End") next = groups.length - 1;
+					if (next == null) return;
+					event.preventDefault();
+					selectTab(groups[next][0], true);
+				},
+				{ signal }
+			);
+			for (const name of fields) {
+				fieldTabs[name] = key;
+				const control = form.fields_dict[name];
+				const element = control.$wrapper?.[0] || control.wrapper;
+				if (element) panel.append(element);
+			}
+			nav.append(tab);
+			root.append(panel);
+		});
+		// Original section containers are now empty; all controls retain their
+		// native FieldGroup objects and stay inside its event-delegation wrapper.
+		if (form.page?.[0]) form.page[0].hidden = true;
+		const oldHeading = form.fields_dict.enrollment_payment_section?.$wrapper?.[0];
+		if (oldHeading) oldHeading.hidden = true;
+		panels.numbering.append(preview);
+		selectTab(panels[activeTab] ? activeTab : "general");
 		const save = button(
 			"Save Settings",
 			async () => {
 				const settings = form.get_values();
-				if (!settings) return;
+				if (!settings) {
+					const missing = Object.values(form.fields_dict).find(
+						(field) => field.df.reqd && !field.get_value?.()
+					);
+					if (missing && fieldTabs[missing.df.fieldname]) {
+						selectTab(fieldTabs[missing.df.fieldname]);
+						missing.set_focus?.();
+					}
+					return;
+				}
+				settings.enrollment_items = (settings.enrollment_items || []).map((row) => ({
+					item_code: row.item_code,
+					qty: row.qty,
+					rate: row.rate,
+				}));
 				save.disabled = true;
 				try {
 					const result = await call("save_configuration", {
@@ -426,8 +630,8 @@ frappe.boost_console_views["sports_app:settings"] = () => {
 			true
 		);
 		wrapper.append(save);
-		renderMasters(wrapper, "Programs", configuration.programs, "program");
-		renderMasters(wrapper, "Groups", configuration.groups, "group");
+		renderMasters(panels.masters, "Programs", configuration.programs, "program");
+		renderMasters(panels.masters, "Groups", configuration.groups, "group");
 		host.replaceChildren(wrapper);
 	};
 	return {

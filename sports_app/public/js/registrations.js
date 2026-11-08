@@ -33,6 +33,8 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 	};
 	const link = (doctype, name, text = name) => {
 		const el = node("a", text);
+		if (["Sales Invoice", "Payment Entry"].includes(doctype))
+			return frappe.sports_finance_documents.pdfLink(doctype, name);
 		el.href = `/app/${frappe.router.slug(doctype)}/${encodeURIComponent(name)}`;
 		return el;
 	};
@@ -442,6 +444,18 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			list.append(li);
 		};
 		add("View", () => show(row.name));
+		if (row.invoice_pdf)
+			add("View invoice PDF", () =>
+				frappe.sports_finance_documents.openPdf("Sales Invoice", row.invoice_pdf)
+			);
+		if (row.receipt_pdf)
+			add("View receipt PDF", () =>
+				frappe.sports_finance_documents.openPdf("Payment Entry", row.receipt_pdf)
+			);
+		if (row.email_receipt)
+			add("Email receipt", () =>
+				frappe.sports_finance_documents.emailReceipt(row.player, row.email_receipt)
+			);
 		if (row.status === "Pending" && row.can_review) {
 			if (row.can_accept) add("Accept enrollment", () => reviewAction(row.name, "accept"));
 			add("Reject enrollment", () => reviewAction(row.name, "reject"), true);
@@ -566,7 +580,8 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			th.append(sort);
 			heading.append(th);
 		}
-		for (const title of ["Invoice", "Invoice workflow"]) heading.append(node("th", __(title)));
+		for (const title of ["Invoice", "Invoice workflow", "Receipt", "Elapsed"])
+			heading.append(node("th", __(title)));
 		head.append(heading);
 		table.append(head);
 		const body = node("tbody");
@@ -589,8 +604,42 @@ frappe.boost_console_views["sports_app:registrations"] = () => {
 			state.append(chip);
 			tr.append(
 				state,
-				node("td", row.sales_invoice || "—"),
-				node("td", row.invoice_workflow || "—")
+				(() => {
+					const td = node("td");
+					if (row.invoice_pdf)
+						td.append(
+							frappe.sports_finance_documents.pdfLink(
+								"Sales Invoice",
+								row.invoice_pdf
+							)
+						);
+					else td.textContent = row.sales_invoice || "—";
+					return td;
+				})(),
+				node("td", row.invoice_workflow || "—"),
+				(() => {
+					const td = node("td");
+					if (row.receipt_pdf)
+						td.append(
+							frappe.sports_finance_documents.receiptLink(
+								row.player,
+								{
+									name: row.receipt_pdf,
+									can_email_receipt: Boolean(row.email_receipt),
+								},
+								signal
+							)
+						);
+					else td.textContent = "—";
+					return td;
+				})(),
+				(() => {
+					const td = node("td");
+					td.append(
+						frappe.sports_finance_documents.ageCell(row.elapsed_seconds, signal)
+					);
+					return td;
+				})()
 			);
 			body.append(tr);
 		}

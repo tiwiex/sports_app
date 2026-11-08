@@ -88,3 +88,19 @@ Header-photo refinement (6 November 2026): move the authorized private portrait 
 User-authorized develop integration (6 November 2026): [integration evidence](../../build-logs/2026-11-06-us-003-03-develop-integration.md). Merge status follows the linked GitHub PR; broader story remains In progress.
 
 Backlog review (6 November 2026): the console reads this story and the synchronized epic/inventory. Central profile, histories, tabs and header photo are verified. Keep the whole story In progress for the explicitly outstanding injury/absence, returning-player and retention-policy refinements; do not label those complete. Future complete stories should be marked Done with linked acceptance evidence. Recommended next refinement: US-004-02 fee plans, then US-004-03 monthly obligations/invoices after cadence, proration and arrears decisions.
+
+## Accepted PDF/manual-delivery refinement — 7 November 2026
+
+Invoice/receipt links open clearly styled native PDFs. Add elapsed-time columns using finance creation/application submission timestamps. The operator-confirmed Email receipt action is restricted to posted positive Receive receipts and native read/print/email plus scoped player/Company/Customer access. Preserve source records, zero financial posting and duplicate-safe queued delivery. This is subsequent user direction supplementing BA-QNR-001-Q04-12. Automatic reminders, schedules, WhatsApp and broader delivery acceptance are not complete.
+
+[Build evidence](../../build-logs/2026-11-07-us-003-03-pdf-receipts-email-and-elapsed-time.md) · [Operator guide](../../players-guide.md).
+
+## Main-table PDF refinement — 7 November 2026
+
+Main Players/Enrollments expose permission-scoped document links/actions and elapsed age. PDF links open a modal with download fallback and use selectable Sports Academy Invoice / Sports Academy Receipt backend Print Formats. The Settings document logo is configurable; Moyours reuses its website crest. Native Company/Customer/document permissions and deliberate receipt-email confirmation remain authoritative. Do not change global print defaults or broader story acceptance state.
+
+[Build evidence](../../build-logs/2026-11-07-us-003-03-main-table-finance-and-branded-pdf-modal.md) · [Operator guide](../../players-guide.md).
+
+Player profile presentation refinement (7 November 2026): show each label with a colon and its bold value on the same row, including linked accounts. Give cards clearer green accents, section dividers and spacing; retain desktop two-column/phone single-column layout and wrap long value text. Native account links, tab/history behaviour and all data/finance permissions are unchanged. [Build evidence](../../build-logs/2026-11-07-us-003-03-inline-player-profile-details.md).
+
+8 November develop integration and browser verification: [Build evidence](../../build-logs/2026-11-08-us-003-03-develop-integration.md). Existing story acceptance remains unchanged.

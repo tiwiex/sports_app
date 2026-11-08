@@ -85,6 +85,28 @@ class TestEnrollmentPayments(TestCase):
 				raise ValueError()
 		self.assertIsNone(current_registration())
 
+	def test_legacy_invoice_charge_rows_without_amount_derive_saved_rate(self):
+		snapshot = dict(
+			currency="NGN",
+			registration_fee=220000,
+			jersey_fee=30000,
+			monthly_fee=40000,
+			total=250000,
+			bank="Bank",
+			account_number="123",
+			account_name="Academy",
+			items=[
+				dict(item_code="PRIVATE", item_name="Saved registration", qty=1, rate=220000),
+				dict(item_code="PRIVATE-KIT", item_name="Saved kit", qty=1, rate=30000),
+			],
+		)
+		result = payments._response(
+			frappe._dict(payment_snapshot=json.dumps(snapshot)),
+			self.payment(workflow_state="Draft", docstatus=0),
+		)
+		self.assertEqual(sum(row["amount"] for row in result["charges"]), 250000)
+		self.assertNotIn("PRIVATE", json.dumps(result))
+
 	def test_public_response_excludes_accounting_ids_identity_and_token(self):
 		snapshot = dict(
 			currency="NGN",

@@ -16,10 +16,10 @@ This is the complete current epic inventory, including proposed additions and wi
 
 | Story | State | Origin | Priority |
 |---|---|---|---|
-| [US-005-01: Record player-attributed payments using ERPNext](../user-stories/us-005-01-player-receipts-and-allocations.md) | In progress — invoice-first enrollment PoC | Both | Must |
-| [US-005-02: Show monthly payment status and source history](../user-stories/us-005-02-monthly-status-and-history.md) | Proposed | Both | Must |
-| [US-005-03: Reconcile credits, refunds and payment corrections](../user-stories/us-005-03-corrections-and-reconciliation.md) | Proposed | Both | Must |
-| [US-005-04: Parent reminders and receipt delivery](../user-stories/us-005-04-parent-reminders-and-receipt-delivery.md) | Proposed | Questionnaire only | Proposed launch candidate; estimate and sequence pending clarification |
+| [US-005-01: Record player-attributed payments using ERPNext](../user-stories/us-005-01-player-receipts-and-allocations.md) | In review | Both | Must |
+| [US-005-02: Show monthly payment status and source history](../user-stories/us-005-02-monthly-status-and-history.md) | In progress | Both | Must |
+| [US-005-03: Reconcile credits, refunds and payment corrections](../user-stories/us-005-03-corrections-and-reconciliation.md) | In progress | Both | Must |
+| [US-005-04: Parent reminders and receipt delivery](../user-stories/us-005-04-parent-reminders-and-receipt-delivery.md) | In progress | Both | Proposed launch candidate; estimate and sequence pending clarification |
 | [US-005-05: Payment gateway discovery and reconciliation](../user-stories/us-005-05-payment-gateway-discovery-and-reconciliation.md) | Proposed | Questionnaire only | Proposed launch candidate; estimate and sequence pending clarification |
 
 ## Exit criteria

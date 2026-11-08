@@ -268,14 +268,23 @@ frappe.sports_player_profile.mount = async ({
 	const definitions = {
 		invoices: {
 			title: "Invoices",
-			labels: ["Invoice", "Posting date", "Due date", "Amount", "Outstanding", "Status"],
+			labels: [
+				"Invoice",
+				"Posting date",
+				"Due date",
+				"Amount",
+				"Outstanding",
+				"Status",
+				"Elapsed",
+			],
 			cells: (r) => [
-				link("Sales Invoice", r.name),
+				frappe.sports_finance_documents.pdfLink("Sales Invoice", r.name),
 				date(r.posting_date),
 				date(r.due_date),
 				amount(r.grand_total, r.currency),
 				amount(r.outstanding_amount, r.currency),
 				r.docstatus === 0 ? __("Draft") : r.docstatus === 2 ? __("Cancelled") : r.status,
+				frappe.sports_finance_documents.ageCell(r.elapsed_seconds, signal),
 			],
 		},
 		receipts: {
@@ -288,9 +297,10 @@ frappe.sports_player_profile.mount = async ({
 				"Received",
 				"Bank reference",
 				"Status",
+				"Elapsed",
 			],
 			cells: (r) => [
-				link("Payment Entry", r.name),
+				frappe.sports_finance_documents.receiptLink(name, r, signal),
 				date(r.posting_date),
 				r.payment_type,
 				amount(r.paid_amount, r.paid_from_account_currency),
@@ -301,6 +311,7 @@ frappe.sports_player_profile.mount = async ({
 					: r.docstatus === 2
 					? __("Cancelled")
 					: __("Draft"),
+				frappe.sports_finance_documents.ageCell(r.elapsed_seconds, signal),
 			],
 		},
 		attendance: {
@@ -472,7 +483,12 @@ frappe.sports_player_profile.mount = async ({
 					const dialog = openDialog(
 						"Add private supporting document",
 						[
-							{ fieldname: "title", label: __("Title"), fieldtype: "Data", reqd: 1 },
+							{
+								fieldname: "title",
+								label: __("Title"),
+								fieldtype: "Data",
+								reqd: 1,
+							},
 							{
 								fieldname: "document_type",
 								label: __("Document type"),

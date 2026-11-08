@@ -2,6 +2,7 @@
 
 import hmac
 import json
+from decimal import Decimal
 
 import frappe
 from frappe import _
@@ -32,25 +33,17 @@ def invoice_configuration(settings):
 	if not center or center.company != company.name or center.is_group or center.disabled:
 		frappe.throw(_("Set a company default cost center for enrollment invoicing."))
 	config.update(income_account=account.name, cost_center=center.name, items=[])
-	for field, amount, label in (
-		("enrollment_registration_item", config["registration_fee"], "Registration fee"),
-		("enrollment_jersey_item", config["jersey_fee"], "Jersey (2 sets)"),
-	):
-		if not amount:
-			continue
-		code = settings.get(field)
-		item = frappe.get_doc("Item", code) if code else None
-		if not item or item.disabled or item.is_stock_item or not item.is_sales_item:
-			frappe.throw(_("Configure active non-stock enrollment fee items in Academy Settings."))
+	for charge in config["charges"]:
 		config["items"].append(
 			dict(
-				item_code=code,
-				item_name=label,
-				description=label,
-				qty=1,
-				rate=amount,
-				uom=item.stock_uom,
-				stock_uom=item.stock_uom,
+				item_code=charge["item_code"],
+				item_name=charge["item_name"],
+				description=charge["item_name"],
+				qty=charge["qty"],
+				rate=charge["rate"],
+				amount=charge["amount"],
+				uom=charge["uom"],
+				stock_uom=charge["uom"],
 				conversion_factor=1,
 				income_account=account.name,
 				cost_center=center.name,
@@ -188,9 +181,10 @@ def validate_enrollment_invoice(doc, method=None):
 	for row, saved in zip(doc.items, expected, strict=False):
 		if (
 			any(row.get(k) != saved.get(k) for k in ("item_code", "income_account", "cost_center", "uom"))
-			or _money(row.qty) != 1
+			or Decimal(str(row.qty)) != Decimal(str(saved.get("qty", 1)))
 			or _money(row.rate) != _money(saved["rate"])
-			or _money(row.amount) != _money(saved["rate"])
+			or _money(row.amount)
+			!= _money(saved.get("amount", _money(saved["rate"]) * _money(saved.get("qty", 1))))
 		):
 			frappe.throw(_("Enrollment invoice fee lines cannot change."))
 

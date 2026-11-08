@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-005](../epics/EPIC-005-payments-and-financial-history.md)
-- State: In progress — invoice-first enrollment PoC
+- State: In review
 - Priority: Must
 - Delivery owner / affected apps: ERPNext configuration + Sports App
 
@@ -97,3 +97,45 @@ Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPI
 ## Combined admission/payment refinement — 6 November 2026
 
 An authorized reviewer may now accept a pending application and complete its linked Pending Review invoice/allocated receipt in one atomic operation. The existing standalone Finance action remains available. Draft/unclaimed invoices remain unposted. Native finance rights and configured Boost approvals still apply. This supersedes the mandatory two-step admission/finance sequence. [Acceptance criteria](us-003-01-application-intake-and-review.md#accepted-enrollment-refinement--6-november-2026); [build evidence](../../build-logs/2026-11-06-us-003-01-enrollment-image-and-invoice-acceptance.md).
+
+## Accepted PDF/manual-delivery refinement — 7 November 2026
+
+Invoice/receipt links open clearly styled native PDFs. Add elapsed-time columns using finance creation/application submission timestamps. The operator-confirmed Email receipt action is restricted to posted positive Receive receipts and native read/print/email plus scoped player/Company/Customer access. Preserve source records, zero financial posting and duplicate-safe queued delivery. This is subsequent user direction supplementing BA-QNR-001-Q04-12. Automatic reminders, schedules, WhatsApp and broader delivery acceptance are not complete.
+
+[Build evidence](../../build-logs/2026-11-07-us-003-03-pdf-receipts-email-and-elapsed-time.md) · [Operator guide](../../players-guide.md).
+
+## Main-table PDF refinement — 7 November 2026
+
+Main Players/Enrollments expose permission-scoped document links/actions and elapsed age. PDF links open a modal with download fallback and use selectable Sports Academy Invoice / Sports Academy Receipt backend Print Formats. The Settings document logo is configurable; Moyours reuses its website crest. Native Company/Customer/document permissions and deliberate receipt-email confirmation remain authoritative. Do not change global print defaults or broader story acceptance state.
+
+[Build evidence](../../build-logs/2026-11-07-us-003-03-main-table-finance-and-branded-pdf-modal.md) · [Operator guide](../../players-guide.md).
+
+## Subscription overview and checkbox payments — 7 November 2026
+
+User requested the Community App Membership Admin Overview and Payments pattern for Sports subscriptions. Community source was inspected read-only; Sports owns its independent implementation with no Community runtime dependency or Boost source changes.
+
+Sports → Scholarships & Billing opens an Overview with scoped enrollment/active counts and submitted annual/monthly billed, settled and outstanding totals. Settled includes allocations/credits and is explicitly not reported as cash receipts. Payments provides a paginated player/program-by-month grid, year and player-name filters, explicit unpaid/partial/paid/no-charge/unbilled/review/future/cancelled states, overdue indication and source invoice/receipt PDF modals. Financial status comes from native submitted invoices and outstanding amounts; no checkbox directly toggles accounting state. Fully exempt months do not produce false payments.
+
+Authorized Finance selects up to 20 payable cells, an enabled same-company/currency Bank or Cash account, payment date and bank/cash reference, then explicitly confirms funds received. One action generates/submits an eligible missing monthly invoice if necessary and creates/submits a fully allocated Payment Entry for the remaining balance. Each cell has a separate Customer-attributed receipt, so reversal does not affect other months or players. Partial balances can be fully settled; arbitrary installment scheduling is not implemented. Native accounting, Company/Player permissions, workflow and configured approver checks remain mandatory. There are no new role grants or general finance bypasses.
+
+A stable request key and payload hash return the same receipt on retries; changed retry inputs are rejected. Shared settings/enrollment/invoice locks serialize requests. Failure at receipt submission rolls back that cell's obligation, invoice and ledger as well as its receipt; successful independent cells are reported separately. Existing invoices retain original billing snapshots and already-paid cells are not collected again.
+
+Activate reversal exposes selectors for submitted receipts created by this grid only. A reason, native receipt read/cancel and an allowed cancellation workflow are required. Cancellation reopens the invoice's native outstanding balance while retaining the charge and audit trail. Repeating cancellation is safe; retrying the old payment request after reversal returns Cancelled instead of creating a replacement. A new explicit confirmation may settle the reopened balance. Enrollment receipts, unrelated multi-invoice receipts, credit notes, bank reconciliations and actual cash refunds stay in their own reviewed native processes.
+
+Automatic monthly invoice posting remains a separate implemented feature whose development activation still awaits an explicitly approved execution account. This manual checkbox collection interface does not enable it or assign Administrator. No real development balances were changed by QA; no production deployment, commit, PR or merge requested.
+
+[Build evidence](../../build-logs/2026-11-07-us-005-01-subscription-overview-payment-grid.md).
+
+7 November refinement: [historical checkbox invoice generation and retained January test](../../build-logs/2026-11-07-us-004-03-january-test-and-checkbox-invoices.md) verified, plus [missing extension asset recovery](../../build-logs/2026-11-07-us-005-01-extension-asset-recovery.md). No whole-story Done assertion or production release.
+
+## Completed-month automation and payment-only checkboxes — 7 November 2026
+
+Explicit user correction supersedes the earlier month-start issuance, automation-start floor and checkbox invoice-generation interactions. **Submit monthly invoices automatically after their calendar month ends**, catching up from each currently Active enrollment's start date. Keep the approved full-fee eligibility at the first day of each billed month, dated fee-plan rates, concessions and native accounting mappings. A January-1 enrollment is eligible for January–October invoices on 7 November; November becomes eligible on 1 December. Midmonth joiners still begin with the following full month. Existing invoices/receipts remain authoritative and are not silently cancelled/repriced.
+
+The Sports daily task now derives completed periods from each enrollment, so the deprecated global start-date value cannot hide historical obligations. Native settings retain that value for compatibility but hide its editor. Automation enablement and the enabled, deliberately selected execution User remain required, with native Company/read/create/submit/workflow/approver controls and no role grants. Enrollment, fee-plan and Academy Settings updates request a deduplicated catch-up after commit; the daily job provides ongoing month-boundary generation and failure retries. Install/migrate registers the Sports daily Scheduled Job Type. Opening a grid does not post accounting.
+
+**Payments checkboxes mean receipt collection only.** Unpaid/partial cells are unchecked, paid cells are checked with a green background; unbilled/not-due/future/review/no-charge cells have no payable checkbox. Check the received months and Save payments, with explicit funds confirmation. The payment API refuses a missing or unsubmitted invoice and never creates its charge. The Generate invoices button is removed from Payments and the Generate and submit invoices button is removed from Monthly billing; that tab is a read-only status/exception view. Native accountant recovery services are not the ordinary workflow. The compact yearly grid keeps amounts/status in tooltips and invoice/receipt PDF links under a documents menu. Activate reversal selects permitted grid receipts, requires a reason and restores the native outstanding balance without deleting the charge.
+
+The first corrected run registered the missing daily task and posted nine missing completed-month invoices for the retained January test enrollment. January–October now each have a submitted native invoice. No payment or email was created, and existing invoices/receipts were preserved, including an already-posted November test invoice from the earlier manual flow. New automatic runs exclude current/future months. Existing selected execution account, automation switch, saved fee plans and global scheduler configuration were not changed.
+
+[Adjustment evidence](../../build-logs/2026-11-07-us-004-03-completed-month-automation-payment-only-grid.md). Existing review states remain; this does not mark expanded refund/reconciliation policies Done.

@@ -23,6 +23,7 @@ class TestSportsConsole(TestCase):
 		with (
 			patch("sports_app.academy.can_manage_settings", return_value=False),
 			patch("sports_app.players.can_manage_players", return_value=False),
+			patch("sports_app.billing_access.can_read", return_value=False),
 		):
 			manifest = console.get_provider()
 		self.assertEqual(manifest["id"], "sports_app")
