@@ -36,7 +36,7 @@ Prepared the existing billing/scholarships, configurable charges, subscription p
 
 - Initial remote Frappe Linter failed because Prettier enforced the repository tab/99-column EditorConfig, while the sandboxed local formatter had preserved spaces. Reran the pinned hooks outside the sandbox to apply CI formatting to nine changed JavaScript files; no policy or business behavior changes. Attendance build and dependency audit passed on the initial remote run.
 
-- Remote formatting then passed; Semgrep correctness flagged the temporary asset filename access before an explicit flush. Added the flush before accessing `handle.name`, preserving the existing content flush, atomic replace and cleanup. The existing publication/repair tests verify bytes, permissions and removal of temporary files.
+- Remote formatting then passed; Semgrep correctness flagged the temporary asset filename access before an explicit flush. An initial explicit flush still triggered the rule. Switched to `mkstemp` and a context-managed descriptor writer, with the filename returned directly, preserving content flush, atomic replace and guaranteed path cleanup. The existing publication/repair tests verify bytes, permissions and removal of temporary files.
 
 ## Decisions, deviations and recovery
 

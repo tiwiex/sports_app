@@ -1,8 +1,9 @@
 """Content-addressed console assets, published by install/migrate hooks."""
 
 import hashlib
+import os
 from pathlib import Path
-from tempfile import NamedTemporaryFile
+from tempfile import mkstemp
 
 FILES = (
 	"finance_documents.js",
@@ -41,18 +42,14 @@ def _publish(filename):
 	target = destination / published
 	if not target.exists() or target.read_bytes() != content or target.stat().st_mode & 0o444 != 0o444:
 		# Publish complete bytes atomically before advertising this versioned URL.
-		with NamedTemporaryFile(dir=destination, prefix=".sports-asset-", delete=False) as handle:
-			handle.flush()
-			temporary = Path(handle.name)
-			try:
+		descriptor, temporary_name = mkstemp(dir=destination, prefix=".sports-asset-")
+		temporary = Path(temporary_name)
+		try:
+			with os.fdopen(descriptor, "wb") as handle:
 				handle.write(content)
 				handle.flush()
 				# Static files must also be readable by the separate web-server user.
 				temporary.chmod(0o644)
-			except Exception:
-				temporary.unlink(missing_ok=True)
-				raise
-		try:
 			temporary.replace(target)
 		finally:
 			temporary.unlink(missing_ok=True)
