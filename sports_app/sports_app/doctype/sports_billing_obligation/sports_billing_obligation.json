@@ -1,0 +1,151 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Billing Obligation",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "autoname": "hash",
+ "allow_rename": 0,
+ "track_changes": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "fields": [
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 1,
+   "options": "Company"
+  },
+  {
+   "fieldname": "enrollment",
+   "label": "Program enrollment",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 1,
+   "options": "Sports Enrollment"
+  },
+  {
+   "fieldname": "player",
+   "label": "Player",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 1,
+   "options": "Sports Player"
+  },
+  {
+   "fieldname": "billing_month",
+   "label": "Billing month",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "plan",
+   "label": "Fee plan",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 1,
+   "options": "Sports Fee Plan"
+  },
+  {
+   "fieldname": "currency",
+   "label": "Currency",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 1,
+   "options": "Currency"
+  },
+  {
+   "fieldname": "amount",
+   "label": "Amount",
+   "fieldtype": "Currency",
+   "reqd": 0,
+   "read_only": 1,
+   "precision": "2",
+   "options": "currency"
+  },
+  {
+   "fieldname": "due_date",
+   "label": "Due date",
+   "fieldtype": "Date",
+   "reqd": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_invoice",
+   "label": "Sales Invoice",
+   "fieldtype": "Link",
+   "reqd": 0,
+   "read_only": 1,
+   "options": "Sales Invoice"
+  },
+  {
+   "fieldname": "source_hash",
+   "label": "Source revision",
+   "fieldtype": "Data",
+   "reqd": 0,
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "invoice_snapshot",
+   "label": "Invoice snapshot",
+   "fieldtype": "Long Text",
+   "reqd": 0,
+   "read_only": 1,
+   "hidden": 1
+  }
+ ],
+ "field_order": [
+  "company",
+  "enrollment",
+  "player",
+  "billing_month",
+  "plan",
+  "currency",
+  "amount",
+  "due_date",
+  "sales_invoice",
+  "source_hash",
+  "invoice_snapshot"
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 0,
+   "cancel": 0,
+   "delete": 0,
+   "share": 0,
+   "export": 0,
+   "report": 1
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 0,
+   "cancel": 0,
+   "delete": 0,
+   "share": 0,
+   "export": 0,
+   "report": 1
+  },
+  {
+   "role": "Sports Finance",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 0,
+   "cancel": 0,
+   "delete": 0,
+   "share": 0,
+   "export": 0,
+   "report": 1
+  }
+ ]
+}

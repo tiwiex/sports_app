@@ -204,3 +204,112 @@ Injury/absence automation, scholarship decisions, returning-player undertakings 
 The central profile uses **Player details**, **Program enrollments**, **Invoices & receipts**, **Attendance & fingerprint**, **Measurements**, and **Documents** tabs. Player identity and common actions remain visible above the tab strip. Choose a tab or use arrow/Home/End keys while focusing the tab strip; on phones, scroll the strip horizontally. Only the selected panel is displayed. Same-player membership paging/refresh retains the active tab; a different player starts at Player details. Creating a program enrollment opens Program enrollments. Each history retains its own pagination and existing permission restrictions. This is a Sports-only presentation refinement, with no financial, document-security or public-enrollment behavior change. [Build log](build-logs/2026-11-06-us-003-03-tabbed-player-profile.md).
 
 Player photo placement refinement (6 November 2026): a permitted private portrait appears beside the player name in the persistent header above the tabs, remaining visible across sections. Age and preferred foot stay within Player details. No photo duplication or privacy changes. [Build log](build-logs/2026-11-06-us-003-03-profile-header-photo.md).
+
+## EPIC-004 accepted prototype policy — 6 November 2026
+
+User authorized the Sports-only scholarship/fee-plan/manual monthly billing slice. Academy management approves/revokes restricted effective-dated decisions; an unassigned Sports Finance role can read them and run billing alongside existing native permissions. Coaches gain no scholarship access. Keep category/benefit records separate from routine financial payloads and Customer Groups. Approved records retain actor/time, no overlap or history deletion, and no silent rewrite of issued invoices.
+
+Full monthly fee is due for current Active memberships eligible at the start of the calendar month. Mid-month joiners are not charged that month; suspended records and mid-month concession changes require review. Plans require explicit service item, income ledger, cost center, company currency, effective dates and due day. Month-aligned enabled plans cannot overlap. Partial coverage remains available as a dated concession, not an invented player category. No automatic expiry, payment-free admission, refund, grace/notice or historical suspension policy is inferred from TBD/blank answers.
+
+Retain current NGN250,000 public enrollment charges and configurable NGN40,000 monthly default; the earlier questionnaire fee ambiguity does not override that explicit user answer. Manual preview/generation creates one immutable enrollment/month obligation and at most one draft Sales Invoice; zero-due obligations create no invoice or receipt. Stable keys, revision checks, serialization and row-level rollback protect retries. Routine previews exclude scholarship reasons, status, benefit flags and decision IDs. Native invoice approval/payment controls remain; no automatic posting, scheduler or email. See [billing guide](billing-guide.md) and [build evidence](build-logs/2026-11-06-epic-004-scholarships-and-monthly-billing.md).
+
+Academy Settings tab refinement (6 November 2026, SPORTS-FR-001 / SPORTS-NFR-006): organize the existing controls into General, Player IDs, Enrollment defaults, Monthly fees, Website payments and Programs & groups. Save remains global; switching tabs preserves unsaved values and existing validation, permissions and data semantics. [Build evidence](build-logs/2026-11-06-us-001-01-tabbed-academy-settings.md).
+
+## Item-based enrollment and subscription pricing — 7 November 2026
+
+Accepted user refinement of SPORTS-FR-001/009/010/031, supplementary to BA-QNR-001 rather than a change to its original responses. Academy Settings → Website payments contains an invoice-style **Enrollment charges** table: select existing enabled sales Items, quantity and rate; the server calculates amounts. Configure 1–30 rows with a positive total. Item names and quantities appear on the public payment page and become invoice lines. Stock Items can be charged without stock issuance; procurement/distribution remains separate. No hardcoded registration/jersey Item creation remains.
+
+The additive migration copies saved legacy charges once, preserving the current NGN250,000 total. Existing invoices, immutable fee snapshots, references and legacy receipts are retained. Removing all rows after migration cannot resurrect legacy fees. New settings edits supersede the fixed two-charge model for future applications only.
+
+Sports Fee Plan may select an existing **ERPNext Subscription Plan** for one Month, interval count 1, Fixed Rate and the company currency. Its enabled non-stock sales Item and current native rate override manual Item/amount inputs. Native Plan/Item read permissions are required. A plan-price change requires a fresh preview for ungenerated charges; generated obligations retain their original invoice. Manual Item/rate plans remain supported when no Subscription Plan is linked. Native Subscription records, automatic scheduled invoicing/posting and prorating are not enabled; this avoids competing lifecycles with the manual scholarship-safe generation process. The website monthly amount remains explicitly informational.
+
+[Adjustment evidence](build-logs/2026-11-07-us-001-01-configurable-enrollment-items-and-subscription-pricing.md).
+
+## PDF receipts and manual delivery — 7 November 2026
+
+User-approved refinement: invoice/receipt references in the player financial history and enrollment review open native PDF downloads in a new tab. Links use an underline, link colour and visible PDF ↗ indicator. The final **Elapsed** column shows minutes/hours/days since finance-record creation or application submission; labels update every 30 seconds while connected, without editing source dates or balances.
+
+Posted positive Customer Receive receipts expose **Email receipt** in the player receipt menu and, for the linked accepted application, its context menu. Require native receipt read/print/email, player access and matching Company/Customer. A dialog defaults the permitted guardian email (or player email) and requires explicit confirmation of one recipient. Server rechecks eligibility and attaches the native receipt print format as PDF. A receipt lock and stable per-dialog request key prevent lost-response duplicates; changed-recipient retries are rejected. Native Communication and Email Queue provide audit and delivery status; queued does not mean delivered. Default outgoing Email Account and working PDF generation are required. No scheduled reminder or automatic acceptance email is enabled.
+
+The transactional email may reach disabled future player/guardian Website Users without activating their accounts. No financial posting, new role grant or Boost change. [Build evidence](build-logs/2026-11-07-us-003-03-pdf-receipts-email-and-elapsed-time.md).
+
+## Main-table document actions and branded PDF modals — 7 November 2026
+
+Subsequent user refinement supersedes the normal new-tab PDF interaction above: ordinary clicks open an in-console **PDF preview** modal with an Open / download fallback. Ctrl/Cmd-click still supports the browser’s normal new-tab behaviour. Main **Players** adds **Latest invoice**, **Latest receipt** and final **Elapsed** columns, plus View invoice PDF / View receipt PDF / Email receipt in the player menu when permitted. Latest refers to newest creation time; the player profile retains access to older documents. Main **Enrollments** has linked invoice and posted receipt columns and matching context actions, without opening the inner profile first.
+
+Financial references use native permission-filtered Company/Customer queries. Sports-only staff without finance access receive no finance IDs. Email retains posted Receive/read/print/email checks and explicit recipient confirmation. No accounting states or dates change.
+
+Backend Print Formats **Sports Academy Invoice** and **Sports Academy Receipt** provide green/gold branding, existing website crest on Moyours, clear reference/date/party/line-item/total sections and draft/cancelled indicators. The receipt shows only its recorded amount and allocations; it does not claim all customer invoices are settled. Sports PDF preview/download and receipt email explicitly choose these formats. They do not replace ERPNext global print defaults. **Academy Settings → General → Document logo** configures the Sports PDF logo; another academy can use its own image, falling back to its Company logo. This deployment reuses Moyours’ existing public crest and leaves Company branding unchanged.
+
+[Build evidence](build-logs/2026-11-07-us-003-03-main-table-finance-and-branded-pdf-modal.md).
+
+Player profile presentation refinement (7 November 2026): show each label with a colon and its bold value on the same row, including linked accounts. Give cards clearer green accents, section dividers and spacing; retain desktop two-column/phone single-column layout and wrap long value text. Native account links, tab/history behaviour and all data/finance permissions are unchanged. [Build evidence](build-logs/2026-11-07-us-003-03-inline-player-profile-details.md).
+
+## Automatic monthly receivables — 7 November 2026
+
+Explicit user direction supersedes the earlier manual/draft-only monthly policy: eligible Active enrollments are billed automatically each calendar month and positive charges are submitted to native ERPNext accounting, producing outstanding receivables. The first-day/full-fee eligibility rule and approved concessions remain unchanged; mid-month joiners begin the following month. No payment/receipt or bank clearance is inferred.
+
+Academy Settings → Monthly fees now controls automatic submission, an explicit earliest billing month (first-day date) and the enabled System User that executes billing. A daily Sports scheduler processes the current month and retries missed months from that start date only, evaluated in academy timezone. Months before the start are not backfilled. Disabled monthly fees or automatic billing stops the job. Native Company/Player/Enrollment/accounting scope, invoice read/create/submit, workflow conditions and configured approver checks remain mandatory. No user roles are granted.
+
+Deterministic enrollment/month keys, shared settings and enrollment locks, immutable snapshots and per-row rollback prevent duplicate obligations/invoices/ledger posting. Existing submitted invoices remain unchanged; legacy drafts resume under the same reference. Cancelled invoices require reviewed correction. Full concessions create zero obligations without invoices or receipts. Failures do not stop other rows: failed enrollment/month keys enter native Error Log and staff can inspect the Monthly billing preview. An unreadable or invalid execution user fails the native scheduled job; jobs and errors are visible in Desk Scheduled Job Type / Error Log.
+
+The Sports-owned invoice workflow gains a conditional Submit monthly fee transition for existing invoice-approval roles, applicable only to a valid Sports monthly obligation without enrollment-application provenance. Ordinary invoices and enrollment payment review retain their existing paths. Custom third-party workflows are not rewritten; if no permitted synchronous submitted transition exists, the charge fails safely. No Boost code/global settings or native Subscription scheduler is changed. No automatic parent invoice/reminder email is introduced; normal installed native notification hooks retain their configured behavior.
+
+Manual Preview and Generate and submit invoices remain available for authorized recovery, with the same posting behavior and native permissions. Source changes require a new preview for ungenerated charges. This adjustment does not complete installment/refund/grace/returning-player or automatic reminder policy scope.
+
+[Automatic monthly receivables](build-logs/2026-11-07-us-004-03-automatic-monthly-receivables.md).
+
+## Subscription overview and checkbox payments — 7 November 2026
+
+User requested the Community App Membership Admin Overview and Payments pattern for Sports subscriptions. Community source was inspected read-only; Sports owns its independent implementation with no Community runtime dependency or Boost source changes.
+
+Sports → Scholarships & Billing opens an Overview with scoped enrollment/active counts and submitted annual/monthly billed, settled and outstanding totals. Settled includes allocations/credits and is explicitly not reported as cash receipts. Payments provides a paginated player/program-by-month grid, year and player-name filters, explicit unpaid/partial/paid/no-charge/unbilled/review/future/cancelled states, overdue indication and source invoice/receipt PDF modals. Financial status comes from native submitted invoices and outstanding amounts; no checkbox directly toggles accounting state. Fully exempt months do not produce false payments.
+
+Authorized Finance selects up to 20 payable cells, an enabled same-company/currency Bank or Cash account, payment date and bank/cash reference, then explicitly confirms funds received. One action generates/submits an eligible missing monthly invoice if necessary and creates/submits a fully allocated Payment Entry for the remaining balance. Each cell has a separate Customer-attributed receipt, so reversal does not affect other months or players. Partial balances can be fully settled; arbitrary installment scheduling is not implemented. Native accounting, Company/Player permissions, workflow and configured approver checks remain mandatory. There are no new role grants or general finance bypasses.
+
+A stable request key and payload hash return the same receipt on retries; changed retry inputs are rejected. Shared settings/enrollment/invoice locks serialize requests. Failure at receipt submission rolls back that cell's obligation, invoice and ledger as well as its receipt; successful independent cells are reported separately. Existing invoices retain original billing snapshots and already-paid cells are not collected again.
+
+Activate reversal exposes selectors for submitted receipts created by this grid only. A reason, native receipt read/cancel and an allowed cancellation workflow are required. Cancellation reopens the invoice's native outstanding balance while retaining the charge and audit trail. Repeating cancellation is safe; retrying the old payment request after reversal returns Cancelled instead of creating a replacement. A new explicit confirmation may settle the reopened balance. Enrollment receipts, unrelated multi-invoice receipts, credit notes, bank reconciliations and actual cash refunds stay in their own reviewed native processes.
+
+Automatic monthly invoice posting remains a separate implemented feature whose development activation still awaits an explicitly approved execution account. This manual checkbox collection interface does not enable it or assign Administrator. No real development balances were changed by QA; no production deployment, commit, PR or merge requested.
+
+[Build evidence](build-logs/2026-11-07-us-005-01-subscription-overview-payment-grid.md).
+
+## Checkbox invoice-only and delivery refinement — 7 November 2026
+
+Payments month checkboxes now support **Generate invoices** (receivables only, including historical eligible months) separately from **Save payments** (confirmed receipt collection). Invoice-only generation does not require bank details or post a receipt. Future months are rejected here. Payment references are optional and generated deterministically if blank; a configured receiving ledger is preselected only when permitted/valid. Billing exceptions show their reason. This supersedes the earlier mandatory-reference UI requirement; native finance controls and effective fee-plan snapshots remain authoritative.
+
+Sports release URLs now ensure complete, web-readable versioned assets are published before advertisement; old hashes remain available. No Boost change. [Historical test evidence](build-logs/2026-11-07-us-004-03-january-test-and-checkbox-invoices.md) · [Asset recovery](build-logs/2026-11-07-us-005-01-extension-asset-recovery.md).
+
+## Completed-month automation and payment-only checkboxes — 7 November 2026
+
+Explicit user correction supersedes the earlier month-start issuance, automation-start floor and checkbox invoice-generation interactions. **Submit monthly invoices automatically after their calendar month ends**, catching up from each currently Active enrollment's start date. Keep the approved full-fee eligibility at the first day of each billed month, dated fee-plan rates, concessions and native accounting mappings. A January-1 enrollment is eligible for January–October invoices on 7 November; November becomes eligible on 1 December. Midmonth joiners still begin with the following full month. Existing invoices/receipts remain authoritative and are not silently cancelled/repriced.
+
+The Sports daily task now derives completed periods from each enrollment, so the deprecated global start-date value cannot hide historical obligations. Native settings retain that value for compatibility but hide its editor. Automation enablement and the enabled, deliberately selected execution User remain required, with native Company/read/create/submit/workflow/approver controls and no role grants. Enrollment, fee-plan and Academy Settings updates request a deduplicated catch-up after commit; the daily job provides ongoing month-boundary generation and failure retries. Install/migrate registers the Sports daily Scheduled Job Type. Opening a grid does not post accounting.
+
+**Payments checkboxes mean receipt collection only.** Unpaid/partial cells are unchecked, paid cells are checked with a green background; unbilled/not-due/future/review/no-charge cells have no payable checkbox. Check the received months and Save payments, with explicit funds confirmation. The payment API refuses a missing or unsubmitted invoice and never creates its charge. The Generate invoices button is removed from Payments and the Generate and submit invoices button is removed from Monthly billing; that tab is a read-only status/exception view. Native accountant recovery services are not the ordinary workflow. The compact yearly grid keeps amounts/status in tooltips and invoice/receipt PDF links under a documents menu. Activate reversal selects permitted grid receipts, requires a reason and restores the native outstanding balance without deleting the charge.
+
+The first corrected run registered the missing daily task and posted nine missing completed-month invoices for the retained January test enrollment. January–October now each have a submitted native invoice. No payment or email was created, and existing invoices/receipts were preserved, including an already-posted November test invoice from the earlier manual flow. New automatic runs exclude current/future months. Existing selected execution account, automation switch, saved fee plans and global scheduler configuration were not changed.
+
+[Build evidence](build-logs/2026-11-07-us-004-03-completed-month-automation-payment-only-grid.md).
+
+
+## Payments summary cards — 7 November 2026
+
+SPORTS-FR-011 / SPORTS-FR-012 / SPORTS-FR-023, US-005-02: Payments also displays the Overview's Program enrollments, Active enrollments, Billed this year and Outstanding cards above the payment controls. The same permission-scoped Overview API supplies selected-year totals across all visible enrollments, independently of grid pagination/player search; this scope is stated beside the cards. Refresh, year changes and completed payment/reversal actions reload totals. Enrollment counts retain the Overview's current enrollment semantics. No billing/payment, permission or schema change.
+
+[Build evidence](build-logs/2026-11-07-us-005-02-payment-summary-cards.md).
+
+
+## Summary card colours — 7 November 2026
+
+US-005-02 / SPORTS-FR-011, SPORTS-FR-012, SPORTS-FR-023: Overview and Payments share coloured summary cards: blue enrollments, teal active enrollments, green billed amounts, red positive outstanding balances and green cleared balances. Soft matching backgrounds, accent borders and bold values follow the Community App visual direction; text labels retain meaning independently of colour. This is a visual refinement with unchanged financial totals and scope. [Build evidence](build-logs/2026-11-07-us-005-02-summary-card-colours.md).
+
+
+## Sports Academy landing dashboard — 7 November 2026
+
+SPORTS-FR-023 / SPORTS-NFR-002 / SPORTS-NFR-005, US-008-02: replace the Sports Academy introductory text with a read-only dashboard. Coloured cards show visible player counts, current Active program memberships, Pending applications and non-cancelled sessions in the academy's current month. The next five Scheduled sessions from today show title, date/time and venue with native record links. Active memberships are enrollment counts, not unique active players or reconstructed historical eligibility.
+
+Authorized finance users also see selected-year monthly subscription Billed, Settled and Outstanding totals with a twelve-month billed/outstanding chart. Reuse the existing permission-scoped subscription Overview service: submitted monthly invoices only, not enrollment fees/all ERP revenue; Settled includes accounting credits and is not cash receipts. The year filter affects financial totals only. Operational counts remain current. Missing native permissions show Restricted, not zero; no scholarship, biometric or player contact data is included.
+
+Role-scoped shortcuts use the existing host dashboard navigation to Players, Enrollments, Attendance, Scholarships & Billing and Academy Settings. Refresh, year changes and host data-change watchers update the dashboard, with loading, empty, restricted, retry and unmount protection. Desktop and phone layouts use the same coloured summary style. This delivers the landing-dashboard slice; broader date/program filters, exports, attendance outcome reporting and production p95 acceptance remain open. [Build evidence](build-logs/2026-11-07-us-008-02-academy-landing-dashboard.md).

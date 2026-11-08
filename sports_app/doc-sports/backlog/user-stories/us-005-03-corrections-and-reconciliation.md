@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-005](../epics/EPIC-005-payments-and-financial-history.md)
-- State: Proposed
+- State: In progress
 - Priority: Must
 - Delivery owner / affected apps: ERPNext configuration + Sports App
 
@@ -39,8 +39,8 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
+- Build log: [Subscription grid and correction slice](../../build-logs/2026-11-07-us-005-01-subscription-overview-payment-grid.md).
+- Verification summary: Development grid/overview and reasoned receipt cancellation verified against native invoice/receipt/ledger behavior and desktop/phone fixtures. See the dated slice below; broader credit/refund/reconciliation acceptance remains open.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
 
 ## Discovery provenance — 6 November 2026
@@ -57,3 +57,21 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
 
 Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-005-payments-and-financial-history.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+## Subscription overview and checkbox payments — 7 November 2026
+
+User requested the Community App Membership Admin Overview and Payments pattern for Sports subscriptions. Community source was inspected read-only; Sports owns its independent implementation with no Community runtime dependency or Boost source changes.
+
+Sports → Scholarships & Billing opens an Overview with scoped enrollment/active counts and submitted annual/monthly billed, settled and outstanding totals. Settled includes allocations/credits and is explicitly not reported as cash receipts. Payments provides a paginated player/program-by-month grid, year and player-name filters, explicit unpaid/partial/paid/no-charge/unbilled/review/future/cancelled states, overdue indication and source invoice/receipt PDF modals. Financial status comes from native submitted invoices and outstanding amounts; no checkbox directly toggles accounting state. Fully exempt months do not produce false payments.
+
+Authorized Finance selects up to 20 payable cells, an enabled same-company/currency Bank or Cash account, payment date and bank/cash reference, then explicitly confirms funds received. One action generates/submits an eligible missing monthly invoice if necessary and creates/submits a fully allocated Payment Entry for the remaining balance. Each cell has a separate Customer-attributed receipt, so reversal does not affect other months or players. Partial balances can be fully settled; arbitrary installment scheduling is not implemented. Native accounting, Company/Player permissions, workflow and configured approver checks remain mandatory. There are no new role grants or general finance bypasses.
+
+A stable request key and payload hash return the same receipt on retries; changed retry inputs are rejected. Shared settings/enrollment/invoice locks serialize requests. Failure at receipt submission rolls back that cell's obligation, invoice and ledger as well as its receipt; successful independent cells are reported separately. Existing invoices retain original billing snapshots and already-paid cells are not collected again.
+
+Activate reversal exposes selectors for submitted receipts created by this grid only. A reason, native receipt read/cancel and an allowed cancellation workflow are required. Cancellation reopens the invoice's native outstanding balance while retaining the charge and audit trail. Repeating cancellation is safe; retrying the old payment request after reversal returns Cancelled instead of creating a replacement. A new explicit confirmation may settle the reopened balance. Enrollment receipts, unrelated multi-invoice receipts, credit notes, bank reconciliations and actual cash refunds stay in their own reviewed native processes.
+
+Automatic monthly invoice posting remains a separate implemented feature whose development activation still awaits an explicitly approved execution account. This manual checkbox collection interface does not enable it or assign Administrator. No real development balances were changed by QA; no production deployment, commit, PR or merge requested.
+
+[Build evidence](../../build-logs/2026-11-07-us-005-01-subscription-overview-payment-grid.md).
+
+This is a verified receipt-cancellation slice. Credit notes, refunds, reconciliation reports and production correction acceptance remain open; the full story is not Done.

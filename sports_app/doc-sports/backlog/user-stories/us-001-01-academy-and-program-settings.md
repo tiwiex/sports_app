@@ -113,3 +113,21 @@ Native Data Import is enabled for Sports Player, with import permission restrict
 Player email/account validation and automatic separate Customer/disabled player User/shared guardian account preparation remain in force for imports. Imports create no invoices, receipts, balances or attendance history; create program memberships separately using staff tools. Missing/duplicate emails require source-data correction rather than placeholders or silent existing-account reuse. Obtain and review the real roster before an actual import; this adjustment prepares tooling and does not complete the migration/pilot story.
 
 SPORTS-FR-001/004/024; SPORTS-NFR-003. User refinement of existing numbering and BA-QNR-001 legacy-roster discovery, not new questionnaire wording. [Build evidence](../../build-logs/2026-11-06-us-003-02-legacy-import-and-sequence-floor.md). Wider delivery states remain unchanged.
+
+## Tabbed Academy Settings — 6 November 2026
+
+Group existing controls into General, Player IDs, Enrollment defaults, Monthly fees, Website payments and Programs & groups. Keep Save Settings available across tabs and preserve all unsaved values, numbering preview, native validation and master-management dialogs. Accessible keyboard navigation and phone scrolling are required. Existing Done state remains; [adjustment build log](../../build-logs/2026-11-06-us-001-01-tabbed-academy-settings.md).
+
+## Accepted Item-pricing refinement — 7 November 2026
+
+Enrollment charges are selected existing sales Items with quantity/rate rows in Academy Settings, driving public labels and native invoice lines. Monthly plans optionally reuse a one-month, company-currency Fixed Rate ERPNext Subscription Plan and its service Item/rate. Manual previews, immutable snapshots, scholarship privacy and native approval/payment controls remain in force. No native automatic Subscription is created. Migration preserves the current enrollment total; row edits affect new applications only. Verify arbitrary charge counts/quantities, unchanged retries, native Plan read permissions and stale-price rejection. This adjustment does not close unresolved EPIC-004 policy scope or change story review state.
+
+[Build evidence](../../build-logs/2026-11-07-us-001-01-configurable-enrollment-items-and-subscription-pricing.md) · [Setup guide](../../academy-setup.md) · [Billing guide](../../billing-guide.md).
+
+## Main-table PDF refinement — 7 November 2026
+
+Main Players/Enrollments expose permission-scoped document links/actions and elapsed age. PDF links open a modal with download fallback and use selectable Sports Academy Invoice / Sports Academy Receipt backend Print Formats. The Settings document logo is configurable; Moyours reuses its website crest. Native Company/Customer/document permissions and deliberate receipt-email confirmation remain authoritative. Do not change global print defaults or broader story acceptance state.
+
+[Build evidence](../../build-logs/2026-11-07-us-003-03-main-table-finance-and-branded-pdf-modal.md) · [Operator guide](../../players-guide.md).
+
+7 November refinement: Monthly fees settings now expose automatic submitted receivables, explicit start month and execution user. No role grants or native Subscription activation. [Build evidence](../../build-logs/2026-11-07-us-004-03-automatic-monthly-receivables.md).

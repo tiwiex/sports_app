@@ -16,9 +16,9 @@ This is the complete current epic inventory, including proposed additions and wi
 
 | Story | State | Origin | Priority |
 |---|---|---|---|
-| [US-004-01: Manage effective-dated scholarship and exemption decisions](../user-stories/us-004-01-restricted-scholarship-decisions.md) | Proposed | Both | Must |
-| [US-004-02: Configure fee plans and concession-safe charge calculation](../user-stories/us-004-02-fee-plans-and-policy.md) | Proposed | Both | Must |
-| [US-004-03: Generate monthly obligations and ERPNext invoices safely](../user-stories/us-004-03-monthly-obligations-and-invoices.md) | Proposed | Both | Must |
+| [US-004-01: Manage effective-dated scholarship and exemption decisions](../user-stories/us-004-01-restricted-scholarship-decisions.md) | In review | Both | Must |
+| [US-004-02: Configure fee plans and concession-safe charge calculation](../user-stories/us-004-02-fee-plans-and-policy.md) | In review | Both | Must |
+| [US-004-03: Generate monthly obligations and ERPNext invoices safely](../user-stories/us-004-03-monthly-obligations-and-invoices.md) | In review | Both | Must |
 
 ## Exit criteria
 
@@ -32,3 +32,5 @@ Every linked story is Done with acceptance evidence, affected app pull requests 
 - Source responses: [BA-QNR-001-Q02-06](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q02-06), [BA-QNR-001-Q03-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-01), [BA-QNR-001-Q03-02](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-02), [BA-QNR-001-Q03-03](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-03), [BA-QNR-001-Q03-04](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-04), [BA-QNR-001-Q03-05](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-05), [BA-QNR-001-Q03-06](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-06), [BA-QNR-001-Q03-07](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-07), [BA-QNR-001-Q03-08](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q03-08), [BA-QNR-001-Q04-01](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-01), [BA-QNR-001-Q04-06](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-06), [BA-QNR-001-Q04-07](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-07), [BA-QNR-001-Q04-09](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-09), [BA-QNR-001-Q04-10](../../discovery/BA-QNR-001-responses.md#ba-qnr-001-q04-10).
 - [Question-level reconciliation](../../discovery/BA-QNR-001-reconciliation.md); [consolidation evidence](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
 - Open decisions are proposed refinements, not permission, pricing, delivery-state or commercial changes. Resolve them before affected work becomes Ready.
+
+Implementation review (6 November 2026): accepted prototype slice is available in Sports → Scholarships & Billing. All three stories are In review with verification evidence. Unanswered installment/refund/grace/expiry/admission policies remain explicit follow-ups; the full expanded epic is not declared Done. [Guide](../../billing-guide.md) · [build log](../../build-logs/2026-11-06-epic-004-scholarships-and-monthly-billing.md).

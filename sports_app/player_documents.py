@@ -84,6 +84,10 @@ def prepare_file(data):
 
 
 def protect_file(doc, method=None):
+	if doc.attached_to_doctype == "Sports Scholarship Decision":
+		frappe.throw(
+			_("Scholarship file attachments are not enabled. Record the restricted decision reason instead.")
+		)
 	previous = doc.get_doc_before_save()
 	if doc.attached_to_doctype != DOCUMENT and (not previous or previous.attached_to_doctype != DOCUMENT):
 		return

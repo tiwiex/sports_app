@@ -6,7 +6,7 @@ from uuid import UUID
 
 import frappe
 from frappe import _
-from frappe.utils import CallbackManager, cint
+from frappe.utils import CallbackManager, cint, get_datetime, now_datetime
 
 from sports_app.academy import validate_company
 from sports_app.player_ids import can_change
@@ -66,6 +66,15 @@ def list_players(
 		page_length=20,
 	)
 	for row in rows:
+		from sports_app.printing import latest_documents
+
+		player = frappe.get_doc("Sports Player", row.name)
+		row.update(latest_documents(player))
+		row["elapsed_seconds"] = (
+			max(0, (now_datetime() - get_datetime(row.registered_on)).total_seconds())
+			if row.registered_on
+			else None
+		)
 		can_create_enrollment = frappe.has_permission("Sports Enrollment", "create")
 		row["can_change_id"] = can_change(frappe.get_doc("Sports Player", row.name))
 		row["can_enroll"] = bool(

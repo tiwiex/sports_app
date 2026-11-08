@@ -27,6 +27,15 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
             player_starting_sequence: "1",
             default_program: "P",
             modified: "v1",
+            enrollment_items: [
+              {
+                item_code: "EXISTING",
+                item_name: "Academy kit",
+                qty: 2,
+                rate: 15000,
+                amount: 30000,
+              },
+            ],
           },
           companies: [{ name: "Academy" }],
           timezones: ["Africa/Lagos"],
@@ -40,17 +49,78 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
           call: async ({ method, args }) => {
             if (method.endsWith("get_configuration"))
               return { message: configuration };
+            if (method.endsWith("save_program")) {
+              configuration.programs.push({
+                ...args.program,
+                name: "NEW-PROGRAM",
+              });
+              return { message: "NEW-PROGRAM" };
+            }
             window.saved = args.settings;
             return { message: { ...args.settings, modified: "v2" } };
           },
           ui: {
+            Dialog: class {
+              constructor(options) {
+                this.options = options;
+                this.el = document.createElement("div");
+                this.el.role = "dialog";
+                this.inputs = {};
+                for (const df of options.fields) {
+                  const label = document.createElement("label"),
+                    input = document.createElement("input");
+                  label.textContent = df.label;
+                  label.append(input);
+                  this.el.append(label);
+                  this.inputs[df.fieldname] = input;
+                }
+                this.primary = document.createElement("button");
+                this.primary.textContent = "Save";
+                this.primary.onclick = () =>
+                  options.primary_action(
+                    Object.fromEntries(
+                      Object.entries(this.inputs).map(([key, input]) => [
+                        key,
+                        input.value,
+                      ])
+                    )
+                  );
+                this.el.append(this.primary);
+              }
+              set_values(values) {
+                for (const [key, value] of Object.entries(values))
+                  if (this.inputs[key]) this.inputs[key].value = value ?? "";
+              }
+              show() {
+                document.body.append(this.el);
+              }
+              hide() {
+                this.el.remove();
+              }
+              get_primary_btn() {
+                return {
+                  prop: (key, value) => {
+                    this.primary[key] = value;
+                  },
+                };
+              }
+            },
             FieldGroup: class {
               constructor({ body, fields }) {
                 this.body = body;
                 this.fields = fields;
                 this.fields_dict = {};
+                window.settingsForm = this;
               }
               make() {
+                const wrapper = document.createElement("div"),
+                  page = document.createElement("div");
+                wrapper.className = "form-layout";
+                page.className = "form-page";
+                wrapper.append(page);
+                this.body.append(wrapper);
+                this.wrapper = [wrapper];
+                this.page = [page];
                 for (const df of this.fields) {
                   const div = document.createElement("div");
                   div.className = "field";
@@ -63,28 +133,45 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
                   input.value = df.default ?? "";
                   const small = document.createElement("small");
                   small.textContent = df.description || "";
-                  this.fields_dict[df.fieldname] = { df, input };
+                  this.fields_dict[df.fieldname] = {
+                    df,
+                    input,
+                    $wrapper: [div],
+                    get_value: () =>
+                      df.fieldtype === "Table"
+                        ? this.fields_dict[df.fieldname].value || []
+                        : input.value,
+                  };
                   input.addEventListener("change", () => df.onchange?.());
                   div.append(label, input, small);
-                  this.body.append(div);
+                  this.page[0].append(div);
                 }
               }
               async set_values(values) {
                 for (const [key, value] of Object.entries(values))
-                  if (this.fields_dict[key])
+                  if (this.fields_dict[key]) {
                     this.fields_dict[key].input.value = value ?? "";
+                    this.fields_dict[key].value = value;
+                  }
               }
               get_value(key) {
-                return this.fields_dict[key].input.value;
+                return this.fields_dict[key].get_value();
               }
               set_value(key, value) {
                 this.fields_dict[key].input.value = value;
               }
-              get_values() {
+              get_values(ignore_errors) {
+                if (
+                  !ignore_errors &&
+                  Object.values(this.fields_dict).some(
+                    (field) => field.df.reqd && !field.input.value
+                  )
+                )
+                  return null;
                 return Object.fromEntries(
                   Object.entries(this.fields_dict).map(([key, value]) => [
                     key,
-                    value.input.value,
+                    value.get_value(),
                   ])
                 );
               }
@@ -102,6 +189,9 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
           signal: new AbortController().signal,
         });
       });
+      assert.equal(await page.getByRole("tab").count(), 6);
+      assert.equal(await page.getByRole("tabpanel").count(), 1);
+      await page.getByRole("tab", { name: "Player IDs", exact: true }).click();
       assert.equal(
         await page.locator('[name="player_starting_sequence"]').inputValue(),
         "1"
@@ -121,6 +211,65 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
         .locator('[name="registration_prefix"]')
         .dispatchEvent("change");
       await page
+        .getByRole("tab", { name: "Website payments", exact: true })
+        .click();
+      await page.evaluate(() => {
+        const field = window.settingsForm.fields_dict.enrollment_items;
+        field.value.push({
+          item_code: "EXTRA",
+          qty: 1.5,
+          rate: 2000,
+          item_name: "Extra charge",
+          amount: 3000,
+        });
+      });
+      await page
+        .locator('[name="payment_review_emails"]')
+        .fill("review@example.invalid");
+      await page.getByRole("tab", { name: "General", exact: true }).click();
+      await page.locator('[name="academy_name"]').fill("Updated Academy");
+      await page
+        .getByRole("tab", { name: "Monthly fees", exact: true })
+        .click();
+      await page.locator('[name="default_monthly_fee"]').fill("40000");
+      await page
+        .getByRole("tab", { name: "Programs & groups", exact: true })
+        .click();
+      assert.equal(
+        await page
+          .getByRole("button", { name: "New Program", exact: true })
+          .isVisible(),
+        true
+      );
+      await page
+        .getByRole("button", { name: "New Program", exact: true })
+        .click();
+      await page
+        .getByRole("dialog")
+        .getByLabel("Program name", { exact: true })
+        .fill("New program");
+      await page
+        .getByRole("dialog")
+        .getByLabel("Sport", { exact: true })
+        .fill("Football");
+      await page.getByRole("button", { name: "Save", exact: true }).click();
+      await page.getByText("New program", { exact: true }).waitFor();
+      assert.equal(
+        await page.getByRole("tab", { selected: true }).textContent(),
+        "Programs & groups"
+      );
+      assert.equal(
+        await page.locator('[name="player_starting_sequence"]').inputValue(),
+        "126"
+      );
+      await page
+        .getByRole("tab", { name: "Enrollment defaults", exact: true })
+        .click();
+      assert.equal(
+        await page.locator('[name="default_program"]').inputValue(),
+        "P"
+      );
+      await page
         .getByRole("button", { name: "Save Settings", exact: true })
         .click();
       assert.equal(
@@ -132,6 +281,83 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
         "CLUB"
       );
       assert.equal(await page.evaluate(() => window.saved.modified), "v1");
+      assert.deepEqual(
+        await page.evaluate(() => window.saved.enrollment_items),
+        [
+          { item_code: "EXISTING", qty: 2, rate: 15000 },
+          { item_code: "EXTRA", qty: 1.5, rate: 2000 },
+        ]
+      );
+      assert.equal(
+        await page.evaluate(() => window.saved.academy_name),
+        "Updated Academy"
+      );
+      assert.equal(
+        await page.evaluate(() => window.saved.payment_review_emails),
+        "review@example.invalid"
+      );
+      assert.equal(
+        await page.evaluate(() => window.saved.default_monthly_fee),
+        "40000"
+      );
+      await page
+        .getByRole("tab", { name: "Monthly fees", exact: true })
+        .click();
+      await page.locator('[name="automatic_monthly_billing"]').fill("1");
+
+      await page
+        .locator('[name="monthly_billing_user"]')
+        .fill("finance@example.invalid");
+      await page
+        .getByRole("button", { name: "Save Settings", exact: true })
+        .click();
+      assert.equal(
+        await page.evaluate(() => window.saved.automatic_monthly_billing),
+        "1"
+      );
+
+      assert.equal(
+        await page.evaluate(() => window.saved.monthly_billing_user),
+        "finance@example.invalid"
+      );
+      await page.getByRole("tab", { name: "General", exact: true }).focus();
+      await page.keyboard.press("End");
+      assert.equal(
+        await page.getByRole("tab", { selected: true }).textContent(),
+        "Programs & groups"
+      );
+      await page.keyboard.press("Home");
+      await page.keyboard.press("ArrowRight");
+      assert.equal(
+        await page.getByRole("tab", { selected: true }).textContent(),
+        "Player IDs"
+      );
+      assert.equal(
+        await page.locator('[name="player_starting_sequence"]').inputValue(),
+        "126"
+      );
+      assert.equal(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > innerWidth
+        ),
+        false
+      );
+      await page.getByRole("tab", { name: "General", exact: true }).click();
+      await page.locator('[name="academy_name"]').fill("");
+      await page
+        .getByRole("tab", { name: "Monthly fees", exact: true })
+        .click();
+      await page
+        .getByRole("button", { name: "Save Settings", exact: true })
+        .click();
+      assert.equal(
+        await page.getByRole("tab", { selected: true }).textContent(),
+        "General"
+      );
+      assert.equal(
+        await page.evaluate(() => window.saved.academy_name),
+        "Updated Academy"
+      );
       assert.deepEqual(errors, []);
       await page.close();
     }

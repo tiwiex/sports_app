@@ -1,0 +1,33 @@
+{% set academy = frappe.get_doc('Sports Academy Settings') %}
+{% set company = frappe.get_doc('Company', doc.company) %}
+{% set logo = (academy.get('print_logo') if academy.company == doc.company else '') or company.get('company_logo') %}
+{% set display_name = academy.academy_name if academy.company == doc.company else doc.company %}
+<style>
+.print-format { font-family: Arial, sans-serif; font-size: 10pt; color:#18382c; padding:15mm; }
+.sports-paper .brand-table {width:100%;border:0;border-bottom:3px solid #d5ac25;margin-bottom:25px}
+.sports-paper .brand-table td {border:0;padding:0 0 18px!important;vertical-align:middle}
+.sports-paper .brand {font-size:19pt;font-weight:700;color:#173f30;line-height:1.2}
+.sports-paper .eyebrow {font-size:8pt;text-transform:uppercase;letter-spacing:2px;color:#607466;margin-bottom:8px}
+.sports-paper .doc-title {font-size:25pt;font-weight:700;letter-spacing:1px;color:#173f30;margin:0 0 7px}
+.sports-paper .muted {color:#65746b;font-size:9pt}
+.sports-paper .meta {width:100%;table-layout:fixed;margin:22px 0;border:0}
+.sports-paper .meta td {width:50%;vertical-align:top;border:0;padding:12px 18px 12px 0!important;line-height:1.8;word-wrap:break-word}
+.sports-paper .state {display:inline-block;padding:5px 11px;background:#eaf3ed;color:#173f30;font-weight:bold;font-size:9pt}
+.sports-paper .warning {background:#fff1d9;color:#805400}
+.sports-paper .lines {width:100%;border-collapse:collapse;margin:18px 0 22px;font-size:9pt}
+.sports-paper .lines th {background:#173f30!important;color:#fff!important;padding:11px!important;border:0!important}
+.sports-paper .lines td {padding:11px!important;border:0!important;border-bottom:1px solid #dce5df!important;vertical-align:top}
+.sports-paper .lines tr {page-break-inside:avoid}
+.sports-paper .num {text-align:right;white-space:nowrap}
+.sports-paper .totals {width:58%;margin-left:42%;border:0;page-break-inside:avoid}
+.sports-paper .totals td {border:0;padding:7px 0!important}
+.sports-paper .total td {border-top:2px solid #173f30;padding-top:13px!important;font-size:13pt;font-weight:bold}
+.sports-paper .receipt-amount {background:#edf4ef;border-left:4px solid #d5ac25;padding:20px;margin:20px 0}
+.sports-paper .receipt-amount strong {font-size:25pt;display:block;margin-top:7px}
+.sports-paper .foot {margin-top:35px;padding-top:15px;border-top:1px solid #ccd8cf;font-size:8pt;color:#65746b;line-height:1.7;page-break-inside:avoid}
+</style>
+<div class="sports-paper">
+<table class="brand-table"><tr><td style="width:80px">{% if logo %}<img src="{{ frappe.utils.get_url(logo) | e }}" alt="Academy logo" style="width:64px;height:64px;object-fit:contain">{% endif %}</td><td><div class="brand">{{ display_name | e }}</div>{% if display_name != doc.company %}<div class="muted">{{ doc.company | e }}</div>{% endif %}</td><td style="text-align:right;width:125px"><div class="eyebrow">ACADEMY FINANCE</div><div class="muted">{{ doc.get_formatted('posting_date') | e }}</div></td></tr></table>
+{% block document %}{% endblock %}
+<div class="foot"><strong>{{ display_name | e }}</strong><br>{{ doc.name | e }} · Generated from the academy’s ERP accounting record.<br>{% block note %}{% endblock %}</div>
+</div>

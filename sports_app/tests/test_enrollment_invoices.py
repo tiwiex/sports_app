@@ -43,6 +43,19 @@ class TestEnrollmentInvoiceGuards(TestCase):
 			),
 		)
 
+	def test_configurable_quantity_snapshot_and_fractional_tampering(self):
+		self.line.qty = 2
+		self.line.rate = 125000
+		self.app.payment_snapshot = json.dumps(
+			dict(currency="NGN", paid_from="Debtors", total=250000, items=[dict(self.line)])
+		)
+		with patch.object(frappe, "get_doc", return_value=self.app):
+			invoices.validate_enrollment_invoice(self.invoice())
+			bad = self.invoice()
+			bad.items[0].qty = 2.0001
+			with self.assertRaises(frappe.ValidationError):
+				invoices.validate_enrollment_invoice(bad)
+
 	def invoice(self, **changes):
 		doc = frappe._dict(
 			name="INV",

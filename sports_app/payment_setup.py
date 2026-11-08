@@ -129,13 +129,16 @@ def setup_payment_support():
 	if not frappe.db.exists("DocType", "Sports Registration"):
 		return
 	setup_payment_fields()
+	from sports_app.enrollment_charges import migrate_legacy_charges
+
+	migrate_legacy_charges()
 	if frappe.db.get_single_value("Sports Academy Settings", "enrollment_payments_enabled"):
 		ensure_payment_workflow()
 		setup_invoice_support()
 
 
 def setup_invoice_support():
-	"""Add enrolment fields/items and seed a workflow only if none is active."""
+	"""Add enrolment fields and seed a workflow only if none is active."""
 	from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 	create_custom_fields(
@@ -163,38 +166,12 @@ def setup_invoice_support():
 		},
 		update=True,
 	)
+	from sports_app.enrollment_charges import migrate_legacy_charges
+
+	migrate_legacy_charges()
 	settings = frappe.get_single("Sports Academy Settings")
 	if not settings.enrollment_payments_enabled:
 		return
-	for field, code in (
-		("enrollment_registration_item", "Sports Registration Fee"),
-		("enrollment_jersey_item", "Sports Jersey Fee"),
-	):
-		if settings.get(field):
-			continue
-		if not frappe.db.exists("Item", code):
-			group = frappe.db.get_value("Item Group", {"is_group": 0}, "name") or frappe.db.get_value(
-				"Item Group", {"is_group": 1}, "name"
-			)
-			uom = frappe.db.get_value("UOM", {"name": "Nos"}, "name") or frappe.db.get_value(
-				"UOM", {}, "name"
-			)
-			if not group or not uom:
-				frappe.throw(_("Configure an Item Group and unit of measure for enrollment fees."))
-			frappe.get_doc(
-				doctype="Item",
-				item_code=code,
-				item_name=code,
-				item_group=group,
-				stock_uom=uom,
-				is_stock_item=0,
-				is_sales_item=1,
-				include_item_in_manufacturing=0,
-			).insert(ignore_permissions=True)
-		item = frappe.get_doc("Item", code)
-		if item.disabled or item.is_stock_item or not item.is_sales_item:
-			frappe.throw(_("Configure compatible active non-stock enrollment fee items."))
-		frappe.db.set_single_value("Sports Academy Settings", field, code)
 	ensure_invoice_workflow()
 
 

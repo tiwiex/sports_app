@@ -7,6 +7,7 @@
  "track_changes": 1,
  "field_order": [
   "academy_name",
+  "print_logo",
   "company",
   "currency",
   "timezone",
@@ -20,18 +21,23 @@
   "default_group",
   "fee_section",
   "monthly_fees_enabled",
+  "automatic_monthly_billing",
+  "monthly_billing_start",
+  "monthly_billing_user",
   "default_monthly_fee",
   "enrollment_payment_section",
   "enrollment_payments_enabled",
   "payment_review_emails",
   "enrollment_payment_currency",
+  "enrollment_items",
   "enrollment_registration_fee",
   "enrollment_jersey_fee",
   "enrollment_monthly_fee",
   "enrollment_bank_account",
   "enrollment_receivable_account",
   "enrollment_registration_item",
-  "enrollment_jersey_item"
+  "enrollment_jersey_item",
+  "enrollment_items_configured"
  ],
  "fields": [
   {
@@ -148,13 +154,15 @@
    "fieldname": "enrollment_registration_fee",
    "label": "Initial registration fee",
    "fieldtype": "Currency",
-   "options": "enrollment_payment_currency"
+   "options": "enrollment_payment_currency",
+   "hidden": 1
   },
   {
    "fieldname": "enrollment_jersey_fee",
    "label": "Jersey fee (2 sets)",
    "fieldtype": "Currency",
-   "options": "enrollment_payment_currency"
+   "options": "enrollment_payment_currency",
+   "hidden": 1
   },
   {
    "fieldname": "enrollment_monthly_fee",
@@ -178,13 +186,15 @@
    "fieldname": "enrollment_registration_item",
    "label": "Registration fee item",
    "fieldtype": "Link",
-   "options": "Item"
+   "options": "Item",
+   "hidden": 1
   },
   {
    "fieldname": "enrollment_jersey_item",
    "label": "Jersey fee item",
    "fieldtype": "Link",
-   "options": "Item"
+   "options": "Item",
+   "hidden": 1
   },
   {
    "fieldname": "enrollment_naming_series",
@@ -200,6 +210,46 @@
    "fieldtype": "Data",
    "default": "1",
    "description": "Minimum sequence for new players, for example 126 after legacy number 125. Existing issued/imported numbers take precedence; lowering this never resets numbering. Prefix, year and month are separate. Existing IDs stay unchanged."
+  },
+  {
+   "fieldname": "enrollment_items",
+   "label": "Enrollment charges",
+   "fieldtype": "Table",
+   "options": "Sports Enrollment Charge"
+  },
+  {
+   "fieldname": "enrollment_items_configured",
+   "label": "Enrollment charges migrated",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "print_logo",
+   "label": "Document logo",
+   "fieldtype": "Attach Image",
+   "description": "Logo used on Sports invoice and receipt PDF templates."
+  },
+  {
+   "fieldname": "automatic_monthly_billing",
+   "label": "Automatically submit monthly invoices",
+   "fieldtype": "Check",
+   "default": "0",
+   "description": "Generate and submit monthly receivables; payments remain separately confirmed."
+  },
+  {
+   "fieldname": "monthly_billing_start",
+   "label": "Automatic billing starts",
+   "fieldtype": "Date",
+   "description": "Legacy value retained for compatibility; completed-month catch-up now starts at each enrollment date.",
+   "hidden": 1
+  },
+  {
+   "fieldname": "monthly_billing_user",
+   "label": "Billing automation user",
+   "fieldtype": "Link",
+   "options": "User",
+   "description": "Enabled System User with Sports billing access and native Sales Invoice read/create/submit and workflow approval permissions. No roles are assigned automatically."
   }
  ],
  "permissions": [

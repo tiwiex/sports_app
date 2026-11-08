@@ -26,6 +26,7 @@ def has_console_permission(user=None):
 
 def get_provider():
 	from sports_app.academy import can_manage_settings
+	from sports_app.billing_access import can_read
 	from sports_app.players import can_manage_players
 
 	views = [
@@ -42,7 +43,7 @@ def get_provider():
 				"key": "sports_app:registrations",
 				"label": "Enrollments",
 				"group": "Sports",
-				"assets": [asset_url("registrations.js")],
+				"assets": [asset_url("finance_documents.js"), asset_url("registrations.js")],
 			}
 		)
 		views.append(
@@ -51,6 +52,7 @@ def get_provider():
 				"label": "Players",
 				"group": "Sports",
 				"assets": [
+					asset_url("finance_documents.js"),
 					asset_url("player_id_change.js"),
 					asset_url("player_profile.js"),
 					asset_url("players.js"),
@@ -99,6 +101,19 @@ def get_provider():
 				"label": "Development Tools",
 				"group": "Sports",
 				"assets": [asset_url("development_tools.js")],
+			}
+		)
+	if can_read():
+		views.append(
+			{
+				"key": "sports_app:billing",
+				"label": "Scholarships & Billing",
+				"group": "Sports",
+				"assets": [
+					asset_url("finance_documents.js"),
+					asset_url("subscription_console.js"),
+					asset_url("billing.js"),
+				],
 			}
 		)
 	return {

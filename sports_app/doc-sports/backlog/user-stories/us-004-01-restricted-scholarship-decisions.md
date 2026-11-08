@@ -3,7 +3,7 @@
 ## Header
 
 - Epic: [EPIC-004](../epics/EPIC-004-scholarships-and-monthly-billing.md)
-- State: Proposed
+- State: In review
 - Priority: Must
 - Delivery owner / affected apps: Sports App
 
@@ -39,8 +39,8 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 ## Completion evidence
 
 - Pull request(s): Not opened.
-- Build log: Not started.
-- Verification summary: Not implemented or verified.
+- Build log: [EPIC-004 implementation](../../build-logs/2026-11-06-epic-004-scholarships-and-monthly-billing.md).
+- Verification summary: Prototype slice verified by 213 Python checks, actual-source desktop/phone browser fixture and native development role/overlap/retry/rollback checks. Two independent database connections confirmed shared-lock serialization. No real charges or ledger posting persisted.
 - Remaining decisions / follow-up work: Refine applicable [PRD open decisions](../../PRD.md#11-open-decisions-and-risks) before marking Ready.
 
 ## Discovery provenance — 6 November 2026
@@ -63,3 +63,9 @@ This story covers the outcome and acceptance criteria below. Resolve applicable 
 - Existing delivery state and acceptance criteria remain unchanged; proposed changes require refinement before implementation.
 
 Epic consolidation (6 November 2026): the [complete epic inventory](../epics/EPIC-004-scholarships-and-monthly-billing.md) now includes this story alongside baseline and questionnaire additions. State and acceptance evidence unchanged. [Build log](../../build-logs/2026-11-06-backlog-consolidated-epics.md).
+
+## Accepted implementation and remaining scope — 6 November 2026
+
+User confirmed management approval/revocation, dedicated unassigned Sports Finance read/billing capability, month-start full-fee eligibility, unchanged NGN250,000 enrollment and configurable NGN40,000 monthly default. Native accounting/player access remains required. See [guide](../../billing-guide.md) and [build log](../../build-logs/2026-11-06-epic-004-scholarships-and-monthly-billing.md). This supersedes unresolved role/cadence/fee-conflict notes above only for this accepted prototype policy.
+
+The central EPIC-004 console now supports restricted draft/approved/revoked decisions, explicit effective fee plans, final-amount-only previews, retry-safe draft invoice generation and zero-due obligations. Issued invoice snapshots are immutable; later scholarship/plan changes require reviewed correction rather than silent recalculation. Current membership status does not reconstruct historical suspension dates. Full policy scope for installments, grace/notice, refunds, scholarship admission exceptions and fulfillment of benefit entitlements remains unaccepted/unimplemented. Story is In review, with the verified slice recorded; do not mark the expanded epic Done on prototype evidence alone. No PR/merge is requested for this implementation turn.

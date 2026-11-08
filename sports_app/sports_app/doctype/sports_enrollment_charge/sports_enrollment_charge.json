@@ -1,0 +1,62 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Enrollment Charge",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "istable": 1,
+ "editable_grid": 1,
+ "field_order": [
+  "item_code",
+  "item_name",
+  "qty",
+  "rate",
+  "amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "item_code",
+   "label": "Item",
+   "fieldtype": "Link",
+   "options": "Item",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 4
+  },
+  {
+   "fieldname": "item_name",
+   "label": "Item name",
+   "fieldtype": "Data",
+   "read_only": 1,
+   "fetch_from": "item_code.item_name"
+  },
+  {
+   "fieldname": "qty",
+   "label": "Quantity",
+   "fieldtype": "Float",
+   "default": "1",
+   "precision": "4",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "rate",
+   "label": "Rate",
+   "fieldtype": "Currency",
+   "precision": "2",
+   "reqd": 1,
+   "in_list_view": 1,
+   "columns": 2
+  },
+  {
+   "fieldname": "amount",
+   "label": "Amount",
+   "fieldtype": "Currency",
+   "precision": "2",
+   "read_only": 1,
+   "in_list_view": 1,
+   "columns": 2
+  }
+ ],
+ "permissions": []
+}

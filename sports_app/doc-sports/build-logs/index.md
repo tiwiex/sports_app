@@ -2,6 +2,21 @@
 
 | Date | Entry | Status |
 |---|---|---|
+| 2026-11-08 | [Billing, profile and dashboard develop integration](2026-11-08-us-003-03-develop-integration.md) | Local checks verified / integration pending |
+| 2026-11-07 | [Sports Academy landing dashboard](2026-11-07-us-008-02-academy-landing-dashboard.md) | Verified development slice / US-008-02 |
+| 2026-11-07 | [Summary card colours](2026-11-07-us-005-02-summary-card-colours.md) | Verified development styling / US-005-02 |
+| 2026-11-07 | [Payments summary cards](2026-11-07-us-005-02-payment-summary-cards.md) | Verified development refinement / US-005-02 |
+| 2026-11-07 | [Completed-month automation and payment-only grid](2026-11-07-us-004-03-completed-month-automation-payment-only-grid.md) | Verified development refinement / daily job and catch-up applied |
+| 2026-11-07 | [Extension asset recovery](2026-11-07-us-005-01-extension-asset-recovery.md) | Verified development fix / US-005-01 |
+| 2026-11-07 | [January test player and checkbox invoice generation](2026-11-07-us-004-03-january-test-and-checkbox-invoices.md) | Verified development refinement / retained synthetic fixture |
+| 2026-11-07 | [Subscription overview, checkbox payments and reversal](2026-11-07-us-005-01-subscription-overview-payment-grid.md) | Verified development slice / US-005-01 In review; US-005-02/03 In progress |
+| 2026-11-07 | [Automatic monthly receivables](2026-11-07-us-004-03-automatic-monthly-receivables.md) | Verified development refinement / US-004-03 |
+| 2026-11-07 | [Inline player profile details](2026-11-07-us-003-03-inline-player-profile-details.md) | Verified development styling / US-003-03 |
+| 2026-11-07 | [Main-table finance actions and branded PDF modals](2026-11-07-us-003-03-main-table-finance-and-branded-pdf-modal.md) | Verified development refinement / main tables and PDFs |
+| 2026-11-07 | [PDF links, manual receipt email and elapsed time](2026-11-07-us-003-03-pdf-receipts-email-and-elapsed-time.md) | Verified development refinement / PDF and receipt delivery |
+| 2026-11-07 | [Configurable enrollment items and native subscription pricing](2026-11-07-us-001-01-configurable-enrollment-items-and-subscription-pricing.md) | Verified development refinement / settings and EPIC-004 |
+| 2026-11-06 | [Tabbed Academy Settings](2026-11-06-us-001-01-tabbed-academy-settings.md) | Verified development refinement / US-001-01 |
+| 2026-11-06 | [EPIC-004 scholarships and monthly billing](2026-11-06-epic-004-scholarships-and-monthly-billing.md) | Verified development slice / stories In review |
 | 2026-11-06 | [Central profile develop integration](2026-11-06-us-003-03-develop-integration.md) | Pre-merge verification / PR state authoritative |
 | 2026-11-06 | [Player photo in profile header](2026-11-06-us-003-03-profile-header-photo.md) | Verified development adjustment / US-003-03 |
 | 2026-11-06 | [Tabbed player profile](2026-11-06-us-003-03-tabbed-player-profile.md) | Verified development adjustment / US-003-03 |

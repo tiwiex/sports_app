@@ -70,6 +70,11 @@ const apps = path.resolve(__dirname, "../../../..");
           },
           {
             name: "REG-ACCEPTED",
+            player: "PLAYER-1",
+            email_receipt: "PAY-1",
+            invoice_pdf: "INV-ACCEPTED",
+            receipt_pdf: "PAY-1",
+            elapsed_seconds: 172800,
             full_name: "Accepted Player",
             status: "Accepted",
             can_review: false,
@@ -192,6 +197,12 @@ const apps = path.resolve(__dirname, "../../../..");
           },
         };
       }, JSON.parse(fs.readFileSync(path.join(apps, "sports_app/sports_app/registration_fields.json"), "utf8")));
+      await page.addScriptTag({
+        path: path.join(
+          apps,
+          "sports_app/sports_app/public/js/finance_documents.js"
+        ),
+      });
       await page.addScriptTag({
         path: path.join(
           apps,
@@ -379,6 +390,34 @@ const apps = path.resolve(__dirname, "../../../..");
           .allTextContents(),
         ["View"]
       );
+      assert.equal(
+        await page.getByText("2 days ago", { exact: true }).count(),
+        1
+      );
+      await page.keyboard.press("Escape");
+      await page
+        .getByRole("button", {
+          name: "Actions for enrollment REG-ACCEPTED",
+          exact: true,
+        })
+        .click();
+      assert.deepEqual(
+        await page
+          .locator(".sports-registration-menu.is-open [role=menuitem]")
+          .allTextContents(),
+        ["View", "View invoice PDF", "View receipt PDF", "Email receipt"]
+      );
+      await page.keyboard.press("Escape");
+      await page
+        .getByRole("link", { name: "INV-ACCEPTED", exact: true })
+        .click();
+      assert.match(
+        await page
+          .getByTitle("PDF preview", { exact: true })
+          .getAttribute("src"),
+        /Sports\+Academy\+Invoice/
+      );
+      await page.getByRole("button", { name: "Close", exact: true }).click();
       await page
         .getByLabel("Enrollment status", { exact: true })
         .selectOption("Pending");

@@ -11,6 +11,7 @@ DEFAULT_ENROLLMENT_SERIES = "MSA-ENR-.YYYY.-.#####"
 
 SETTINGS_ROLE = "Sports Academy Administrator"
 SETTINGS_FIELDS = (
+	"print_logo",
 	"academy_name",
 	"company",
 	"currency",
@@ -23,16 +24,16 @@ SETTINGS_FIELDS = (
 	"default_program",
 	"default_group",
 	"monthly_fees_enabled",
+	"automatic_monthly_billing",
+	"monthly_billing_start",
+	"monthly_billing_user",
 	"default_monthly_fee",
 	"enrollment_payments_enabled",
 	"enrollment_payment_currency",
-	"enrollment_registration_fee",
-	"enrollment_jersey_fee",
+	"enrollment_items",
 	"enrollment_monthly_fee",
 	"enrollment_bank_account",
 	"enrollment_receivable_account",
-	"enrollment_registration_item",
-	"enrollment_jersey_item",
 	"payment_review_emails",
 )
 
@@ -108,6 +109,9 @@ def validate_settings(doc):
 
 	doc.payment_review_emails = ", ".join(review_recipients(doc.get("payment_review_emails")))
 	validate_company(doc.company)
+	from sports_app.scheduled_billing import validate_configuration
+
+	validate_configuration(doc)
 	if not frappe.db.exists("Currency", {"name": doc.currency, "enabled": 1}):
 		frappe.throw(_("Select an enabled currency."))
 	program = frappe.get_doc("Sports Program", doc.default_program)
@@ -134,6 +138,8 @@ def get_configured_settings(for_update=False):
 		else frappe.db.get_singles_dict("Sports Academy Settings")
 	)
 	for fieldname in SETTINGS_FIELDS:
+		if doc.meta.get_field(fieldname) and doc.meta.get_field(fieldname).fieldtype == "Table":
+			continue
 		if fieldname not in stored:
 			field = doc.meta.get_field(fieldname)
 			doc.set(fieldname, field.default if field else None)

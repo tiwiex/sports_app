@@ -1,0 +1,176 @@
+{
+ "doctype": "DocType",
+ "name": "Sports Fee Plan",
+ "module": "Sports App",
+ "engine": "InnoDB",
+ "autoname": "hash",
+ "allow_rename": 0,
+ "track_changes": 1,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "fields": [
+  {
+   "fieldname": "title",
+   "label": "Plan name",
+   "fieldtype": "Data",
+   "reqd": 1,
+   "read_only": 0
+  },
+  {
+   "fieldname": "company",
+   "label": "Company",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "Company"
+  },
+  {
+   "fieldname": "program",
+   "label": "Program",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "Sports Program"
+  },
+  {
+   "fieldname": "enabled",
+   "label": "Enabled",
+   "fieldtype": "Check",
+   "reqd": 0,
+   "read_only": 0,
+   "default": "1"
+  },
+  {
+   "fieldname": "effective_from",
+   "label": "Effective from",
+   "fieldtype": "Date",
+   "reqd": 1,
+   "read_only": 0
+  },
+  {
+   "fieldname": "effective_to",
+   "label": "Effective to",
+   "fieldtype": "Date",
+   "reqd": 0,
+   "read_only": 0
+  },
+  {
+   "fieldname": "currency",
+   "label": "Currency",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "Currency"
+  },
+  {
+   "fieldname": "monthly_amount",
+   "label": "Monthly amount",
+   "fieldtype": "Currency",
+   "reqd": 1,
+   "read_only": 0,
+   "default": "40000",
+   "precision": "2",
+   "options": "currency"
+  },
+  {
+   "fieldname": "joining_policy",
+   "label": "Eligibility policy",
+   "fieldtype": "Select",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "\nFull fee if active at month start"
+  },
+  {
+   "fieldname": "due_day",
+   "label": "Due day (1\u201328)",
+   "fieldtype": "Int",
+   "reqd": 1,
+   "read_only": 0
+  },
+  {
+   "fieldname": "item",
+   "label": "Service item",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "Item"
+  },
+  {
+   "fieldname": "income_account",
+   "label": "Income account",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "Account"
+  },
+  {
+   "fieldname": "cost_center",
+   "label": "Cost center",
+   "fieldtype": "Link",
+   "reqd": 1,
+   "read_only": 0,
+   "options": "Cost Center"
+  },
+  {
+   "fieldname": "subscription_plan",
+   "label": "ERPNext Subscription Plan",
+   "fieldtype": "Link",
+   "options": "Subscription Plan",
+   "description": "Optional existing one-month Fixed Rate plan; its Item and rate are authoritative. No native Subscription is started."
+  }
+ ],
+ "field_order": [
+  "title",
+  "company",
+  "program",
+  "enabled",
+  "effective_from",
+  "effective_to",
+  "currency",
+  "subscription_plan",
+  "monthly_amount",
+  "joining_policy",
+  "due_day",
+  "item",
+  "income_account",
+  "cost_center"
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 0,
+   "cancel": 0,
+   "delete": 0,
+   "share": 0,
+   "export": 0,
+   "report": 1
+  },
+  {
+   "role": "Sports Academy Administrator",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "submit": 0,
+   "cancel": 0,
+   "delete": 0,
+   "share": 0,
+   "export": 0,
+   "report": 1
+  },
+  {
+   "role": "Sports Finance",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "submit": 0,
+   "cancel": 0,
+   "delete": 0,
+   "share": 0,
+   "export": 0,
+   "report": 1
+  }
+ ]
+}

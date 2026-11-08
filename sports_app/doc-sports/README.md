@@ -53,3 +53,5 @@ Public enrollment is now submittable: [Sports Registration review workflow](webs
 - [Manual attendance prototype guide](attendance-guide.md) — sessions, active-enrollment rosters, marking, finalization and audit corrections.
 
 [Shared console navigation](console-navigation-guide.md) explains Sports-first ordering, group colours and indented menu items.
+
+- [Scholarships and monthly billing guide](billing-guide.md) — restricted decisions, fee plans, manual previews and draft invoices.

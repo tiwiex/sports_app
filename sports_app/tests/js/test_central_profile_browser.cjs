@@ -62,6 +62,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
                 rows = [
                   {
                     name: args.start ? "INV-21" : "INV-1",
+                    elapsed_seconds: 7200,
                     posting_date: "2026-11-06",
                     currency: "NGN",
                     grand_total: 250000,
@@ -74,6 +75,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
                 rows = [
                   {
                     name: "PAY-1",
+                    elapsed_seconds: 180,
+                    can_email_receipt: true,
                     payment_type: "Receive",
                     paid_amount: 10,
                     received_amount: 10,
@@ -112,6 +115,14 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
                 },
               };
             }
+            if (action === "context")
+              return {
+                message: {
+                  receipt: "PAY-1",
+                  recipient: "guardian@example.invalid",
+                },
+              };
+            if (action === "send") return { message: { state: "Queued" } };
             if (action === "save_preferred_foot") return { message: "v2" };
             if (action === "add_measurement") {
               window.measurements = [
@@ -157,13 +168,21 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
                   this.fields_dict[df.fieldname] = {
                     df,
                     input,
-                    $wrapper: { append: (node) => wrap.append(node) },
+                    $wrapper: {
+                      empty: () => wrap.replaceChildren(),
+                      append: (...nodes) => wrap.append(...nodes),
+                    },
                   };
                   this.el.append(wrap);
                 }
                 this.primary = document.createElement("button");
-                this.primary.textContent = options.primary_action_label;
+                this.primary.textContent =
+                  options.primary_action_label || "Close";
                 this.primary.onclick = () => {
+                  if (!options.primary_action) {
+                    this.hide();
+                    return;
+                  }
                   const values = {};
                   for (const [key, field] of Object.entries(this.fields_dict)) {
                     if (field.input) {
@@ -192,6 +211,9 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
           },
         };
         window.controller = new AbortController();
+      });
+      await page.addScriptTag({
+        path: path.resolve(__dirname, "../../public/js/finance_documents.js"),
       });
       await page.addScriptTag({
         path: path.resolve(__dirname, "../../public/js/player_profile.js"),
@@ -227,6 +249,63 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
       await page
         .getByRole("tab", { name: "Invoices & receipts", exact: true })
         .click();
+      assert.match(
+        await page
+          .getByRole("link", { name: "INV-1", exact: true })
+          .getAttribute("href"),
+        /download_pdf\?doctype=Sales\+Invoice&name=INV-1/
+      );
+      assert.equal(
+        await page
+          .getByRole("link", { name: "INV-1", exact: true })
+          .getAttribute("target"),
+        "_blank"
+      );
+      assert.match(
+        await page
+          .getByRole("link", { name: "INV-1", exact: true })
+          .getAttribute("style"),
+        /text-decoration: underline/
+      );
+      assert.match(
+        await page
+          .getByRole("link", { name: "INV-1", exact: true })
+          .textContent(),
+        /PDF ↗/
+      );
+      await page.getByRole("link", { name: "INV-1", exact: true }).click();
+      await page.getByRole("dialog").waitFor();
+      assert.match(
+        await page
+          .getByTitle("PDF preview", { exact: true })
+          .getAttribute("src"),
+        /format=Sports\+Academy\+Invoice/
+      );
+      await page.getByRole("button", { name: "Close", exact: true }).click();
+      assert.equal(
+        await page.getByText("2 hours ago", { exact: true }).count(),
+        1
+      );
+      assert.equal(
+        await page.getByText("3 minutes ago", { exact: true }).count(),
+        1
+      );
+      await page.getByLabel("Receipt actions", { exact: true }).click();
+      await page
+        .getByRole("button", { name: "Email receipt", exact: true })
+        .click();
+      await page.getByRole("dialog").waitFor();
+      assert.equal(
+        await page.getByLabel("Recipient email", { exact: true }).inputValue(),
+        "guardian@example.invalid"
+      );
+      await page
+        .getByRole("button", { name: "Send receipt", exact: true })
+        .click();
+      await page.waitForFunction(() =>
+        window.calls.some((c) => c.action === "send")
+      );
+
       assert.equal(
         await page.getByRole("img", { name: "Player portrait" }).isVisible(),
         true
@@ -300,7 +379,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || "playwright");
         .click();
       await page.getByLabel("Title", { exact: true }).fill("Birth record");
       await page.getByRole("button", { name: "Save", exact: true }).click();
-      await page.waitForFunction(() => window.messages.length === 1);
+      await page.waitForFunction(() => window.messages.length === 2);
       assert.equal(await page.getByRole("dialog").count(), 1);
       await page
         .getByLabel("Private supporting file", { exact: true })

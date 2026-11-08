@@ -201,6 +201,12 @@ const apps = path.resolve(__dirname, "../../../..");
       await page.addScriptTag({
         path: path.join(
           apps,
+          "sports_app/sports_app/public/js/finance_documents.js"
+        ),
+      });
+      await page.addScriptTag({
+        path: path.join(
+          apps,
           "sports_app/sports_app/public/js/player_profile.js"
         ),
       });
@@ -306,6 +312,29 @@ const apps = path.resolve(__dirname, "../../../..");
           .innerText(),
         "No"
       );
+      const customerLayout = await page
+        .locator(".sports-player-profile .player-field")
+        .filter({ has: page.locator("dt", { hasText: /^Customer:$/ }) })
+        .evaluate((el) => {
+          const label = el.querySelector("dt"),
+            value = el.querySelector("dd");
+          return {
+            sameLine:
+              Math.abs(
+                label.getBoundingClientRect().top -
+                  value.getBoundingClientRect().top
+              ) < 3,
+            bold: Number(getComputedStyle(value).fontWeight) >= 700,
+            underlined: getComputedStyle(
+              value.querySelector("a")
+            ).textDecorationLine.includes("underline"),
+          };
+        });
+      assert.deepEqual(customerLayout, {
+        sameLine: true,
+        bold: true,
+        underlined: true,
+      });
       await page
         .getByRole("dialog")
         .screenshot({ path: `/tmp/sports-player-profile-${width}.png` });
@@ -423,6 +452,57 @@ const apps = path.resolve(__dirname, "../../../..");
         if (labels.length)
           throw Error("Native action visible after capability denial");
       });
+      await page.evaluate(async () => {
+        document
+          .querySelectorAll(".modal-fixture")
+          .forEach((el) => el.remove());
+        window.allowed = true;
+        Object.assign(player, {
+          latest_invoice: "INV-MAIN",
+          latest_receipt: "PAY-MAIN",
+          can_email_receipt: true,
+          elapsed_seconds: 7200,
+        });
+        view.unmount();
+        view = frappe.boost_console_views["sports_app:players"]();
+        await view.mount({
+          container: document.querySelector("#host"),
+          signal: new AbortController().signal,
+        });
+      });
+      assert.equal(
+        await page
+          .getByRole("columnheader", { name: "Latest invoice", exact: true })
+          .count(),
+        1
+      );
+      assert.equal(
+        await page
+          .getByRole("columnheader", { name: "Elapsed", exact: true })
+          .count(),
+        1
+      );
+      assert.equal(
+        await page.getByText("2 hours ago", { exact: true }).count(),
+        1
+      );
+      await page.getByRole("link", { name: "INV-MAIN", exact: true }).click();
+      assert.match(
+        await page
+          .getByTitle("PDF preview", { exact: true })
+          .getAttribute("src"),
+        /Sports\+Academy\+Invoice/
+      );
+      await page.getByRole("button", { name: "Close", exact: true }).click();
+      await page
+        .getByRole("button", {
+          name: "Actions for player MSA17-08042",
+          exact: true,
+        })
+        .click();
+      await page
+        .getByRole("menuitem", { name: "Email receipt", exact: true })
+        .waitFor({ state: "visible" });
       await page.evaluate(() => view.unmount());
       assert.deepEqual(errors, []);
       await page.close();

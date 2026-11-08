@@ -38,6 +38,15 @@ class TestAcademySettings(TestCase):
 			active.start()
 			self.addCleanup(active.stop)
 
+	def test_enrollment_grid_rejects_child_metadata_and_wrong_shapes(self):
+		with (
+			patch.object(settings_api, "require_settings_access"),
+			patch.object(frappe, "parse_json", side_effect=lambda v: v),
+		):
+			for rows in ({}, [{"doctype": "User"}], [{}] * 31):
+				with self.assertRaises(frappe.ValidationError):
+					settings_api.save_configuration.__wrapped__({"enrollment_items": rows})
+
 	def test_two_academies_are_configuration_not_code(self):
 		for values in (
 			valid_values(),
@@ -89,11 +98,13 @@ class TestAcademySettings(TestCase):
 		with (
 			patch.object(academy, "can_manage_settings", return_value=False),
 			patch("sports_app.players.can_manage_players", return_value=False),
+			patch("sports_app.billing_access.can_read", return_value=False),
 		):
 			self.assertEqual(len(console.get_provider()["views"]), 1)
 		with (
 			patch.object(academy, "can_manage_settings", return_value=True),
 			patch("sports_app.players.can_manage_players", return_value=True),
+			patch("sports_app.billing_access.can_read", return_value=True),
 		):
 			self.assertIn("sports_app:settings", [row["key"] for row in console.get_provider()["views"]])
 			self.assertIn("sports_app:development", [row["key"] for row in console.get_provider()["views"]])
@@ -156,11 +167,12 @@ class TestAcademySettings(TestCase):
 				self.values = {"company": "Global company", "currency": "USD"}
 				self.meta = SimpleNamespace(
 					get_field=lambda name: SimpleNamespace(
+						fieldtype="Data",
 						default={
 							"registration_digits": 5,
 							"default_enrollment_status": "Pending",
 							"monthly_fees_enabled": 1,
-						}.get(name)
+						}.get(name),
 					)
 				)
 

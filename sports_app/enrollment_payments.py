@@ -67,14 +67,13 @@ def payment_configuration(settings):
 	if not settings.get("enrollment_payments_enabled"):
 		frappe.throw(_("Online payment instructions are not configured. Contact the academy."))
 	currency = settings.enrollment_payment_currency
-	total = flt(settings.enrollment_registration_fee) + flt(settings.enrollment_jersey_fee)
-	fees = [
-		flt(settings.enrollment_registration_fee),
-		flt(settings.enrollment_jersey_fee),
-		flt(settings.enrollment_monthly_fee),
-	]
-	if not currency or not all(math.isfinite(value) for value in fees) or total <= 0 or min(fees) < 0:
-		frappe.throw(_("Configure valid enrollment fees and currency."))
+	from sports_app.enrollment_charges import calculate
+
+	charges = calculate(settings)
+	total = float(sum(_money(row["amount"]) for row in charges))
+	monthly = flt(settings.enrollment_monthly_fee)
+	if not currency or not math.isfinite(monthly) or monthly < 0:
+		frappe.throw(_("Configure valid enrollment currency and monthly information amount."))
 	bank = frappe.get_doc("Bank Account", settings.enrollment_bank_account)
 	if (
 		bank.disabled
@@ -100,6 +99,7 @@ def payment_configuration(settings):
 		frappe.throw(_("This PoC requires enrollment and company currencies to match."))
 	return dict(
 		currency=currency,
+		charges=charges,
 		registration_fee=flt(settings.enrollment_registration_fee),
 		jersey_fee=flt(settings.enrollment_jersey_fee),
 		monthly_fee=flt(settings.enrollment_monthly_fee),
@@ -124,6 +124,29 @@ def _response(app, payment):
 			payment.docstatus == 1
 			and (payment.get("doctype") != "Sales Invoice" or _money(payment.outstanding_amount) == 0)
 		),
+		"charges": [
+			dict(
+				item_name=row.get("item_name"),
+				qty=row.get("qty", 1),
+				rate=row.get("rate", 0),
+				amount=row.get("amount", float(_money(row.get("rate")) * Decimal(str(row.get("qty", 1))))),
+			)
+			for row in snapshot.get("charges", snapshot.get("items", []))
+		]
+		or [
+			dict(
+				item_name="Registration fee",
+				qty=1,
+				rate=snapshot.get("registration_fee", 0),
+				amount=snapshot.get("registration_fee", 0),
+			),
+			dict(
+				item_name="Jersey (2 sets)",
+				qty=1,
+				rate=snapshot.get("jersey_fee", 0),
+				amount=snapshot.get("jersey_fee", 0),
+			),
+		],
 		**{
 			key: snapshot[key]
 			for key in (
