@@ -36,6 +36,8 @@ Prepared the existing billing/scholarships, configurable charges, subscription p
 
 - Initial remote Frappe Linter failed because Prettier enforced the repository tab/99-column EditorConfig, while the sandboxed local formatter had preserved spaces. Reran the pinned hooks outside the sandbox to apply CI formatting to nine changed JavaScript files; no policy or business behavior changes. Attendance build and dependency audit passed on the initial remote run.
 
+- Remote formatting then passed; Semgrep correctness flagged the temporary asset filename access before an explicit flush. Added the flush before accessing `handle.name`, preserving the existing content flush, atomic replace and cleanup. The existing publication/repair tests verify bytes, permissions and removal of temporary files.
+
 ## Decisions, deviations and recovery
 
 Browser checks use synthetic endpoints and the existing rendered public fixture. They do not replace native integration smoke evidence in the feature logs. No accounts, settings, invoices, payments or emails were created by this integration verification. No other app source changed.

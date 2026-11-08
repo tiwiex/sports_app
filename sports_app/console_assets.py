@@ -42,6 +42,7 @@ def _publish(filename):
 	if not target.exists() or target.read_bytes() != content or target.stat().st_mode & 0o444 != 0o444:
 		# Publish complete bytes atomically before advertising this versioned URL.
 		with NamedTemporaryFile(dir=destination, prefix=".sports-asset-", delete=False) as handle:
+			handle.flush()
 			temporary = Path(handle.name)
 			try:
 				handle.write(content)
