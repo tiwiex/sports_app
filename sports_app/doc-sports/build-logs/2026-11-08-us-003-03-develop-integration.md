@@ -4,7 +4,7 @@
 - Story / epic: sports_app:EPIC-004; US-001-01, US-003-01/03, US-004-01/02/03, US-005-01/02/03/04, US-008-02
 - Requirements: Existing requirement mappings in the linked story and feature logs apply.
 - Affected apps / branches / versions: Sports App; `story/epic-004-scholarships-and-monthly-billing` → `develop`.
-- Pull requests: Pending creation.
+- Pull requests: [Sports App PR #4](https://github.com/tiwiex/sports_app/pull/4) → `develop`.
 - Status: Local checks verified; integration pending.
 
 ## Intended outcome and starting context
@@ -40,4 +40,4 @@ Browser checks use synthetic endpoints and the existing rendered public fixture.
 
 ## Remaining work and release impact
 
-Remote PR/check and merge references will follow. Schema, daily billing catch-up and release limitations remain as documented in feature logs; no new migration or deployment is performed by this integration task.
+Remote CI and merge status are available on PR #4; local verification is recorded above. Schema, daily billing catch-up and release limitations remain as documented in feature logs; no new migration or deployment is performed by this integration task.
